@@ -1,4 +1,4 @@
-package es.esy.rafaelsilva.tcc;
+package es.esy.rafaelsilva.tcc.home;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import es.esy.rafaelsilva.tcc.R;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,6 +26,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Olá Sabrina!");
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

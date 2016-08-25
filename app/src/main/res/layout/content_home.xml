@@ -9,20 +9,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="es.esy.rafaelsilva.tcc.HomeActivity"
+    tools:context=".home.HomeActivity"
     tools:showIn="@layout/app_bar_home"
     android:background="@color/button_material_light">
 
     <fragment
         android:id="@+id/cabecalho_post"
-        android:name="es.esy.rafaelsilva.tcc.CabecalhoPost"
+        android:name="es.esy.rafaelsilva.tcc.home.CabecalhoPost"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         tools:layout="@layout/cabecalho_post" />
 
     <fragment
         android:id="@+id/corpo_home"
-        android:name="es.esy.rafaelsilva.tcc.CorpoHome"
+        android:name="es.esy.rafaelsilva.tcc.home.CorpoHome"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         tools:layout="@layout/corpo_home"
