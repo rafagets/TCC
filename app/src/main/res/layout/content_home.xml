@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="es.esy.rafaelsilva.tcc.HomeActivity"
+    tools:showIn="@layout/app_bar_home"
+    android:background="@color/button_material_light">
+
+    <fragment
+        android:id="@+id/cabecalho_post"
+        android:name="es.esy.rafaelsilva.tcc.CabecalhoPost"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        tools:layout="@layout/cabecalho_post" />
+
+    <fragment
+        android:id="@+id/corpo_home"
+        android:name="es.esy.rafaelsilva.tcc.CorpoHome"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        tools:layout="@layout/corpo_home"
+        android:layout_below="@+id/cabecalho_post"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>
