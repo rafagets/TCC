@@ -17,14 +17,14 @@
         android:id="@+id/cabecalho_post"
         android:name="es.esy.rafaelsilva.tcc.home.CabecalhoPost"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         tools:layout="@layout/cabecalho_post" />
 
     <fragment
         android:id="@+id/corpo_home"
         android:name="es.esy.rafaelsilva.tcc.home.CorpoHome"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         tools:layout="@layout/corpo_home"
         android:layout_below="@+id/cabecalho_post"
         android:layout_alignParentStart="true"

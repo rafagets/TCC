@@ -15,8 +15,9 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lyComentar">
+        android:layout_height="match_parent"
+        android:id="@+id/lyComentar"
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,7 +25,8 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Diga uma novidade..."
             android:id="@+id/lbNovidade"
-            android:layout_marginLeft="6dp" />
+            android:layout_marginLeft="6dp"
+            android:clickable="false" />
     </LinearLayout>
 
 </LinearLayout>
