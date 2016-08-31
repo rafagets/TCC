@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import es.esy.rafaelsilva.tcc.QrcodeActivity;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.historico.HistoricoActivity;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,8 +36,16 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+//                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
+//                startActivity(intent);
+
+                Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
+                startActivity(intent);
+
+
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 

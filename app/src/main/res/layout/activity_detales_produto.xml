@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="es.esy.rafaelsilva.tcc.DetalesProdutoActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"
+        android:id="@+id/imgIcone"
+        android:src="@drawable/maca"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"/>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_alignBottom="@+id/imgIcone"
+        android:layout_toEndOf="@+id/imgIcone"
+        android:layout_marginStart="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbTotalAvaliacoes"
+        android:text="2,6k avaliaram"
+        android:layout_below="@+id/ratingBar"
+        android:layout_alignStart="@+id/ratingBar"
+        android:layout_marginStart="15dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:id="@+id/linha"
+        android:src="@drawable/linha"
+        android:scaleType="fitXY"
+        android:tint="@color/background_floating_material_dark"
+        android:layout_below="@+id/lbTotalAvaliacoes"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Informações Nutricionais"
+        android:layout_below="@+id/lbTotalAvaliacoes"
+        android:layout_alignStart="@+id/imgIcone"
+        android:layout_marginTop="20dp"
+        android:id="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A maçã ajuda a controlar certas doenças como diabetes, melhora a digestão, contribuindo para um melhor aproveitamento dos nutrientes e é indicada para quem deseja emagrecer, porque é rica em fibras e tem poucas calorias. A maça da Fazenda Santa Rita é produzida com um grande controle de qualidade. Nossa maçã é livre de agrotóxicos."
+        android:id="@+id/lbDescricao"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginTop="15dp" />
+
+
+</RelativeLayout>

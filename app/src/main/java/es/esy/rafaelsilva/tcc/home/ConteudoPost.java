@@ -21,4 +21,6 @@ public class ConteudoPost extends Fragment {
         return inflater.inflate(R.layout.conteudo_post, container, false);
 
     }
+
+
 }

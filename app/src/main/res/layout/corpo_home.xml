@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:showIn="@layout/content_home">
 
 
     <!-- A CardView that contains a TextView -->
@@ -80,8 +81,8 @@
                 android:layout_marginTop="10dp" />
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:id="@+id/imgAddOne"
                 android:src="@drawable/ic_add_one"
                 android:layout_alignParentStart="false"
@@ -100,7 +101,8 @@
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentStart="false"
                 android:layout_alignTop="@+id/imgAddOne"
-                android:layout_marginTop="3dp" />
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="3dp" />
 
         </RelativeLayout>
 

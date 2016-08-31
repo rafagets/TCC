@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/lbPost"
         android:layout_below="@+id/imgUsuario"
-        android:text="Hoje eu fui no mercado Avenida e tinha umas frutas e legumes que aparentava estar deliciosa! Acabei de comer e estava mesmo! rsrs" />
+        android:text="Hoje eu fui no mercado Avenida e tinha umas frutas e legumes que aparentava estar deliciosa! Acabei de comer e estava mesmo! rsrs"
+        android:textSize="20sp"/>
 
 </LinearLayout>

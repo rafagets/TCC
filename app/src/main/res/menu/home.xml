@@ -8,4 +8,5 @@
         app:showAsAction="always|collapseActionView"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="Pesquisa" />
+
 </menu>

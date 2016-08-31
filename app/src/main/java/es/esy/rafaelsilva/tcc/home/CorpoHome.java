@@ -16,6 +16,8 @@ import es.esy.rafaelsilva.tcc.R;
  */
 public class CorpoHome extends Fragment {
 
+    ImageView addOne;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class CorpoHome extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ImageView addOne  = (ImageView) getActivity().findViewById(R.id.imgAddOne);
+        addOne  = (ImageView) getActivity().findViewById(R.id.imgAddOne);
         addOne.setOnClickListener(runAddOne());
     }
 
@@ -34,6 +36,7 @@ public class CorpoHome extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addOne.setImageResource(R.drawable.ic_added);
                 Toast.makeText(getActivity(), "add one.", Toast.LENGTH_LONG).show();
             }
         };
