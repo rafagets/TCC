@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import es.esy.rafaelsilva.tcc.QrcodeActivity;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.Welcome_Activity;
 import es.esy.rafaelsilva.tcc.historico.HistoricoActivity;
 
 public class HomeActivity extends AppCompatActivity
@@ -32,6 +33,8 @@ public class HomeActivity extends AppCompatActivity
         setTitle("Olá Sabrina!");
 
 
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +45,6 @@ public class HomeActivity extends AppCompatActivity
 
                 Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
                 startActivity(intent);
-
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
@@ -117,6 +119,9 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+
+            Intent intent = new Intent(HomeActivity.this, Welcome_Activity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
 
