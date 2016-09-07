@@ -6,4 +6,6 @@ public class Tipo {
 
 	private String nome;
 
+	private String imagem;
+
 }

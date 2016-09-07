@@ -8,8 +8,8 @@ public class Produto {
 
 	private String desc;
 
-	private String status;
+	private int status;
 
-	private String imagem;
+	private String img;
 
 }

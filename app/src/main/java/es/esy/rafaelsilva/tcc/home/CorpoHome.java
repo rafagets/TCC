@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import es.esy.rafaelsilva.tcc.GenericDAO.LoadPosts;
 import es.esy.rafaelsilva.tcc.R;
 
 /**
@@ -28,8 +29,13 @@ public class CorpoHome extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        addOne  = (ImageView) getActivity().findViewById(R.id.imgAddOne);
-        addOne.setOnClickListener(runAddOne());
+//        addOne  = (ImageView) getActivity().findViewById(R.id.imgAddOne);
+//        addOne.setOnClickListener(runAddOne());
+
+        LoadPosts loadPosts = new LoadPosts(getActivity());
+        loadPosts.execute("R", "comentario");
+
+
     }
 
     private View.OnClickListener runAddOne() {

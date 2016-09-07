@@ -6,9 +6,9 @@ public class Historico {
 
 	private String data;
 
-	private String imagem;
-
 	private String cordenadas;
+
+	private String nome;
 
 	private Tipo tipo;
 

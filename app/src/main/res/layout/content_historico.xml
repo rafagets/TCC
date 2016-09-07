@@ -79,7 +79,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lbNomeProduto"
+        android:id="@+id/lbUsuario"
         android:layout_below="@+id/imgIcone"
         android:text="Maçã Gala - Fazenda Santa Rita"
         android:textSize="22dp"
@@ -90,8 +90,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/estrelas"
-        android:layout_below="@+id/lbNomeProduto"
-        android:layout_alignStart="@+id/lbNomeProduto"
+        android:layout_below="@+id/lbUsuario"
+        android:layout_alignStart="@+id/lbUsuario"
         android:numStars="5"
         android:rating="2.5"
         android:stepSize="0.5" />

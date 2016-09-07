@@ -6,4 +6,8 @@ public class Mercado {
 
 	private String nome;
 
+	private String endereco;
+
+	private String cordenadas;
+
 }
