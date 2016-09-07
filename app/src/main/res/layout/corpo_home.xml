@@ -6,39 +6,45 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/content_home">
 
+    <!--<ProgressBar-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/progressBar"-->
+        <!--android:visibility="invisible"-->
+        <!--android:layout_gravity="center_horizontal" />-->
 
-    <!-- A CardView that contains a TextView -->
-    <ListView
-        android:id="@+id/lista"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:background="@color/cardview_light_background"
-        android:elevation="3dp"
-        android:dividerHeight="10dp"
-        android:divider="@color/button_material_light"
-        android:clickable="false"
-        android:contextClickable="false"
-        android:drawSelectorOnTop="false">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/recarregar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- A CardView that contains a TextView -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:elevation="3dp"
+            android:background="@color/cardview_light_background">
 
 
+        </android.support.v7.widget.RecyclerView>
 
-    </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-    <!--<android.support.v7.widget.CardView-->
-        <!--xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/card_view"-->
+
+    <!--<ListView-->
+        <!--android:id="@+id/lista"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_margin="0dp"-->
-        <!--card_view:cardBackgroundColor="#ffffff"-->
-        <!--card_view:cardCornerRadius="0dp"-->
-        <!--card_view:cardElevation="3dp"-->
-        <!--card_view:contentPadding="10dp"-->
-        <!--android:clickable="true">-->
-        <!---->
+        <!--android:background="@color/cardview_light_background"-->
+        <!--android:elevation="3dp"-->
+        <!--android:dividerHeight="10dp"-->
+        <!--android:divider="@color/button_material_light" >-->
+
+    <!--</ListView>-->
 
 
-    <!--</android.support.v7.widget.CardView>-->
 
 </LinearLayout>

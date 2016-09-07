@@ -20,6 +20,15 @@
         android:layout_height="50dp"
         tools:layout="@layout/cabecalho_post" />
 
+    <!--<ProgressBar-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/progressBar"-->
+        <!--android:layout_below="@+id/cabecalho_post"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:visibility="invisible"/>-->
+
     <fragment
         android:id="@+id/corpo_home"
         android:name="es.esy.rafaelsilva.tcc.home.CorpoHome"

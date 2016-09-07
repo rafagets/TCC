@@ -3,6 +3,7 @@ package es.esy.rafaelsilva.tcc.home;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import es.esy.rafaelsilva.tcc.R;
  */
 public class CorpoHome extends Fragment {
 
-    ImageView addOne;
+    SwipeRefreshLayout recarregar;
 
     @Nullable
     @Override
@@ -29,22 +30,22 @@ public class CorpoHome extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        addOne  = (ImageView) getActivity().findViewById(R.id.imgAddOne);
-//        addOne.setOnClickListener(runAddOne());
+        recarregar = (SwipeRefreshLayout) getActivity().findViewById(R.id.recarregar);
+        recarregar.setRefreshing(true);
 
-        LoadPosts loadPosts = new LoadPosts(getActivity());
-        loadPosts.execute("R", "comentario");
+        carregarComentarios();
 
-
-    }
-
-    private View.OnClickListener runAddOne() {
-        return new View.OnClickListener() {
+        recarregar.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View view) {
-                addOne.setImageResource(R.drawable.ic_added);
-                Toast.makeText(getActivity(), "add one.", Toast.LENGTH_LONG).show();
+            public void onRefresh() {
+                carregarComentarios();
             }
-        };
-    }
+        });}
+
+
+        void carregarComentarios() {
+            LoadPosts loadPosts = new LoadPosts(getActivity(), recarregar);
+            loadPosts.execute("R", "comentario", "ORDER BY data DESC");
+        }
+
 }
