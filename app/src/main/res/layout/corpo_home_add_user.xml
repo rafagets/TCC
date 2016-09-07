@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgUsuario"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbAvaliacao"
+            android:layout_below="@+id/imgProduto"
+            android:layout_alignParentStart="true"
+            android:text="Otima maçã! recomendo a todos..."
+            android:layout_margin="3dp"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:id="@+id/imageView4"
+            android:src="@drawable/linha"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/lbAvaliacao"
+            android:layout_alignParentStart="true"
+            android:tint="@color/background_floating_material_dark"
+            android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btAddOne"
+            android:src="@drawable/ic_add_one"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/imageView4"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_alignParentEnd="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbNome"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:text="Sabrina"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:id="@+id/lbTexto"
+            android:textSize="14sp"
+            android:text="fez uma amizade à"
+            android:layout_toEndOf="@+id/lbNome"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbTempo"
+            android:layout_toRightOf="@+id/lbTexto"
+            android:textSize="14sp"
+            android:text="1 minuto á trás"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"
+        android:id="@+id/imgProduto"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        android:layout_below="@+id/imgUsuario"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="6dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbUsuario"
+            android:layout_below="@id/imgUsuario"
+            android:layout_toRightOf="@+id/imgProduto"
+            android:text="Rafael"
+            android:layout_marginLeft="10dp"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbProficao"
+            android:layout_below="@+id/lbUsuario"
+            android:layout_alignStart="@+id/lbUsuario"
+            android:text="Programador em Google Inc."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbAlimentacao"
+            android:layout_below="@+id/lbProficao"
+            android:layout_alignStart="@+id/lbUsuario"
+            android:text="Vegetariano"
+            android:textColor="@android:color/darker_gray"/>
+
+
+        <!--<RatingBar-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/estrelas"-->
+        <!--android:layout_below="@+id/imgUsuario"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:numStars="5"-->
+        <!--android:rating="2.5"-->
+        <!--android:stepSize="0.5"-->
+        <!--android:scaleX="0.5"-->
+        <!--android:scaleY="0.5"-->
+        <!--android:transformPivotX="0dp"-->
+        <!--android:transformPivotY="0dp"-->
+        <!--style="?android:attr/ratingBarStyleSmall"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbQtdCurtidas"
+            android:layout_toRightOf="@+id/btAddOne"
+            android:text="14k"
+            android:textSize="14sp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignTop="@+id/btAddOne"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
