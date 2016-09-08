@@ -1,6 +1,8 @@
 package es.esy.rafaelsilva.tcc.home;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -43,9 +45,10 @@ public class CorpoHome extends Fragment {
         });}
 
 
-        void carregarComentarios() {
-            LoadPosts loadPosts = new LoadPosts(getActivity(), recarregar);
-            loadPosts.execute("R", "comentario", "ORDER BY data DESC");
-        }
+    void carregarComentarios() {
+        LoadPosts loadPosts = new LoadPosts(getActivity(), recarregar);
+        loadPosts.execute("R", "comentario", "ORDER BY data DESC");
+    }
+
 
 }

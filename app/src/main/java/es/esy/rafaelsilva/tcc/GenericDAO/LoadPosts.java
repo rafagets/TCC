@@ -23,6 +23,7 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.AdapterComentarios;
 import es.esy.rafaelsilva.tcc.adapters.AdapterHome;
 import es.esy.rafaelsilva.tcc.beans.Comentario;
+import es.esy.rafaelsilva.tcc.beans.ComentarioPost;
 import es.esy.rafaelsilva.tcc.beans.CurtidaComentario;
 import es.esy.rafaelsilva.tcc.beans.Usuario;
 import es.esy.rafaelsilva.tcc.configuracao.Config;
@@ -78,6 +79,8 @@ public class LoadPosts extends AsyncTask<String, Integer, Boolean> {
 
                     c.setCurtidaComentario(loadCurtidas(c.getCodigo()));
 
+                    c.setComentariosPost(loadCoemntariosPost(String.valueOf(jsonObject.getInt("codigo"))));
+
                     comentarios.add(c);
                 }
 
@@ -92,7 +95,6 @@ public class LoadPosts extends AsyncTask<String, Integer, Boolean> {
         return false;
     }
 
-
     @Override
     protected void onPostExecute(Boolean flag) {
 
@@ -102,7 +104,7 @@ public class LoadPosts extends AsyncTask<String, Integer, Boolean> {
 //        ListView listView = (ListView) ((HomeActivity) contexto).findViewById(R.id.lista);
 //        listView.setAdapter(adapterHome);
 
-        AdapterComentarios adapter = new AdapterComentarios(comentarios);
+        AdapterComentarios adapter = new AdapterComentarios(comentarios, contexto);
         RecyclerView recyclerView = (RecyclerView) ((HomeActivity) contexto).findViewById(R.id.lista);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -111,6 +113,56 @@ public class LoadPosts extends AsyncTask<String, Integer, Boolean> {
 
     }
 
+
+
+    private ComentarioPost[] loadCoemntariosPost(String codigo) {
+
+        JSONObject jsonObject;
+        JSONArray jsonArray;
+        DAO helper = new DAO();
+
+
+        String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+        String[] v = new String[] { "R", "comentariopost", "coment",  String.valueOf(codigo)};
+
+        try {
+            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+            ComentarioPost[] comentariosPost = new ComentarioPost[jsonArray.length()];
+
+            try {
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObject = (JSONObject) jsonArray.get(i);
+
+                    ComentarioPost u = new ComentarioPost();
+                    u.setStatus(jsonObject.getInt("status"));
+                    u.setComentario(jsonObject.getString("comentario"));
+                    u.setData(jsonObject.getString("data"));
+
+                    Usuario usu = new Usuario();
+                    usu.setCodigo(jsonObject.getInt("usuario"));
+                    u.setUsuario(usu);
+
+                    Comentario c = new Comentario();
+                    c.setCodigo(jsonObject.getInt("coment"));
+                    u.setPost(c);
+
+                    comentariosPost[i] = u;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return comentariosPost;
+
+        }catch (Exception e){
+
+        }
+
+        return null;
+
+    }
 
 
     private CurtidaComentario[] loadCurtidas(int codigo) {

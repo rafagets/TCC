@@ -1,5 +1,7 @@
 package es.esy.rafaelsilva.tcc.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import es.esy.rafaelsilva.tcc.QrcodeActivity;
 import es.esy.rafaelsilva.tcc.R;
@@ -46,11 +49,9 @@ public class HomeActivity extends AppCompatActivity
                 Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
                 startActivity(intent);
 
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
-        //ygvjh
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -137,4 +138,5 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

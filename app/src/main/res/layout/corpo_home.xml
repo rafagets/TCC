@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/content_home">
 
-    <!--<ProgressBar-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/progressBar"-->
-        <!--android:visibility="invisible"-->
-        <!--android:layout_gravity="center_horizontal" />-->
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/recarregar"
         android:layout_width="wrap_content"
@@ -24,27 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            android:elevation="3dp"
             android:background="@color/cardview_light_background">
 
 
         </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-    <!--<ListView-->
-        <!--android:id="@+id/lista"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="0dp"-->
-        <!--android:background="@color/cardview_light_background"-->
-        <!--android:elevation="3dp"-->
-        <!--android:dividerHeight="10dp"-->
-        <!--android:divider="@color/button_material_light" >-->
-
-    <!--</ListView>-->
-
 
 
 </LinearLayout>

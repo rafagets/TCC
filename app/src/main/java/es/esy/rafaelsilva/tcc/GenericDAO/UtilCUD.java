@@ -4,11 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import es.esy.rafaelsilva.tcc.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.configuracao.Config;
 
 /**
  * Created by Rafael on 19/08/2016.
@@ -54,15 +59,12 @@ import es.esy.rafaelsilva.tcc.DAO.DAO;
 
 public class UtilCUD extends AsyncTask<String, Integer, Boolean> {
 
-    private ProgressDialog dialog;
     private String acao;
-    private String url = "http://rafaelsilva.esy.es/tcc/crud.php";
     private String tabela;
     private Context contexto;
 
 
     public UtilCUD(Context contexto, String acao, String tabela) {
-        this.dialog = new ProgressDialog(contexto);
         this.contexto = contexto;
         this.acao   = acao;
         this.tabela = tabela;
@@ -70,8 +72,7 @@ public class UtilCUD extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Trabalhando, espere um pouco.");
-        dialog.show();
+
     }
 
     @Override
@@ -81,7 +82,7 @@ public class UtilCUD extends AsyncTask<String, Integer, Boolean> {
         DAO helper;
 
         helper = new DAO();
-        jsonObject = helper.getJSONOject(acao, url, tabela, valores);
+        jsonObject = helper.getJSONOject(acao, Config.urlMaster, tabela, valores);
 
         try {
             return jsonObject.getBoolean("flag");
@@ -95,12 +96,11 @@ public class UtilCUD extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        dialog.dismiss();
 
         if (flag)
-            Toast.makeText(contexto, "Sucesso! ;)", Toast.LENGTH_LONG).show();
+            Log.e("OK", String.valueOf(flag));
         else {
-            Toast.makeText(contexto, "Falha. =(", Toast.LENGTH_LONG).show();
+            Toast.makeText(contexto, "Falha. Tente mais tarde =(", Toast.LENGTH_LONG).show();
         }
 
     }

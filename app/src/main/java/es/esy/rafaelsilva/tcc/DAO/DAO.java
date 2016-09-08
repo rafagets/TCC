@@ -127,6 +127,8 @@ public class DAO {
                 response += line;
             }
 
+            Log.e("********** data", response);
+
             bufferedReader.close();
             is.close();
             http.disconnect();

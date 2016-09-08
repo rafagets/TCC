@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="br.com.paulistinhaperfumaria.erp_ts_ponto.MAPS_RECEIVE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,28 +21,29 @@
             android:name=".home.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".QrcodeActivity" />
         <activity
             android:name=".historico.HistoricoActivity"
             android:label="@string/title_activity_historico"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DetalesProdutoActivity"></activity>
+        <activity android:name=".DetalesProdutoActivity" />
         <activity android:name=".Login_Activity">
-
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".Welcome_Activity" />
+        <activity android:name=".ComentariosPostActivity"></activity>
     </application>
-
 
 </manifest>
