@@ -1,9 +1,8 @@
-package es.esy.rafaelsilva.tcc.DAO;
+package es.esy.rafaelsilva.tcc.dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 /**
  * Created by Rafa on 31/08/2016.

@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".home.HomeActivity"
+            android:name=".activity.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 
@@ -29,21 +29,21 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".QrcodeActivity" />
+        <activity android:name=".activity.QrcodeActivity" />
         <activity
-            android:name=".historico.HistoricoActivity"
+            android:name=".activity.HistoricoActivity"
             android:label="@string/title_activity_historico"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DetalesProdutoActivity" />
-        <activity android:name=".Login_Activity">
+        <activity android:name=".activity.DetalesProdutoActivity" />
+        <activity android:name=".activity.Login_Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Welcome_Activity" />
-        <activity android:name=".ComentariosPostActivity"></activity>
+        <activity android:name=".activity.Welcome_Activity" />
+        <activity android:name=".activity.ComentariosPostActivity"></activity>
     </application>
 
 </manifest>

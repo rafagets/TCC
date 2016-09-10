@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:context="es.esy.rafaelsilva.tcc.ComentariosPostActivity"
+    tools:context=".activity.ComentariosPostActivity"
     android:background="@color/button_material_light">
 
 

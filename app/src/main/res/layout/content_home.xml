@@ -9,32 +9,23 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".home.HomeActivity"
+    tools:context=".activity.HomeActivity"
     tools:showIn="@layout/app_bar_home"
     android:background="@color/button_material_light">
 
     <fragment
         android:id="@+id/cabecalho_post"
-        android:name="es.esy.rafaelsilva.tcc.home.CabecalhoPost"
+        android:name="es.esy.rafaelsilva.tcc.fragment.CabecalhoPost"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        tools:layout="@layout/cabecalho_post" />
-
-    <!--<ProgressBar-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/progressBar"-->
-        <!--android:layout_below="@+id/cabecalho_post"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:visibility="invisible"/>-->
+        tools:layout="@layout/fragment_cabecalho_post" />
 
     <fragment
         android:id="@+id/corpo_home"
-        android:name="es.esy.rafaelsilva.tcc.home.CorpoHome"
+        android:name="es.esy.rafaelsilva.tcc.fragment.CorpoHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/corpo_home"
+        tools:layout="@layout/fragment_corpo_home"
         android:layout_below="@+id/cabecalho_post"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
