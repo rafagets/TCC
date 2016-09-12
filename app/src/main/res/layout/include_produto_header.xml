@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgFundo"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:paddingRight="10dp">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/btLocalizacao"
+            android:src="@drawable/ic_location"
+            android:layout_marginRight="6dp" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/btSaude"
+            android:src="@drawable/ic_tabela_nutricional"
+            android:layout_alignTop="@+id/btLocalizacao"
+            android:layout_toStartOf="@+id/btLocalizacao"
+            android:layout_marginRight="6dp" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/btCompartilhar"
+            android:src="@drawable/ic_share"
+            android:layout_alignTop="@+id/btLocalizacao"
+            android:layout_toStartOf="@+id/btSaude"
+            android:layout_marginRight="6dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/imgFundo"
+        android:src="@drawable/macieira"
+        android:scaleType="fitXY" />
+
+    <!--<ImageView-->
+    <!--android:layout_width="120dp"-->
+    <!--android:layout_height="120dp"-->
+    <!--android:id="@+id/imgIcone"-->
+    <!--android:src="@drawable/maca"-->
+    <!--android:layout_below="@+id/imgFundo"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="-60dp"-->
+    <!--/>-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"
+        android:id="@+id/imgIcone"
+        android:src="@drawable/maca"
+        android:layout_below="@+id/imgFundo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-60dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbUsuario"
+        android:layout_below="@+id/imgIcone"
+        android:text="Maçã Gala - Fazenda Santa Rita"
+        android:textSize="22dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="10dp" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/estrelas"
+        android:layout_below="@+id/lbUsuario"
+        android:layout_alignStart="@+id/lbUsuario"
+        android:numStars="5"
+        android:rating="2.5"
+        android:stepSize="0.5" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbTotalAvaliacoes"
+        android:text="2,6k avaliaram"
+        android:layout_alignTop="@+id/estrelas"
+        android:layout_toEndOf="@+id/estrelas"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="10dp"/>
+
+</RelativeLayout>

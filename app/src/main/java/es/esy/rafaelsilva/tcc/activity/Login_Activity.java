@@ -39,8 +39,12 @@ public class Login_Activity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
                 startActivity(intent);
+
+//                Intent intent = new Intent(Login_Activity.this, ReputacaoProdutoActivity.class);
+//                startActivity(intent);
             }
         };
     }

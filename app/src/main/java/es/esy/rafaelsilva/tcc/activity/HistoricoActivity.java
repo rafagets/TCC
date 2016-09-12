@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,9 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.List;
+
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.modelo.Historico;
+import es.esy.rafaelsilva.tcc.task.HistoricoTask;
 
 public class HistoricoActivity extends AppCompatActivity {
+
+    private List<Historico> lista;
+    private Context contexto = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +33,24 @@ public class HistoricoActivity extends AppCompatActivity {
         setTitle("Maçã Gala");
 
 
+        HistoricoTask loadPosts = new HistoricoTask(contexto);
+        loadPosts.execute("R", "historico","produto","2"," ORDER BY data ASC");
+
+
         ImageView btSaude = (ImageView) findViewById(R.id.btSaude);
         btSaude.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HistoricoActivity.this, DetalesProdutoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
+        btLocalizacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HistoricoActivity.this, ReputacaoProdutoActivity.class);
                 startActivity(intent);
             }
         });
@@ -43,6 +64,8 @@ public class HistoricoActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     @Override
     public void onBackPressed() {

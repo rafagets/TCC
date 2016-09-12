@@ -23,6 +23,7 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(String... urls) {
         String url = urls[0];
+
         Bitmap foto = null;
 
         try {

@@ -6,9 +6,11 @@ package es.esy.rafaelsilva.tcc.util;
 public class Config {
 
 //    public static String caminhoImageTumb = "http://192.168.1.102/projetotcc/img/tumb/";
+//    public static String caminhoImageIcons = "http://192.168.1.102/projetotcc/img/icons_system/";
 //    public static String urlMaster = "http://192.168.1.102/projetotcc/crud.php";
 
     public static String caminhoImageTumb = "http://rafaelsilva.esy.es/tcc/img/tumb/";
+    public static String caminhoImageIcons = "http://rafaelsilva.esy.es/tcc/img/icons_system/";
     public static String urlMaster = "http://rafaelsilva.esy.es/tcc/crud.php";
 
 }
