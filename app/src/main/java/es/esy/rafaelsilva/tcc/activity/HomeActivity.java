@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.dao.QRCode;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,11 +37,12 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-//                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
-//                startActivity(intent);
-
                 Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
+                intent.putExtra("lote", 3);
                 startActivity(intent);
+
+//                QRCode qrCode = new QRCode(HomeActivity.this, HomeActivity.this);
+//                qrCode.lerQrcode();
 
             }
         });

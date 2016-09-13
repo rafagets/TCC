@@ -101,7 +101,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/lbUsuario"
+            android:id="@+id/lbProduto"
             android:layout_below="@id/imgUsuario"
             android:layout_toRightOf="@+id/imgProduto"
             android:text="Rafael"
@@ -112,8 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/lbProficao"
-            android:layout_below="@+id/lbUsuario"
-            android:layout_alignStart="@+id/lbUsuario"
+            android:layout_below="@+id/lbProduto"
+            android:layout_alignStart="@+id/lbProduto"
             android:text="Programador em Google Inc."/>
 
         <TextView
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/lbAlimentacao"
             android:layout_below="@+id/lbProficao"
-            android:layout_alignStart="@+id/lbUsuario"
+            android:layout_alignStart="@+id/lbProduto"
             android:text="Vegetariano"
             android:textColor="@android:color/darker_gray"/>
 

@@ -54,12 +54,16 @@ public class QrcodeActivity extends AppCompatActivity {
             if(resultado.getContents() == null){
                 Log.d("QrcodeActyvity", "Scanner cancelado");
                 Toast.makeText(this, "Leitura cancelada =(", Toast.LENGTH_SHORT).show();
+                finish();
             }else{
                 Log.d("QrcodeActyvity", "Resultado: " + resultado.getContents());
                 Toast.makeText(this, "Resultado " + resultado.getContents(), Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(QrcodeActivity.this, HistoricoActivity.class);
+                intent.putExtra("lote", resultado.getContents());
                 startActivity(intent);
+
+                finish();
             }
 
         }else {

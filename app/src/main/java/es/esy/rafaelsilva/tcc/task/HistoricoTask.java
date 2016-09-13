@@ -1,41 +1,30 @@
 package es.esy.rafaelsilva.tcc.task;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
-import es.esy.rafaelsilva.tcc.adapters.HistoricoAdapter;
-import es.esy.rafaelsilva.tcc.adapters.ReputacaoProdutoAdapter;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.dao.DAO;
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.adapters.ComentariosPostAdapter;
-import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
-import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.Util;
 
@@ -47,15 +36,19 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
     private ProgressBar bar;
     private Context contexto;
     private List<Historico> lista;
+    private Activity historico;
+    private HistoricoActivity pai;
 
     public HistoricoTask(Context contexto) {
         this.contexto = contexto;
+        this.bar = ((HistoricoActivity) contexto).getBar();
+        this.historico = ((HistoricoActivity) contexto);
+        this.pai = ((HistoricoActivity) contexto);
     }
 
     @Override
     protected void onPreExecute() {
-//        bar = (ProgressBar) ((HistoricoActivity) contexto).findViewById(R.id.progressBar);
-//        bar.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -102,13 +95,28 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean flag) {
 
-        //bar.setVisibility(View.GONE);
+        ImageView fundo = (ImageView) historico.findViewById(R.id.imgFundo);
+        CircleImageView icone = (CircleImageView) historico.findViewById(R.id.imgIcone);
+        TextView produto, produtor;
 
+        produto = (TextView) historico.findViewById(R.id.lbProduto);
+        produto.setText(pai.getProduto().getNome());
+
+        produtor = (TextView) historico.findViewById(R.id.lbProdutor);
+        //produtor.setText(pai.getProduto().getNome());
+
+        new ImageLoaderTask(fundo).execute(Config.caminhoImageProdutos + pai.getProduto().getImgheader());
+        new ImageLoaderTask(icone).execute(Config.caminhoImageProdutos + pai.getProduto().getImgicone());
+
+
+
+        // implementação do historico
+        RelativeLayout view = (RelativeLayout) ((HistoricoActivity) contexto).findViewById(R.id.view);
         LinearLayout layout = (LinearLayout) ((HistoricoActivity) contexto).findViewById(R.id.relativeLayout);;
         //for (Historico h : lista){
         for (int i = 0; i < lista.size(); i++){
             Historico h = lista.get(i);
-            View v = ((HistoricoActivity) contexto).getLayoutInflater().inflate(R.layout.adapter_historico, null);
+            View v = ((HistoricoActivity) contexto).getLayoutInflater().inflate(R.layout.inflater_historico, null);
 
             TextView nome, data, detalhe;
             ImageView imgHistorico, fim;
@@ -129,10 +137,10 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
 
             if (lista.size() == i+1)
                 fim.setVisibility(View.VISIBLE);
-
         }
 
-
+        bar.setVisibility(View.GONE);
+        view.setVisibility(View.VISIBLE);
 
     }
 

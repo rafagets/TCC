@@ -16,7 +16,7 @@ public class Historico {
 	private String data;
 	private String cordenadas;
 	private String nome;
-	private int produto;
+	private int lote;
 	private int tipo;
 	private Tipo tipoObj;
 
@@ -53,11 +53,11 @@ public class Historico {
 	}
 
 	public int getProduto() {
-		return produto;
+		return lote;
 	}
 
 	public void setProduto(int produto) {
-		this.produto = produto;
+		this.lote = produto;
 	}
 
 	public int getTipo() {

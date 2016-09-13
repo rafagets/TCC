@@ -5,11 +5,77 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/imgFundo"
+        android:src="@drawable/macieira"
+        android:scaleType="fitXY" />
+
+    <!--<ImageView-->
+    <!--android:layout_width="120dp"-->
+    <!--android:layout_height="120dp"-->
+    <!--android:id="@+id/imgIcone"-->
+    <!--android:src="@drawable/maca"-->
+    <!--android:layout_below="@+id/imgFundo"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="-60dp"-->
+    <!--/>-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorAccent"
+        android:id="@+id/imgIcone"
+        android:src="@drawable/maca"
+        android:layout_below="@+id/imgFundo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-60dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbProduto"
+        android:layout_below="@+id/imgIcone"
+        android:text="Maçã Gala"
+        android:textSize="22sp"
+        android:layout_marginTop="6dp"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbProdutor"
+        android:layout_below="@+id/lbProduto"
+        android:text="Fazenda Santa Rita"
+        android:textSize="18sp"
+        android:layout_marginTop="6dp"
+        android:layout_centerHorizontal="true"/>
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/estrelas"
+        android:layout_below="@+id/lbProdutor"
+        android:numStars="5"
+        android:rating="2.5"
+        android:stepSize="0.5"
+        android:layout_centerHorizontal="true"
+        android:isIndicator="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbTotalAvaliacoes"
+        android:text="2,6k avaliaram"
+        android:layout_below="@+id/estrelas"
+        android:layout_centerHorizontal="true"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgFundo"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:paddingRight="10dp">
@@ -40,62 +106,5 @@
             android:layout_marginRight="6dp" />
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:id="@+id/imgFundo"
-        android:src="@drawable/macieira"
-        android:scaleType="fitXY" />
-
-    <!--<ImageView-->
-    <!--android:layout_width="120dp"-->
-    <!--android:layout_height="120dp"-->
-    <!--android:id="@+id/imgIcone"-->
-    <!--android:src="@drawable/maca"-->
-    <!--android:layout_below="@+id/imgFundo"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="-60dp"-->
-    <!--/>-->
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/colorAccent"
-        android:id="@+id/imgIcone"
-        android:src="@drawable/maca"
-        android:layout_below="@+id/imgFundo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-60dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lbUsuario"
-        android:layout_below="@+id/imgIcone"
-        android:text="Maçã Gala - Fazenda Santa Rita"
-        android:textSize="22dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="10dp" />
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/estrelas"
-        android:layout_below="@+id/lbUsuario"
-        android:layout_alignStart="@+id/lbUsuario"
-        android:numStars="5"
-        android:rating="2.5"
-        android:stepSize="0.5" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lbTotalAvaliacoes"
-        android:text="2,6k avaliaram"
-        android:layout_alignTop="@+id/estrelas"
-        android:layout_toEndOf="@+id/estrelas"
-        android:layout_marginTop="18dp"
-        android:layout_marginLeft="10dp"/>
 
 </RelativeLayout>

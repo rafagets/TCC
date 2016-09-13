@@ -137,7 +137,7 @@ public class DAO {
                 jsonArray = new JSONArray(response.toString());
             } catch (JSONException e) {
                 jsonArray = null;
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
         } catch (MalformedURLException e) {

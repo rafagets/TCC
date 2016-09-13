@@ -40,7 +40,7 @@
         android:text="Texto que detalha a etapa de produção (opcional)"
         android:textSize="16sp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="30dp"/>
 
     <LinearLayout
         android:id="@+id/linha"
