@@ -63,7 +63,8 @@ public class HistoricoActivity extends AppCompatActivity {
 
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.VISIBLE);
-        String lote = String.valueOf(getIntent().getIntExtra("lote", 0));
+        String lote = String.valueOf(getIntent().getStringExtra("lote"));
+        Log.e("+++++++++++++++", lote);
         RequestParams params = new RequestParams();
         params.put("acao", "R");
         params.put("tabela", "lote");

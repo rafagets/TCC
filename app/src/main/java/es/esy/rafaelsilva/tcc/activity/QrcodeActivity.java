@@ -31,20 +31,6 @@ public class QrcodeActivity extends AppCompatActivity {
         integrator.setBarcodeImageEnabled(false);
         integrator.initiateScan();
 
-//        button = (Button) findViewById(R.id.button);
-//        final Activity activity = this;
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                IntentIntegrator integrator = new IntentIntegrator(activity);
-//                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-//                integrator.setPrompt("Enquadre o QRCode na camera");
-//                integrator.setCameraId(0);
-//                integrator.setBeepEnabled(true);
-//                integrator.setBarcodeImageEnabled(false);
-//                integrator.initiateScan();
-//            }
-//        });
     }
 
     @Override
@@ -57,8 +43,6 @@ public class QrcodeActivity extends AppCompatActivity {
                 finish();
             }else{
                 Log.d("QrcodeActyvity", "Resultado: " + resultado.getContents());
-                Toast.makeText(this, "Resultado " + resultado.getContents(), Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(QrcodeActivity.this, HistoricoActivity.class);
                 intent.putExtra("lote", resultado.getContents());
                 startActivity(intent);

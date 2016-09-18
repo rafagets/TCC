@@ -22,9 +22,9 @@ public class QRCode extends AppCompatActivity {
     private Context contexto;
     private HomeActivity home;
 
-    public QRCode(Context contexto, HomeActivity home) {
+    public QRCode(Context contexto) {
         this.contexto = contexto;
-        this.home = home;
+        this.home = ((HomeActivity) contexto);
     }
 
     public void lerQrcode(){
@@ -46,10 +46,11 @@ public class QRCode extends AppCompatActivity {
         if(resultado!= null){
             if(resultado.getContents() == null){
 
-                Toast.makeText(this, "Leitura cancelada =(", Toast.LENGTH_SHORT).show();
+                Toast.makeText(contexto, "Leitura cancelada =(", Toast.LENGTH_SHORT).show();
 
             }else{
 
+                Toast.makeText(contexto, "resultado: " + resultado.getContents(), Toast.LENGTH_SHORT).show();
                 Log.d("QrcodeActyvity", "Resultado: " + resultado.getContents());
 
                 Intent intent = new Intent(home, HistoricoActivity.class);

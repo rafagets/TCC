@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/imgFundo"
-        android:src="@drawable/macieira"
         android:scaleType="fitXY" />
 
     <!--<ImageView-->
@@ -28,7 +27,6 @@
         app:civ_border_width="2dp"
         app:civ_border_color="@color/colorAccent"
         android:id="@+id/imgIcone"
-        android:src="@drawable/maca"
         android:layout_below="@+id/imgFundo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-60dp"/>
