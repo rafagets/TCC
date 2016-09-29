@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import es.esy.rafaelsilva.tcc.dao.DAO;
+import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 /**
