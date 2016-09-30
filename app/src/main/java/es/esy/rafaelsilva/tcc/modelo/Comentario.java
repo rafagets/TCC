@@ -16,6 +16,16 @@ public class Comentario {
 
 	private ComentarioPost[] comentariosPost;
 
+	private int pai;
+
+	public int getPai() {
+		return pai;
+	}
+
+	public void setPai(int pai) {
+		this.pai = pai;
+	}
+
 	public int getCodigo() {
 		return codigo;
 	}

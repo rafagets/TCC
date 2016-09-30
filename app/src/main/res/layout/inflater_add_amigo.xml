@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#00000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/cardview_light_background">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgUsuario"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbNome"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:text="Sabrina"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="6dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_toRightOf="@+id/lbNome"
+            android:textSize="14sp"
+            android:text="fez uma amizade"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbData"
+            android:layout_toRightOf="@+id/textView"
+            android:textSize="14sp"
+            android:text=" à 1 minuto á trás"
+            android:layout_marginTop="6dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/imgAmigo"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_below="@+id/imgUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbNomeAmigo"
+            android:layout_toRightOf="@+id/imgAmigo"
+            android:layout_alignTop="@+id/imgAmigo"
+            android:text="Rafael Silva"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbProfissaoAmigo"
+            android:text="Programador em Google Inc"
+            android:textSize="14sp"
+            android:layout_below="@+id/lbNomeAmigo"
+            android:layout_alignStart="@+id/lbNomeAmigo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbEstiloAmigo"
+            android:text="Vegetariano"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_below="@+id/lbProfissaoAmigo"
+            android:layout_alignStart="@+id/lbNomeAmigo"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/button_material_light" />
+
+</LinearLayout>

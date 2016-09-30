@@ -37,15 +37,15 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-//                Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
-//                intent.putExtra("lote", 3);
-//                startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
+                intent.putExtra("lote", 3);
+                startActivity(intent);
 
 //                QRCode qrCode = new QRCode(HomeActivity.this);
 //                qrCode.lerQrcode();
 
-                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
+//                startActivity(intent);
 
             }
         });

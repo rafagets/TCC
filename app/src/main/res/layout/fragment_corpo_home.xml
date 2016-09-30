@@ -4,25 +4,63 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:showIn="@layout/content_home">
+    tools:showIn="@layout/content_home"
+    >
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/recarregar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    android:id="@+id/recarregar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-        <!-- A CardView that contains a TextView -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/lista"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            android:background="@color/cardview_light_background">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-
-        </android.support.v7.widget.RecyclerView>
-
+            </LinearLayout>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/recarregar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/relativeLayout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+        <!--</LinearLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/linha">-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/relativeLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:padding="16dp"-->
+                <!--android:orientation="vertical"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--&lt;!&ndash; A CardView that contains a TextView &ndash;&gt;-->
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/lista"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scrollbars="vertical"-->
+            <!--android:background=viewupport.v7.widget.RecyclerView>-->
+
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 
 </LinearLayout>
