@@ -21,7 +21,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
-import es.esy.rafaelsilva.tcc.dao.DAO;
+import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
