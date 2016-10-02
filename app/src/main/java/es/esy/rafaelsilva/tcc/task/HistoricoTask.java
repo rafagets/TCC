@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
-import es.esy.rafaelsilva.tcc.activity.HomeActivity;
-import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.DAO.Dao;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
 import es.esy.rafaelsilva.tcc.util.Config;
@@ -56,11 +55,11 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
 
         String[] params;
         JSONArray jsonArray;
-        DAO helper;
+        Dao helper;
 
         params = new String[] { "acao", "tabela","condicao","valores", "ordenacao" };
 
-        helper = new DAO();
+        helper = new Dao();
 
         try {
             jsonArray = helper.getJSONArray(Config.urlMaster, params, values);
@@ -149,7 +148,7 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
     private Tipo loadTipo(int codigo) {
 
         JSONArray jsonArray;
-        DAO helper = new DAO();
+        es.esy.rafaelsilva.tcc.DAO.Dao helper = new es.esy.rafaelsilva.tcc.DAO.Dao();
 
         String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
         String[] v = new String[] { "R", "tipo", "codigo",  String.valueOf(codigo)};

@@ -2,15 +2,39 @@ package es.esy.rafaelsilva.tcc.modelo;
 
 public class ComentarioPost {
 
+
+	/**
+	 * codigo : 1
+	 * data : 2016-09-05 11:57:57
+	 * status : 1
+	 * comentario : so voce mesmo...
+	 * coment : 3
+	 * usuario : 1
+	 */
+
+	private int codigo;
 	private String data;
-
 	private int status;
-
 	private String comentario;
+	private int coment;
+	private int usuario;
+	private Usuario usoarioObj;
 
-	private Usuario usuario;
+	public Usuario getUsoarioObj() {
+		return usoarioObj;
+	}
 
-	private Comentario post;
+	public void setUsoarioObj(Usuario usoarioObj) {
+		this.usoarioObj = usoarioObj;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 
 	public String getData() {
 		return data;
@@ -36,19 +60,19 @@ public class ComentarioPost {
 		this.comentario = comentario;
 	}
 
-	public Usuario getUsuario() {
+	public int getComent() {
+		return coment;
+	}
+
+	public void setComent(int coment) {
+		this.coment = coment;
+	}
+
+	public int getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(int usuario) {
 		this.usuario = usuario;
-	}
-
-	public Comentario getPost() {
-		return post;
-	}
-
-	public void setPost(Comentario post) {
-		this.post = post;
 	}
 }

@@ -1,4 +1,4 @@
-package es.esy.rafaelsilva.tcc.dao;
+package es.esy.rafaelsilva.tcc.DAO;
 
 /**
  * Created by Rafa on 31/08/2016.

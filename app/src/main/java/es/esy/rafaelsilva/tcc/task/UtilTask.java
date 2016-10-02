@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 /**
@@ -74,9 +73,9 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
     protected Boolean doInBackground(String... valores) {
 
         JSONObject jsonObject;
-        DAO helper;
+        es.esy.rafaelsilva.tcc.DAO.Dao helper;
 
-        helper = new DAO();
+        helper = new es.esy.rafaelsilva.tcc.DAO.Dao();
         jsonObject = helper.getJSONOject(acao, Config.urlMaster, tabela, valores);
 
         try {
@@ -93,7 +92,8 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean flag) {
 
         if (flag)
-            Log.e("OK", String.valueOf(flag));
+            Toast.makeText(contexto, "OK =D", Toast.LENGTH_LONG).show();
+            //Log.e("OK", String.valueOf(flag));
         else {
             Toast.makeText(contexto, "Falha. Tente mais tarde =(", Toast.LENGTH_LONG).show();
         }

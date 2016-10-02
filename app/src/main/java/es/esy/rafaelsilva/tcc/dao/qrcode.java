@@ -1,11 +1,10 @@
-package es.esy.rafaelsilva.tcc.dao;
+package es.esy.rafaelsilva.tcc.DAO;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;

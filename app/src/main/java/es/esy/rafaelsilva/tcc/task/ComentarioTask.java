@@ -3,9 +3,8 @@ package es.esy.rafaelsilva.tcc.task;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,15 +13,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.esy.rafaelsilva.tcc.dao.DAO;
-import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.adapters.PostAdapter;
+import es.esy.rafaelsilva.tcc.DAO.Dao;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.CurtidaComentario;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
-import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 
 /**
  * Created by Rafael on 06/09/2016.
@@ -49,11 +45,11 @@ public class ComentarioTask extends AsyncTask<String, Integer, Boolean> {
         String[] params;
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper;
+        Dao helper;
 
         params = new String[] { "acao", "tabela", "ordenacao" };
 
-        helper = new DAO();
+        helper = new Dao();
 
         try {
             jsonArray = helper.getJSONArray(Config.urlMaster, params, values);
@@ -114,7 +110,7 @@ public class ComentarioTask extends AsyncTask<String, Integer, Boolean> {
 
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper = new DAO();
+        Dao helper = new Dao();
 
 
         String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
@@ -127,22 +123,13 @@ public class ComentarioTask extends AsyncTask<String, Integer, Boolean> {
             try {
 
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    jsonObject = (JSONObject) jsonArray.get(i);
+                    String json = jsonArray.get(i).toString();
 
-                    ComentarioPost u = new ComentarioPost();
-                    u.setStatus(jsonObject.getInt("status"));
-                    u.setComentario(jsonObject.getString("comentario"));
-                    u.setData(jsonObject.getString("data"));
+                    ComentarioPost obj;
+                    Gson gson = new Gson();
+                    obj = gson.fromJson(json, ComentarioPost.class);
 
-                    Usuario usu = new Usuario();
-                    usu.setCodigo(jsonObject.getInt("usuario"));
-                    u.setUsuario(usu);
-
-                    Comentario c = new Comentario();
-                    c.setCodigo(jsonObject.getInt("coment"));
-                    u.setPost(c);
-
-                    comentariosPost[i] = u;
+                    comentariosPost[i] = obj;
                 }
 
             } catch (JSONException e) {
@@ -164,7 +151,7 @@ public class ComentarioTask extends AsyncTask<String, Integer, Boolean> {
 
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper = new DAO();
+        Dao helper = new Dao();
 
 
         String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
@@ -205,7 +192,7 @@ public class ComentarioTask extends AsyncTask<String, Integer, Boolean> {
 
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper = new DAO();
+        Dao helper = new Dao();
 
         String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
         String[] v = new String[] { "R", "usuario", "codigo",  codigo};

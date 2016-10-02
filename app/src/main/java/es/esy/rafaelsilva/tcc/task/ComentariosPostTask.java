@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
-import es.esy.rafaelsilva.tcc.dao.DAO;
+import es.esy.rafaelsilva.tcc.DAO.Dao;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.ComentariosPostAdapter;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
@@ -48,11 +48,11 @@ public class ComentariosPostTask extends AsyncTask<String, Void, Boolean> {
         String[] params;
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper;
+        Dao helper;
 
         params = new String[] { "acao", "tabela", "ordenacao" };
 
-        helper = new DAO();
+        helper = new Dao();
 
         try {
             jsonArray = helper.getJSONArray(Config.urlMaster, params, values);
@@ -68,7 +68,7 @@ public class ComentariosPostTask extends AsyncTask<String, Void, Boolean> {
                     c.setData(jsonObject.getString("data"));
                     c.setStatus(jsonObject.getInt("status"));
 
-                    c.setUsuario(loadUsuario(String.valueOf(jsonObject.getInt("usuario"))));
+                    //c.setUsuario(loadUsuario(String.valueOf(jsonObject.getInt("usuario"))));
 
 
                     comentarios.add(c);
@@ -106,7 +106,7 @@ public class ComentariosPostTask extends AsyncTask<String, Void, Boolean> {
 
         JSONObject jsonObject;
         JSONArray jsonArray;
-        DAO helper = new DAO();
+        Dao helper = new Dao();
 
         String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
         String[] v = new String[] { "R", "usuario", "codigo",  codigo};

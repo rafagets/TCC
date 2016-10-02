@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.dao.DataBase;
+import es.esy.rafaelsilva.tcc.DAO.DataBase;
 
 public class Login_Activity extends AppCompatActivity {
     private DataBase database;
