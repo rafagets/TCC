@@ -1,4 +1,4 @@
-package es.esy.rafaelsilva.tcc.dao;
+package es.esy.rafaelsilva.tcc.DAO;
 
 import android.app.Activity;
 import android.content.Context;

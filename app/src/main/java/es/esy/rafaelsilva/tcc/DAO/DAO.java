@@ -51,7 +51,7 @@ public class DAO {
 
             String data = URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8");
                     data = URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8") +"&"+ data;
-                    data = "usuario=1&senha=12345&"+"acao="+acao+"&"+"tabela="+tabela+"&"+data;
+                    data = "acao="+acao+"&"+"tabela="+tabela+"&"+data;
 
             Log.i("********** data", data);
             bw.write(data);

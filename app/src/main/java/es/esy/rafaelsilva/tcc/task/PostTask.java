@@ -27,7 +27,7 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
-import es.esy.rafaelsilva.tcc.dao.DAO;
+import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.fragment.CorpoHome;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;

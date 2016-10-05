@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.esy.rafaelsilva.tcc.dao.DAO;
+import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.PostAdapter;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
