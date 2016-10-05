@@ -56,25 +56,25 @@ public class ComentariosPostAdapter extends RecyclerView.Adapter<ComentariosPost
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        final ComentarioPost c = comentarios.get(position);
-        ImageLoaderTask downImg = new ImageLoaderTask(holder.imgUsuario);
-        downImg.execute(Config.caminhoImageTumb + c.getUsuario().getImagem());
-
-        holder.post.setText(c.getComentario());
-        holder.nome.setText(c.getUsuario().getNome());
-
-        String[] temp = c.getData().split(" ");
-        long date = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dataForm = sdf.format(date);
-
-        if (temp[0].equals(dataForm)) {
-            temp = temp[1].split(":");
-            holder.data.setText("às " + temp[0] + ":" + temp[1]);
-        }else{
-            temp = temp[0].split("-");
-            holder.data.setText("em " + temp[2] + "/" + temp[1]);
-        }
+//        final ComentarioPost c = comentarios.get(position);
+//        ImageLoaderTask downImg = new ImageLoaderTask(holder.imgUsuario);
+//        downImg.execute(Config.caminhoImageTumb + c.getUsuario().getImagem());
+//
+//        holder.post.setText(c.getComentario());
+//        holder.nome.setText(c.getUsuario().getNome());
+//
+//        String[] temp = c.getData().split(" ");
+//        long date = System.currentTimeMillis();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        String dataForm = sdf.format(date);
+//
+//        if (temp[0].equals(dataForm)) {
+//            temp = temp[1].split(":");
+//            holder.data.setText("às " + temp[0] + ":" + temp[1]);
+//        }else{
+//            temp = temp[0].split("-");
+//            holder.data.setText("em " + temp[2] + "/" + temp[1]);
+//        }
     }
 
 

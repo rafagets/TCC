@@ -21,7 +21,7 @@ import java.net.URLEncoder;
 /**
  * Created by Rafael on 10/04/2016.
  */
-public class DAO {
+public class Dao {
 
     public JSONObject getJSONOject(String acao, String serverUrl, String tabela, String[] valores) {
         JSONObject jsonObject = null;
