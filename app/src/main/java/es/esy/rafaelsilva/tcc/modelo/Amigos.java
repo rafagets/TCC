@@ -16,14 +16,23 @@ public class Amigos {
 	private int amigoAce;
 	private int statusAmizade;
 	private int pai;
-	private Usuario usuarioObj;
+	private Usuario amigoAddObj;
+	private Usuario amigoAceObj;
 
-	public Usuario getUsuarioObj() {
-		return usuarioObj;
+	public Usuario getAmigoAceObj() {
+		return amigoAceObj;
 	}
 
-	public void setUsuarioObj(Usuario usuarioObj) {
-		this.usuarioObj = usuarioObj;
+	public void setAmigoAceObj(Usuario amigoAceObj) {
+		this.amigoAceObj = amigoAceObj;
+	}
+
+	public Usuario getAmigoAddObj() {
+		return amigoAddObj;
+	}
+
+	public void setAmigoAddObj(Usuario amigoAddObj) {
+		this.amigoAddObj = amigoAddObj;
 	}
 
 	public int getCodigo() {
