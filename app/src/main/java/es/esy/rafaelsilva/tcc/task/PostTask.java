@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -25,10 +26,12 @@ import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
+import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.CurtidaComentario;
 import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -78,14 +81,15 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                     Post obj;
                     Gson gson = new Gson();
                     obj = gson.fromJson(json, Post.class);
-                    obj.setUsuarioObj(loadUsuario(String.valueOf(obj.getUsuario())));
+                    obj.setUsuarioObj(getUsuario(String.valueOf(obj.getUsuario())));
 
                     if (obj.getTipo() == 1) {
                         obj.setComentarioObj(this.loadCoemntario(String.valueOf(obj.getCodigo())));
                     }else if (obj.getTipo() == 2) {
                         obj.setAmigosObj(this.loadAmizade(String.valueOf(obj.getCodigo())));
-                        obj.getAmigosObj().setAmigoAceObj(loadUsuario(String.valueOf(obj.getAmigosObj().getAmigoAce())));
-                        //obj.getAmigosObj().setAmigoAddObj(loadUsuario(String.valueOf(obj.getAmigosObj().getAmigoAdd())));
+                        obj.getAmigosObj().setAmigoAceObj(getUsuario(String.valueOf(obj.getAmigosObj().getAmigoAce())));
+                    }else if (obj.getTipo() == 3){
+                        obj.setAvaliacaoObj(this.loadAvaliacao(String.valueOf(obj.getCodigo())));
                     }
 
                     lista.add(obj);
@@ -116,9 +120,57 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                 inflarComentarios(post, layout);
             else if (lista.get(i).getTipo() == 2)
                 this.inflarAmizade(post, layout);
+            else if (lista.get(i).getTipo() == 3)
+                this.inflarAvaliacao(post, layout);
 
         }
 
+    }
+
+    private void inflarAvaliacao(Post p, LinearLayout layout){
+        View v = home.getLayoutInflater().inflate(R.layout.inflater_avaliacao, null);
+
+        final TextView nome, data, produto, avaliacao;
+        CircleImageView imgUsuario, imgProduto;
+        RatingBar estrela;
+
+        Usuario usu = p.getUsuarioObj();
+
+        imgUsuario = (CircleImageView) v.findViewById(R.id.imgUsuario);
+        nome = (TextView) v.findViewById(R.id.lbNome);
+        data = (TextView) v.findViewById(R.id.lbData);
+        nome.setText(usu.getNome());
+
+        ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
+        downImg.execute(Config.caminhoImageTumb + usu.getImagem());
+
+        String[] temp = p.getData().split(" ");
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dataForm = sdf.format(date);
+
+        if (temp[0].equals(dataForm))
+            data.setText(Util.formatHoraHHMM(p.getData()));
+        else
+            data.setText(Util.formatDataDDmesYYYY(p.getData()));
+
+
+        // dados da avaliação
+        Avaliacao av = p.getAvaliacaoObj();
+        Produto prod = av.getProdutoObj();
+        imgProduto = (CircleImageView) v.findViewById(R.id.imgProduto);
+        produto = (TextView) v.findViewById(R.id.lbProduto);
+        avaliacao = (TextView) v.findViewById(R.id.lbAvaliacao);
+        estrela = (RatingBar) v.findViewById(R.id.estrelas);
+
+        ImageLoaderTask downImg2 = new ImageLoaderTask(imgProduto);
+        downImg2.execute(Config.caminhoImageProdutos + prod.getImgicone());
+
+        produto.setText(prod.getNome());
+        avaliacao.setText(av.getComentario());
+        estrela.setRating(av.getEstrelas());
+
+        layout.addView(v);
     }
 
     private void inflarAmizade(Post p, LinearLayout layout){
@@ -308,6 +360,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     }
 
 
+
     private Comentario loadCoemntario(String pai) {
 
         JSONArray jsonArray;
@@ -325,7 +378,34 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             obj = gson.fromJson(json, Comentario.class);
 
             obj.setCurtidaComentario(loadCurtidas(obj.getCodigo()));
-            obj.setComentariosPost(loadCoemntariosPost(obj.getCodigo()));
+            obj.setComentariosPost(getCoemntariosPost(obj.getCodigo()));
+            return obj;
+
+        }catch (Exception e){
+
+        }
+
+        return null;
+
+    }
+
+    private Avaliacao loadAvaliacao(String pai) {
+
+        JSONArray jsonArray;
+        DAO helper = new DAO();
+
+        String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+        String[] v = new String[] { "R", "avaliacao", "pai",  pai};
+
+        try {
+            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+            String json = jsonArray.get(0).toString();
+
+            Avaliacao obj;
+            Gson gson = new Gson();
+            obj = gson.fromJson(json, Avaliacao.class);
+
+            obj.setProdutoObj(this.getProduto(obj.getProduto()));
             return obj;
 
         }catch (Exception e){
@@ -363,7 +443,6 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         return null;
 
     }
-
 
     private CurtidaComentario[] loadCurtidas(int codigo) {
 
@@ -405,7 +484,8 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     }
 
 
-    private Usuario loadUsuario(String codigo) {
+
+    private Usuario getUsuario(String codigo) {
 
         JSONArray jsonArray;
         DAO helper = new DAO();
@@ -429,7 +509,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         return null;
     }
 
-    private ComentarioPost[] loadCoemntariosPost(int codigo) {
+    private ComentarioPost[] getCoemntariosPost(int codigo) {
 
         JSONArray jsonArray;
         DAO helper = new DAO();
@@ -465,6 +545,29 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         return null;
 
+    }
+    
+    private Produto getProduto(int codigo){
+        JSONArray jsonArray;
+        DAO helper = new DAO();
+
+        String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+        String[] v = new String[] { "R", "produto", "codigo",  String.valueOf(codigo)};
+
+        try {
+            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+            String json = jsonArray.get(0).toString();
+
+            Produto obj;
+            Gson gson = new Gson();
+            obj = gson.fromJson(json, Produto.class);
+            
+            return obj;
+
+        }catch (Exception e){
+
+        }
+        return null;
     }
 
 }
