@@ -21,7 +21,7 @@ import java.net.URLEncoder;
 /**
  * Created by Rafael on 10/04/2016.
  */
-public class Dao {
+public class DAO {
 
     public JSONObject getJSONOject(String acao, String serverUrl, String tabela, String[] valores) {
         JSONObject jsonObject = null;
@@ -51,7 +51,7 @@ public class Dao {
 
             String data = URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8");
                     data = URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8") +"&"+ data;
-                    data = "acao="+acao+"&"+"tabela="+tabela+"&"+data;
+                    data = "usuario=1&senha=12345&"+"acao="+acao+"&"+"tabela="+tabela+"&"+data;
 
             Log.i("********** data", data);
             bw.write(data);

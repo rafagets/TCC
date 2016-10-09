@@ -56,7 +56,7 @@ public class HomeAdapter extends BaseAdapter {
             case 1:
 
                 Comentario c = timeLineList.get(i);
-                v = LayoutInflater.from(contexto).inflate(R.layout.adapter_post, viewGroup, false);
+                v = LayoutInflater.from(contexto).inflate(R.layout.inflater_post, viewGroup, false);
 
                 CircleImageView imgUsuario = (CircleImageView) v.findViewById(R.id.imgUsuario);
                 ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);

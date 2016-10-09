@@ -132,10 +132,11 @@ public class Usuario {
 		this.alimentacao = alimentacao;
 	}
 
-	public Usuario() {
-
-
-	}
-
-
+//	public Usuario(String email, String senha, String profissao, String alimentacao) {
+//		this.email = email;
+//		this.senha = senha;
+//        this.profissao = profissao;
+//        this.alimentacao = alimentacao;
+//
+//	}
 }

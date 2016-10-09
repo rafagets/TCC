@@ -3,11 +3,20 @@ package es.esy.rafaelsilva.tcc.activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import es.esy.rafaelsilva.tcc.adapters.ComentariosPostAdapter;
+import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.task.ComentariosPostTask;
 import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.R;
@@ -52,6 +61,14 @@ public class ComentariosPostActivity extends AppCompatActivity {
     private void loadComentarios(int codigoPost) {
         ComentariosPostTask loadPosts = new ComentariosPostTask(contexto);
         loadPosts.execute("R", "comentariopost", " WHERE coment = " + codigoPost + " ORDER BY data ASC");
+
+//        List<ComentarioPost> comentarios = (List) getIntent().getParcelableArrayListExtra("comentarios");
+//        ComentariosPostAdapter adapter = new ComentariosPostAdapter(comentarios, ComentariosPostActivity.this);
+//        RecyclerView recyclerView = (RecyclerView) ((ComentariosPostActivity) contexto).findViewById(R.id.recyclerView);
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
+//        recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setAdapter(adapter);
     }
 
 

@@ -93,13 +93,14 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
+        System.out.println("CONTEXTO--->" + contexto.getClass().getCanonicalName());
         if (flag) {
             if (acao.equals("C")) {
-                if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity"))
-                Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(contexto, Login_Activity.class);
-                contexto.startActivity(intent);
+                if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")) {
+                    Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(contexto, Login_Activity.class);
+                    contexto.startActivity(intent);
+                }
             }
             Log.e("OK", String.valueOf(flag));
         }else {

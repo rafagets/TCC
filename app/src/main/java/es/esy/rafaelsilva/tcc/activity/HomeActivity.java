@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.DAO.QRCode;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,7 +37,7 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
-                intent.putExtra("lote", 3);
+                intent.putExtra("lote", String.valueOf(3));
                 startActivity(intent);
 
 //                QRCode qrCode = new QRCode(HomeActivity.this);
@@ -130,11 +129,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        }else if (id ==R.id.nav_user){
-            Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
-            startActivity(intent);
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +48,6 @@ public class ComentariosPostTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... values) {
 
         String[] params;
-        JSONObject jsonObject;
         JSONArray jsonArray;
         DAO helper;
 
@@ -58,20 +59,18 @@ public class ComentariosPostTask extends AsyncTask<String, Void, Boolean> {
             jsonArray = helper.getJSONArray(Config.urlMaster, params, values);
 
             try {
-                comentarios = new ArrayList<ComentarioPost>();
+                comentarios = new ArrayList<>();
 
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    jsonObject = (JSONObject) jsonArray.get(i);
+                    String json = jsonArray.get(0).toString();
 
-                    ComentarioPost c = new ComentarioPost();
-                    c.setComentario(jsonObject.getString("comentario"));
-                    c.setData(jsonObject.getString("data"));
-                    c.setStatus(jsonObject.getInt("status"));
+                    ComentarioPost obj;
+                    Gson gson = new Gson();
+                    obj = gson.fromJson(json, ComentarioPost.class);
 
-                    c.setUsuario(loadUsuario(String.valueOf(jsonObject.getInt("usuario"))));
+                    obj.setUsoarioObj(this.loadUsuario(String.valueOf(obj.getUsuario())));
 
-
-                    comentarios.add(c);
+                    comentarios.add(obj);
                 }
 
                 return true;

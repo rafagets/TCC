@@ -8,15 +8,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,18 +22,13 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
-import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
-import es.esy.rafaelsilva.tcc.fragment.CorpoHome;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
-import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.CurtidaComentario;
-import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Post;
-import es.esy.rafaelsilva.tcc.modelo.Tipo;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -51,19 +43,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     private Context contexto;
     private List<Post> lista;
     private Activity home;
-    private HomeActivity pai;
-
-    private Comentario c;
-//    private Amigos a;
-//    private Avaliacao av;
-
-    private boolean flag = false;
-    private int curtido = 0;
 
     public PostTask(Context contexto, SwipeRefreshLayout recarregar) {
         this.contexto = contexto;
         this.home = ((HomeActivity) contexto);
-        this.pai = ((HomeActivity) contexto);
         this.recarregar = recarregar;
     }
 
@@ -126,7 +109,6 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         // implementação do historico
         LinearLayout layout = (LinearLayout) home.findViewById(R.id.relativeLayout);;
-        //for (Historico h : lista){
         for (int i = 0; i < lista.size(); i++){
             Post post = lista.get(i);
 
@@ -163,7 +145,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         if (temp[0].equals(dataForm))
             data.setText("às " + Util.formatHoraHHMM(p.getData()));
         else
-            data.setText("em " + Util.formatDataDDMM(p.getData()));
+            data.setText("em " + Util.formatDataDDmesYYYY(p.getData()));
 
 
 
@@ -186,13 +168,13 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
     private void inflarComentarios(Post p, LinearLayout layout) {
 
-        View v = home.getLayoutInflater().inflate(R.layout.adapter_post, null);
+        View v = home.getLayoutInflater().inflate(R.layout.inflater_post, null);
 
         final TextView nome, post, data, qtdAddOne, numComent;
         CircleImageView imgUsuario;
         final ImageView addOne, coment;
         Usuario usu = p.getUsuarioObj();
-        this.c = p.getComentarioObj();
+        final Comentario c = p.getComentarioObj();
 
         imgUsuario = (CircleImageView) v.findViewById(R.id.imgUsuario);
         nome = (TextView) v.findViewById(R.id.lbNome);
@@ -203,8 +185,8 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         qtdAddOne = (TextView) v.findViewById(R.id.lbAddOne);
         numComent = (TextView) v.findViewById(R.id.lbComentarios);
 
-//        boolean flag = false;
-//        final int curtido = 0;
+        final boolean[] flag = {false};
+        int curtido = 0;
 
         ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
         downImg.execute(Config.caminhoImageTumb + usu.getImagem());
@@ -222,7 +204,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             data.setText("às " + temp[0] + ":" + temp[1]);
         }else{
             temp = temp[0].split("-");
-            data.setText("em " + temp[2] + "/" + temp[1]);
+            data.setText("em " + Util.formatDataDDmesYYYY(c.getData()));
         }
 
         if (c.getCurtidaComentario() != null)
@@ -231,7 +213,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                 if (cc.getUsuario() == DadosUsuario.codigo){
                     addOne.setImageResource(R.drawable.ic_added);
                     i = c.getCurtidaComentario().length;
-                    flag = true;
+                    flag[0] = true;
                     curtido = 1;
                 }
             }
@@ -247,7 +229,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             @Override
             public boolean onLongClick(View view) {
 
-                if (flag) {
+                if (flag[0]) {
                     UtilTask util = new UtilTask(view.getContext(), "D", "curtidacomentario");
                     util.execute("usuario", String.valueOf(DadosUsuario.codigo) + " AND comentario = " + c.getCodigo());
 
@@ -259,7 +241,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
                     qtdAddOne.setText(String.valueOf(curtiu) + " curtiu");
 
-                    flag = false;
+                    flag[0] = false;
                 }
 
                 //Toast.makeText(view.getContext(), "long "+String.valueOf(holder.curtido), Toast.LENGTH_LONG).show();
@@ -274,7 +256,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             @Override
             public void onClick(View view) {
 
-                if (!flag) {
+                if (!flag[0]) {
                     UtilTask util = new UtilTask(view.getContext(), "C", "curtidacomentario");
                     String campos = "comentario,usuario";
                     String values = c.getCodigo() + "," + DadosUsuario.codigo;
@@ -290,7 +272,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
                     qtdAddOne.setText(String.valueOf(curtiu) + " você curtiu");
 
-                    flag = true;
+                    flag[0] = true;
 
                 }
 
@@ -313,8 +295,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             @Override
             public void onClick(View v) {
 
+                //List<ComentarioPost> list = new ArrayList<>(Arrays.asList(c.getComentariosPost()));
                 Intent intent = new Intent(contexto, ComentariosPostActivity.class);
                 intent.putExtra("post", c.getCodigo());
+                //intent.putExtra("comentarios", list);
                 contexto.startActivity(intent);
 
             }
@@ -340,8 +324,8 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             Gson gson = new Gson();
             obj = gson.fromJson(json, Comentario.class);
 
-            //List<CurtidaComentario> cc = loadCurtidas(obj.getCodigo());
             obj.setCurtidaComentario(loadCurtidas(obj.getCodigo()));
+            obj.setComentariosPost(loadCoemntariosPost(obj.getCodigo()));
             return obj;
 
         }catch (Exception e){
@@ -443,6 +427,44 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         }
 
         return null;
+    }
+
+    private ComentarioPost[] loadCoemntariosPost(int codigo) {
+
+        JSONArray jsonArray;
+        DAO helper = new DAO();
+
+
+        String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+        String[] v = new String[] { "R", "comentariopost", "coment",  String.valueOf(codigo)};
+
+        try {
+            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+            ComentarioPost[] comentariosPost = new ComentarioPost[jsonArray.length()];
+
+            try {
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    String json = jsonArray.get(i).toString();
+
+                    ComentarioPost obj;
+                    Gson gson = new Gson();
+                    obj = gson.fromJson(json, ComentarioPost.class);
+                    comentariosPost[i] = obj;
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return comentariosPost;
+
+        }catch (Exception e){
+
+        }
+
+        return null;
+
     }
 
 }
