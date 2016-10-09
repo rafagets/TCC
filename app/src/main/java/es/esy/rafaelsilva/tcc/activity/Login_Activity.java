@@ -22,7 +22,7 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        //conexao com banco de dados local
+        //conexao com banco de dados local 
         try {
             database = new DataBase(this);
             connection = database.getWritableDatabase();
