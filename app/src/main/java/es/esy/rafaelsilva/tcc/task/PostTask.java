@@ -82,10 +82,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
                     if (obj.getTipo() == 1) {
                         obj.setComentarioObj(this.loadCoemntario(String.valueOf(obj.getCodigo())));
-                        //c = loadCoemntario(String.valueOf(1));
                     }else if (obj.getTipo() == 2) {
                         obj.setAmigosObj(this.loadAmizade(String.valueOf(obj.getCodigo())));
-                        obj.getAmigosObj().setUsuarioObj(loadUsuario(String.valueOf(obj.getAmigosObj().getAmigoAce())));
+                        obj.getAmigosObj().setAmigoAceObj(loadUsuario(String.valueOf(obj.getAmigosObj().getAmigoAce())));
+                        //obj.getAmigosObj().setAmigoAddObj(loadUsuario(String.valueOf(obj.getAmigosObj().getAmigoAdd())));
                     }
 
                     lista.add(obj);
@@ -151,7 +151,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         // dados amigo
         Amigos a = p.getAmigosObj();
-        Usuario amigo = p.getAmigosObj().getUsuarioObj();
+        Usuario amigo = p.getAmigosObj().getAmigoAceObj();
         imgAmigo = (CircleImageView) v.findViewById(R.id.imgAmigo);
         nomeAmigo = (TextView) v.findViewById(R.id.lbNomeAmigo);
         profissaoAmigo = (TextView) v.findViewById(R.id.lbProfissaoAmigo);

@@ -62,7 +62,7 @@
             android:textSize="18sp"
             android:layout_marginRight="6dp"
             android:layout_marginLeft="6dp"
-            android:layout_marginBottom="16dp"/>
+            />
 
 
 
@@ -86,7 +86,7 @@
             android:src="@drawable/ic_add_one"
             android:layout_alignParentStart="false"
             android:layout_below="@+id/linha"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="6dp"
             android:layout_alignParentEnd="false" />
 
@@ -121,6 +121,15 @@
             android:layout_alignTop="@+id/imgAddOne"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="3dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgShare"
+            android:src="@drawable/ic_shareded"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="6dp"/>
 
     </RelativeLayout>
     <LinearLayout
