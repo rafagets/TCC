@@ -44,7 +44,6 @@
         </activity>
         <activity android:name=".activity.Welcome_Activity" />
         <activity android:name=".activity.ComentariosPostActivity" />
-        <activity android:name=".activity.ReputacaoProdutoActivity"></activity>
     </application>
 
 </manifest>

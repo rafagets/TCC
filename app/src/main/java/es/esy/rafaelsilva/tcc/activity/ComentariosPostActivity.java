@@ -61,14 +61,6 @@ public class ComentariosPostActivity extends AppCompatActivity {
     private void loadComentarios(int codigoPost) {
         ComentariosPostTask loadPosts = new ComentariosPostTask(contexto);
         loadPosts.execute("R", "comentariopost", " WHERE coment = " + codigoPost + " ORDER BY data ASC");
-
-//        List<ComentarioPost> comentarios = (List) getIntent().getParcelableArrayListExtra("comentarios");
-//        ComentariosPostAdapter adapter = new ComentariosPostAdapter(comentarios, ComentariosPostActivity.this);
-//        RecyclerView recyclerView = (RecyclerView) ((ComentariosPostActivity) contexto).findViewById(R.id.recyclerView);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
     }
 
 
