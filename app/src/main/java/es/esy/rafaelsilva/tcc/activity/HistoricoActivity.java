@@ -41,10 +41,6 @@ public class HistoricoActivity extends AppCompatActivity {
     private Lote lote;
     private Produto produto;
 
-    public Lote getLote() {
-        return lote;
-    }
-
     public Produto getProduto() {
         return produto;
     }

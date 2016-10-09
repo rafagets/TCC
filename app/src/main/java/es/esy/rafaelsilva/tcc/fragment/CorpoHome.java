@@ -50,9 +50,6 @@ public class CorpoHome extends Fragment {
 
 
     void carregarComentarios() {
-//        ComentarioTask postTask = new ComentarioTask(getActivity(), recarregar);
-//        postTask.execute("R", "comentario", "ORDER BY data DESC");
-
         PostTask postTask = new PostTask(getActivity(), recarregar);
         postTask.execute("R", "post", "ORDER BY data DESC");
     }
