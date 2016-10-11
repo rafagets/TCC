@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import es.esy.rafaelsilva.tcc.R;
@@ -16,11 +17,17 @@ public class Login_Activity extends AppCompatActivity {
     private DataBase database;
     private SQLiteDatabase connection;
     private Button btnEntrar;
+    EditText txtEmail, txtSenha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtSenha = (EditText) findViewById(R.id.txtSenha);
 
+        if(getIntent().getStringExtra("email") != null){
+            txtEmail.setText(getIntent().getStringExtra("email"));
+        }
 
         //conexao com banco de dados local 
         try {

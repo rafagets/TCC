@@ -59,12 +59,14 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
     private String acao;
     private String tabela;
     private Context contexto;
+    String[] valoresTemp;
 
 
     public UtilTask(Context contexto, String acao, String tabela) {
         this.contexto = contexto;
         this.acao   = acao;
         this.tabela = tabela;
+
     }
 
     @Override
@@ -74,6 +76,8 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... valores) {
+
+        valoresTemp = valores[1].split(",");
 
         JSONObject jsonObject;
         DAO helper;
@@ -93,13 +97,19 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        System.out.println("CONTEXTO--->" + contexto.getClass().getCanonicalName());
+        System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
         if (flag) {
             if (acao.equals("C")) {
                 if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")) {
                     Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
+                    //prepara o email para setar txtEmail login
+
+                    //
                     Intent intent = new Intent(contexto, Login_Activity.class);
+                    intent.putExtra("email",valoresTemp[0]);
+
                     contexto.startActivity(intent);
+                    System.out.println("emailTemp: " + valoresTemp[0]);
                 }
             }
             Log.e("OK", String.valueOf(flag));
