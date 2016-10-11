@@ -150,9 +150,9 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         String dataForm = sdf.format(date);
 
         if (temp[0].equals(dataForm))
-            data.setText(Util.formatHoraHHMM(p.getData()));
+            data.setText("avaliou às " + Util.formatHoraHHMM(p.getData()));
         else
-            data.setText(Util.formatDataDDmesYYYY(p.getData()));
+            data.setText("avaliou em " + Util.formatDataDDmesYYYY(p.getData()));
 
 
         // dados da avaliação
@@ -195,9 +195,9 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         String dataForm = sdf.format(date);
 
         if (temp[0].equals(dataForm))
-            data.setText("às " + Util.formatHoraHHMM(p.getData()));
+            data.setText("fez uma amizade às " + Util.formatHoraHHMM(p.getData()));
         else
-            data.setText("em " + Util.formatDataDDmesYYYY(p.getData()));
+            data.setText("fez uma amizade em " + Util.formatDataDDmesYYYY(p.getData()));
 
 
 
@@ -253,10 +253,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
         if (temp[0].equals(dataForm)) {
             temp = temp[1].split(":");
-            data.setText("às " + temp[0] + ":" + temp[1]);
+            data.setText("comentou às " + temp[0] + ":" + temp[1]);
         }else{
             temp = temp[0].split("-");
-            data.setText("em " + Util.formatDataDDmesYYYY(c.getData()));
+            data.setText("comentou em " + Util.formatDataDDmesYYYY(c.getData()));
         }
 
         if (c.getCurtidaComentario() != null)
