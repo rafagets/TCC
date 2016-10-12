@@ -102,6 +102,72 @@
             android:layout_below="@+id/lbProfissaoAmigo"
             android:layout_alignStart="@+id/lbNomeAmigo"/>
 
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:id="@+id/linha"
+            android:src="@drawable/linha"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/imgAmigo"
+            android:layout_alignParentStart="true"
+            android:tint="@color/background_floating_material_dark"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="-10dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgAddOne"
+            android:src="@drawable/ic_add_one"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/linha"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="6dp"
+            android:layout_alignParentEnd="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbAddOne"
+            android:layout_toRightOf="@+id/imgAddOne"
+            android:text="14k"
+            android:textSize="14sp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgComentarios"
+            android:src="@drawable/ic_coment_no"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbComentarios"
+            android:text="14k"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/imgComentarios"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgShare"
+            android:src="@drawable/ic_shareded"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="6dp"/>
     </RelativeLayout>
 
     <LinearLayout
