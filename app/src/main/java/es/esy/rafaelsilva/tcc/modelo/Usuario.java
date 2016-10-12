@@ -1,5 +1,12 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.util.Config;
+
 public class Usuario {
 
 	private int codigo;
@@ -132,6 +139,30 @@ public class Usuario {
 		this.alimentacao = alimentacao;
 	}
 
+	public Usuario getUsuarioObj(int codigo){
+
+		JSONArray jsonArray;
+		DAO helper = new DAO();
+
+		String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+		String[] v = new String[] { "R", "usuario", "codigo",  String.valueOf(codigo)};
+
+		try {
+			jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+			String json = jsonArray.get(0).toString();
+
+			Usuario obj;
+			Gson gson = new Gson();
+			obj = gson.fromJson(json, Usuario.class);
+			return obj;
+
+		}catch (Exception e){
+
+		}
+
+		return null;
+
+	}
 //	public Usuario(String email, String senha, String profissao, String alimentacao) {
 //		this.email = email;
 //		this.senha = senha;

@@ -10,4 +10,5 @@
     <string name="title_activity_cadastro_usuario">es.esy.rafaelsilva.tcc.activity.CadastroUsuarioActivity</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="title_activity_reputacao">Reputacao</string>
 </resources>

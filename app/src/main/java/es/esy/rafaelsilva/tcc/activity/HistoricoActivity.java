@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -26,10 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
+import es.esy.rafaelsilva.tcc.modelo.Produtor;
 import es.esy.rafaelsilva.tcc.task.HistoricoTask;
 import es.esy.rafaelsilva.tcc.util.Config;
 
@@ -39,7 +44,7 @@ public class HistoricoActivity extends AppCompatActivity {
     private Context contexto = this;
     private ProgressBar bar;
     private Lote lote;
-    private Produto produto;
+    public Produto produto;
 
     public Produto getProduto() {
         return produto;
@@ -59,8 +64,10 @@ public class HistoricoActivity extends AppCompatActivity {
 
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.VISIBLE);
+
         String lote = String.valueOf(getIntent().getStringExtra("lote"));
         Log.e("+++++++++++++++", lote);
+
         RequestParams params = new RequestParams();
         params.put("acao", "R");
         params.put("tabela", "lote");
@@ -161,9 +168,70 @@ public class HistoricoActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     produto = gson.fromJson(rr, Produto.class);
 
+                    RequestParams params = new RequestParams();
+                    params.put("acao", "R");
+                    params.put("tabela", "avaliacao");
+                    params.put("condicao", "produto");
+                    params.put("valores", produto.getCodigo());
+                    getAvaliacoes(params);
+
                     setTitle(produto.getNome());
                     HistoricoTask loadPosts = new HistoricoTask(contexto);
                     loadPosts.execute("R", "historico","lote",String.valueOf(lote.getCodigo())," ORDER BY data ASC");
+
+                } catch (JSONException e) {
+                    bar.setVisibility(View.GONE);
+                    Toast.makeText(contexto, "Falha ao carregar", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(contexto, "Falha ao carregar", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void getAvaliacoes(RequestParams params){
+
+        String url = Config.urlMaster;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(contexto, url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                String resposta =  new String(responseBody);
+                Log.e("+++++", "resposta: "+ resposta);
+
+                JSONArray array;
+                try {
+
+                    array = new JSONArray(resposta);
+                    List<Avaliacao> lista = new ArrayList<Avaliacao>();
+
+                    for(int i = 0; i <array.length(); i++){
+                        Avaliacao av;
+                        String rr = array.get(i).toString();
+                        Gson gson = new Gson();
+                        av = gson.fromJson(rr, Avaliacao.class);
+                        lista.add(av);
+                    }
+                    produto.setListaAvaliacao(lista);
+
+                    float soma = 0;
+                    for (Avaliacao av : lista)
+                        soma = soma + av.getEstrelas();
+                    float media = soma / lista.size();
+
+                    RatingBar estrelas = (RatingBar) findViewById(R.id.estrelas);
+                    estrelas.setRating(media);
+
+                    TextView totalAvaliacao = (TextView) findViewById(R.id.lbTotalAvaliacoes);
+                    totalAvaliacao.setText(String.valueOf(lista.size()) + " avaliação");
 
                 } catch (JSONException e) {
                     bar.setVisibility(View.GONE);
