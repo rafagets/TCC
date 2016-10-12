@@ -9,7 +9,9 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
 import es.esy.rafaelsilva.tcc.activity.Login_Activity;
+import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 /**
@@ -60,6 +62,8 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
     private String tabela;
     private Context contexto;
     String[] valoresTemp;
+    Usuario usuario;
+    UsuarioDao dao;
 
 
     public UtilTask(Context contexto, String acao, String tabela) {
@@ -97,19 +101,39 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
+        //System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
         if (flag) {
             if (acao.equals("C")) {
                 if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")) {
                     Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
                     //prepara o email para setar txtEmail login
+                    usuario = new Usuario();
+//
+                    usuario.setNome(valoresTemp[0].substring(1,valoresTemp[0].length() - 1));
+                    usuario.setEmail(valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
+                    usuario.setSenha(valoresTemp[2].substring(1,valoresTemp[2].length() - 1));
+                    usuario.setProfissao(valoresTemp[3].substring(1,valoresTemp[3].length() - 1));
+                    usuario.setAlimentacao(valoresTemp[4].substring(1,valoresTemp[4].length() - 1));
+                    System.out.println("Nome: " + usuario.getNome()+"\nEmail: "+ usuario.getEmail()+"\nSenha: "+
+                            usuario.getProfissao()+ "\nAlimentação: "+usuario.getAlimentacao());
 
-                    //
-                    Intent intent = new Intent(contexto, Login_Activity.class);
-                    intent.putExtra("email",valoresTemp[0]);
 
-                    contexto.startActivity(intent);
-                    System.out.println("emailTemp: " + valoresTemp[0]);
+                    dao = new UsuarioDao(contexto);
+
+
+                    if (dao.inserir(usuario) >= 0){
+
+                        Intent intent = new Intent(contexto, Login_Activity.class);
+                        intent.putExtra("nome", valoresTemp[0].substring(1,valoresTemp[0].length() - 1));
+                        intent.putExtra("email",valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
+                        //
+                        contexto.startActivity(intent);
+//                    System.out.println("emailTemp sem editar: " + valoresTemp[1]);
+//                    System.out.println("editado: "+valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
+                    }
+
+                    //chamo a tela de login passando o usuario/email que acabou de cadastrar
+
                 }
             }
             Log.e("OK", String.valueOf(flag));
