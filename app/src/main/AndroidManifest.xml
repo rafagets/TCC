@@ -44,7 +44,14 @@
         </activity>
         <activity android:name=".activity.Welcome_Activity" />
         <activity android:name=".activity.ComentariosPostActivity" />
-        <activity android:name=".activity.CadastroUsuarioActivity" android:label="@string/title_activity_cadastro_usuario" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activity.CadastroUsuarioActivity"
+            android:label="@string/title_activity_cadastro_usuario"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ReputacaoActivity"
+            android:label="@string/title_activity_reputacao"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

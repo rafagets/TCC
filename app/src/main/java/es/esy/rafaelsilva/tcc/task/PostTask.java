@@ -25,6 +25,7 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.fragment.CorpoHome;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
@@ -87,11 +88,11 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                         obj.setComentarioObj(this.loadCoemntario(String.valueOf(obj.getCodigo())));
                     }else if (obj.getTipo() == 2) {
                         obj.setAmigosObj(this.loadAmizade(String.valueOf(obj.getCodigo())));
+                        //obj.getAmigosObj().setAmigoAceObj(new Usuario().getUsuarioObj(obj.getAmigosObj().getAmigoAce()));
                         obj.getAmigosObj().setAmigoAceObj(getUsuario(String.valueOf(obj.getAmigosObj().getAmigoAce())));
                     }else if (obj.getTipo() == 3){
                         obj.setAvaliacaoObj(this.loadAvaliacao(String.valueOf(obj.getCodigo())));
                     }
-
                     lista.add(obj);
                 }
 
@@ -101,6 +102,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                 e.printStackTrace();
             }
         }catch (Exception e){
+            //e.printStackTrace();
 
         }
 
@@ -112,19 +114,64 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         recarregar.setRefreshing(false);
 
         // implementação do historico
-        LinearLayout layout = (LinearLayout) home.findViewById(R.id.relativeLayout);;
-        for (int i = 0; i < lista.size(); i++){
-            Post post = lista.get(i);
+        final LinearLayout layout = (LinearLayout) home.findViewById(R.id.relativeLayout);
+        // caso haja alguma view essa é destruida
+        layout.removeAllViews();
 
-            if (lista.get(i).getTipo() == 1)
-                inflarComentarios(post, layout);
-            else if (lista.get(i).getTipo() == 2)
-                this.inflarAmizade(post, layout);
-            else if (lista.get(i).getTipo() == 3)
-                this.inflarAvaliacao(post, layout);
+        if (flag)
+
+            try {
+                for (int i = 0; i < lista.size(); i++) {
+                    Post post = lista.get(i);
+
+                    if (lista.get(i).getTipo() == 1)
+                        inflarComentarios(post, layout);
+                    else if (lista.get(i).getTipo() == 2)
+                        this.inflarAmizade(post, layout);
+                    else if (lista.get(i).getTipo() == 3)
+                        this.inflarAvaliacao(post, layout);
+
+                }
+            } catch (Exception e){
+
+                //e.printStackTrace();
+
+                ImageView falha = new ImageView(contexto);
+                falha.setImageResource(R.drawable.back_falha_carregar);
+                layout.addView(falha);
+
+                falha.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        layout.removeAllViews();
+                        recarregar = (SwipeRefreshLayout) home.findViewById(R.id.recarregar);
+                        recarregar.setRefreshing(true);
+                        ((CorpoHome) home.getFragmentManager().findFragmentById(R.id.corpo_home)).carregarComentarios();
+
+                    }
+                });
+            }
+
+        else {
+
+            ImageView falha = new ImageView(contexto);
+            falha.setImageResource(R.drawable.back_falha_carregar);
+            layout.addView(falha);
+
+            falha.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    layout.removeAllViews();
+                    recarregar = (SwipeRefreshLayout) home.findViewById(R.id.recarregar);
+                    recarregar.setRefreshing(true);
+                    ((CorpoHome) home.getFragmentManager().findFragmentById(R.id.corpo_home)).carregarComentarios();
+
+                }
+            });
 
         }
-
     }
 
     private void inflarAvaliacao(Post p, LinearLayout layout){

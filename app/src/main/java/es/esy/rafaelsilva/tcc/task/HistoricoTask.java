@@ -2,11 +2,15 @@ package es.esy.rafaelsilva.tcc.task;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,14 +19,19 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
+import es.esy.rafaelsilva.tcc.activity.ReputacaoActivity;
 import es.esy.rafaelsilva.tcc.activity.HistoricoActivity;
+import es.esy.rafaelsilva.tcc.modelo.Cidade;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
+import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.Util;
@@ -94,18 +103,39 @@ public class HistoricoTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean flag) {
 
-        ImageView fundo = (ImageView) historico.findViewById(R.id.imgFundo);
-        CircleImageView icone = (CircleImageView) historico.findViewById(R.id.imgIcone);
-        TextView produto, produtor;
+        final ImageView fundo = (ImageView) historico.findViewById(R.id.imgFundo);
+        final CircleImageView icone = (CircleImageView) historico.findViewById(R.id.imgIcone);
+        final TextView produto, produtor, numAvaliacoes;
+        RatingBar estrelas = (RatingBar) historico.findViewById(R.id.estrelas);
+
+        numAvaliacoes = (TextView) historico.findViewById(R.id.lbTotalAvaliacoes);
+        numAvaliacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Produto p = ((HistoricoActivity) contexto).produto;
+
+                Intent intent = new Intent(contexto, ReputacaoActivity.class);
+                icone.buildDrawingCache();
+                intent.putExtra("icone", icone.getDrawingCache());
+                intent.putExtra("estrelas", (float) 2.5);
+                intent.putExtra("nome", pai.getProduto().getNome());
+                intent.putExtra("produto", pai.getProduto().getCodigo());
+                intent.putExtra("obj", p);
+                contexto.startActivity(intent);
+
+            }
+        });
 
         produto = (TextView) historico.findViewById(R.id.lbProduto);
         produto.setText(pai.getProduto().getNome());
 
         produtor = (TextView) historico.findViewById(R.id.lbProdutor);
-        //produtor.setText(pai.getProduto().getNome());
+        //produtor.setText(pai.getProduto().getProdutorObj().getNome());
 
         new ImageLoaderTask(fundo).execute(Config.caminhoImageProdutos + pai.getProduto().getImgheader());
         new ImageLoaderTask(icone).execute(Config.caminhoImageProdutos + pai.getProduto().getImgicone());
+
 
 
 

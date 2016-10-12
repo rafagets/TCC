@@ -1,6 +1,16 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
-public class Produto {
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import java.io.Serializable;
+import java.util.List;
+
+import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.util.Config;
+
+public class Produto implements Serializable {
 
 
 	/**
@@ -21,7 +31,25 @@ public class Produto {
 	private String imgicone;
 	private String imgheader;
 	private int produtor;
+	private Produtor produtorObj;
 	private int categoria;
+	private List<Avaliacao> listaAvaliacao;
+
+	public List<Avaliacao> getListaAvaliacao() {
+		return listaAvaliacao;
+	}
+
+	public void setListaAvaliacao(List<Avaliacao> listaAvaliacao) {
+		this.listaAvaliacao = listaAvaliacao;
+	}
+
+	public Produtor getProdutorObj() {
+		return produtorObj;
+	}
+
+	public void setProdutorObj(Produtor produtorObj) {
+		this.produtorObj = produtorObj;
+	}
 
 	public int getCodigo() {
 		return codigo;
@@ -85,5 +113,32 @@ public class Produto {
 
 	public void setCategoria(int categoria) {
 		this.categoria = categoria;
+	}
+
+
+
+	public Produto getProdutoObj(int codigo){
+
+		JSONArray jsonArray;
+		DAO helper = new DAO();
+
+		String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+		String[] v = new String[] { "R", "produto", "codigo",  String.valueOf(codigo)};
+
+		try {
+			jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+			String json = jsonArray.get(0).toString();
+
+			Produto obj;
+			Gson gson = new Gson();
+			obj = gson.fromJson(json, Produto.class);
+			return obj;
+
+		}catch (Exception e){
+
+		}
+
+		return null;
+
 	}
 }

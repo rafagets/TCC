@@ -1,6 +1,8 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
-public class Avaliacao {
+import java.io.Serializable;
+
+public class Avaliacao implements Serializable {
 
 
 	/**
