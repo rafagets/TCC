@@ -5,10 +5,10 @@ package es.esy.rafaelsilva.tcc.util;
  */
 public class Config {
 
-    public static String caminhoImageTumb       = "http://10.10.111.88/projetotcc/img/tumb/";
-    public static String caminhoImageIcons      = "http://10.10.111.88/projetotcc/img/icons_system/";
-    public static String caminhoImageProdutos   = "http://10.10.111.88/projetotcc/img/produtos/";
-    public static String urlMaster              = "http://10.10.111.88/projetotcc/crud.php";
+    public static String caminhoImageTumb       = "http://rdmlsys.esy.es/projetotcc/img/tumb/";
+    public static String caminhoImageIcons      = "http://rdmlsys.esy.es/projetotcc/img/icons_system/";
+    public static String caminhoImageProdutos   = "http://rdmlsys.esy.es/projetotcc/img/produtos/";
+    public static String urlMaster              = "http://rdmlsys.esy.es/projetotcc/crud.php";
 
 //    public static String caminhoImageTumb       = "http://192.168.1.102/projetotcc/img/tumb/";
 //    public static String caminhoImageIcons      = "http://192.168.1.102/projetotcc/img/icons_system/";
