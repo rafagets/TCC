@@ -24,15 +24,12 @@ public class UsuarioDao {
 
     public long inserir(Usuario usuario) {
         ContentValues valores = new ContentValues();
-        valores.put("nome", usuario.getNome());
         valores.put("email", usuario.getEmail());
         valores.put("senha", usuario.getSenha());
-        valores.put("profissao", usuario.getProfissao());
-        valores.put("alimentacao", usuario.getAlimentacao());
 
 
         db = helper.getWritableDatabase();
-        long rowid = db.insert(DbHelper.TABLE_NAME, null, valores);
+        long rowid = db.insert(DbHelper.TABLE_NOME, null, valores);
         helper.close();
 
         return rowid;
@@ -43,16 +40,15 @@ public class UsuarioDao {
 
         db = helper.getReadableDatabase();
 
-        Cursor cursor = db.query(DbHelper.TABLE_NAME,
-                new String[] {"nome, email, senha, profissao, alimentacao"}, null, null, null, null, null);
+        Cursor cursor = db.query(DbHelper.TABLE_NOME,
+                new String[] {"email, senha"}, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            String nome = String.valueOf(cursor.getInt(0));
-            String email = String.valueOf(cursor.getInt(1));
-            String senha = String.valueOf(cursor.getInt(2));
-            String profissao = String.valueOf(cursor.getInt(3));
-            String alimentacao = String.valueOf(cursor.getInt(4));
+            String email = String.valueOf(cursor.getInt(0));
+            String senha = String.valueOf(cursor.getInt(1));
+            String profissao = String.valueOf(cursor.getInt(2));
+            String alimentacao = String.valueOf(cursor.getInt(3));
             usuario = new Usuario();
             lista.add(usuario);
             cursor.moveToNext();
@@ -65,7 +61,7 @@ public class UsuarioDao {
 
     public int excluir(int codigo) {
         db = helper.getWritableDatabase();
-        int rows = db.delete(DbHelper.TABLE_NAME, "email = ?", new String[] {String.valueOf(codigo)});
+        int rows = db.delete(DbHelper.TABLE_NOME, "email = ?", new String[] {String.valueOf(codigo)});
         helper.close();
 
         return rows;
@@ -77,7 +73,7 @@ public class UsuarioDao {
         valores.put("senha", usuario.getSenha());
 
         db = helper.getWritableDatabase();
-        int rows = db.update(DbHelper.TABLE_NAME, valores, "codigo = " + usuario.getEmail(), null);
+        int rows = db.update(DbHelper.TABLE_NOME, valores, "codigo = " + usuario.getEmail(), null);
         helper.close();
 
         return rows;

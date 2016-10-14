@@ -1,5 +1,7 @@
 package es.esy.rafaelsilva.tcc.task;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,7 +11,11 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.activity.Login_Activity;
+import es.esy.rafaelsilva.tcc.fragment.CabecalhoPost;
+import es.esy.rafaelsilva.tcc.fragment.CorpoHome;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 /**
@@ -97,8 +103,9 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
+
         if (flag) {
+
             if (acao.equals("C")) {
                 if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")) {
                     Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
@@ -112,6 +119,8 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
                     System.out.println("emailTemp: " + valoresTemp[0]);
                 }
             }
+
+            Toast.makeText(contexto, "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
             Log.e("OK", String.valueOf(flag));
         }else {
             Toast.makeText(contexto, "Falha. Tente mais tarde =(", Toast.LENGTH_LONG).show();

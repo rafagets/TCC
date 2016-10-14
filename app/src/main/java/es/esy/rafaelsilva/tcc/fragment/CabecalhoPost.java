@@ -26,6 +26,7 @@ import cz.msebera.android.httpclient.Header;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
 import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.task.PostComentarioTask;
 import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -69,48 +70,12 @@ public class CabecalhoPost extends Fragment {
             public void onClick(DialogInterface dialoge, int which) {
 
                 if (!comentario.getText().toString().equals("")) {
-//                    UtilTask task = new UtilTask(getActivity(), "C", "post");
-//                    String campo = "usuario";
-//                    String valor = String.valueOf(DadosUsuario.codigo);
-//                    task.execute(campo, valor);
 
-                    RequestParams params = new RequestParams();
-                    params.put("acao", "C");
-                    params.put("tabela", "post");
-                    params.put("condicao", "usuario");
-                    params.put("valores", DadosUsuario.codigo);
-
-                    String url = Config.urlMaster;
-
-                    AsyncHttpClient client = new AsyncHttpClient();
-                    client.post(getActivity(), url, params, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                            String resposta = new String(responseBody);
-                            Log.e("+++++", "resposta: " + resposta);
-
-                            try {
-
-                                JSONObject object = new JSONObject(resposta);
-                                boolean flag = object.getBoolean("flag");
-                                if (flag)
-                                    postarComentario();
-                                else
-                                    Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-
-                            }catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast.makeText(getActivity(), "Falha ao carregar lote", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    //"C", CabecalhoPost.this, "post"
+                    PostComentarioTask task = new PostComentarioTask("C", comentario.getText().toString(),"post", getActivity());
+                    String campo = "usuario";
+                    String valor = String.valueOf(DadosUsuario.codigo);
+                    task.execute(campo, valor);
 
                 }else{
                     Toast.makeText(getActivity(), "Digite um comentário.", Toast.LENGTH_LONG).show();
@@ -136,50 +101,12 @@ public class CabecalhoPost extends Fragment {
 
     }
 
-    public void postarComentario(){
+    public void postarComentario(String post){
 
-        RequestParams params = new RequestParams();
-        params.put("acao", "R");
-        params.put("tabela", "post");
-        params.put("asteristico", "codigo");
-        params.put("condicao", "usuario");
-        params.put("valores", DadosUsuario.codigo);
-        params.put("ordenacao", "ORDER BY data DESC LIMIT 1");
-
-        String url = Config.urlMaster;
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post(getActivity(), url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                String resposta = new String(responseBody);
-                Log.e("+++++", "resposta: " + resposta);
-
-                JSONArray array;
-                try {
-
-                    array = new JSONArray(resposta);
-
-                    JSONObject object = array.getJSONObject(0);
-
-                    UtilTask task = new UtilTask(getActivity(), "C", "comentario");
-                    String campo = "comentario,usuarioPost,pai";
-                    String valor = "\"" + comentario.getText().toString() + "\"," + DadosUsuario.codigo + "," + object.getInt("valor");
-                    task.execute(campo, valor);
-
-                } catch (JSONException e) {
-                    Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-            }
-        });
+        UtilTask task = new UtilTask(getActivity(), "C", "comentario");
+        String campo = "comentario,usuarioPost,pai";
+        String valor = "\"" + comentario.getText().toString() + "\"," + DadosUsuario.codigo + "," + post;
+        task.execute(campo, valor);
 
     }
 
