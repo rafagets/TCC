@@ -12,11 +12,31 @@ public class Comentario {
 
 	private Usuario usuario;
 
+	private int qtdCurtidas;
+
+	private int qtdComentarios;
+
 	private CurtidaComentario[] curtidaComentario;
 
 	private ComentarioPost[] comentariosPost;
 
 	private int pai;
+
+	public int getQtdComentarios() {
+		return qtdComentarios;
+	}
+
+	public void setQtdComentarios(int qtdComentarios) {
+		this.qtdComentarios = qtdComentarios;
+	}
+
+	public int getQtdCurtidas() {
+		return qtdCurtidas;
+	}
+
+	public void setQtdCurtidas(int qtdCurtidas) {
+		this.qtdCurtidas = qtdCurtidas;
+	}
 
 	public int getPai() {
 		return pai;

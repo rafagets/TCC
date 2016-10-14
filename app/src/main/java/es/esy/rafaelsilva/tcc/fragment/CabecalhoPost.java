@@ -20,6 +20,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 import es.esy.rafaelsilva.tcc.R;
@@ -34,6 +35,8 @@ import es.esy.rafaelsilva.tcc.util.Util;
  * Created by Rafael on 25/08/2016.
  */
 public class CabecalhoPost extends Fragment {
+
+    EditText comentario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,23 +63,22 @@ public class CabecalhoPost extends Fragment {
         // defino a view que contem os dados para abertura da mesa
         View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_coment, null);
         mensagem.setView(view);
-        final EditText comentario = (EditText) view.findViewById(R.id.txtPost);
+        comentario = (EditText) view.findViewById(R.id.txtPost);
 
         mensagem.setPositiveButton("Postar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialoge, int which) {
 
                 if (!comentario.getText().toString().equals("")) {
-                    UtilTask task = new UtilTask(getActivity(), "C", "post");
-                    String campo = "usuario";
-                    String valor = String.valueOf(DadosUsuario.codigo);
-                    task.execute(campo, valor);
+//                    UtilTask task = new UtilTask(getActivity(), "C", "post");
+//                    String campo = "usuario";
+//                    String valor = String.valueOf(DadosUsuario.codigo);
+//                    task.execute(campo, valor);
 
                     RequestParams params = new RequestParams();
-                    params.put("acao", "R");
+                    params.put("acao", "C");
                     params.put("tabela", "post");
                     params.put("condicao", "usuario");
                     params.put("valores", DadosUsuario.codigo);
-                    params.put("ordenacao", "ORDER BY data DESC LIMIT 1");
 
                     String url = Config.urlMaster;
 
@@ -88,22 +90,17 @@ public class CabecalhoPost extends Fragment {
                             String resposta = new String(responseBody);
                             Log.e("+++++", "resposta: " + resposta);
 
-                            JSONArray array;
                             try {
 
-                                array = new JSONArray(resposta);
-                                String rr = array.get(0).toString();
-                                Gson gson = new Gson();
-                                Post post = gson.fromJson(rr, Post.class);
+                                JSONObject object = new JSONObject(resposta);
+                                boolean flag = object.getBoolean("flag");
+                                if (flag)
+                                    postarComentario();
+                                else
+                                    Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
 
-                                UtilTask task = new UtilTask(getActivity(), "C", "comentario");
-                                String campo = "comentario,usuarioPost,pai";
-                                String valor = "\"" + comentario.getText().toString() + "\"," + DadosUsuario.codigo + "," + post.getCodigo();
-                                task.execute(campo, valor);
-
-                            } catch (JSONException e) {
-                                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-                                getActivity().finish();
+                            }catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
                         }
@@ -114,6 +111,7 @@ public class CabecalhoPost extends Fragment {
                             Toast.makeText(getActivity(), "Falha ao carregar lote", Toast.LENGTH_LONG).show();
                         }
                     });
+
                 }else{
                     Toast.makeText(getActivity(), "Digite um comentário.", Toast.LENGTH_LONG).show();
                 }
@@ -135,6 +133,53 @@ public class CabecalhoPost extends Fragment {
 //        // FORÇA O TECLADO APARECER AO ABRIR O ALERT
 //        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+    }
+
+    public void postarComentario(){
+
+        RequestParams params = new RequestParams();
+        params.put("acao", "R");
+        params.put("tabela", "post");
+        params.put("asteristico", "codigo");
+        params.put("condicao", "usuario");
+        params.put("valores", DadosUsuario.codigo);
+        params.put("ordenacao", "ORDER BY data DESC LIMIT 1");
+
+        String url = Config.urlMaster;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(getActivity(), url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                String resposta = new String(responseBody);
+                Log.e("+++++", "resposta: " + resposta);
+
+                JSONArray array;
+                try {
+
+                    array = new JSONArray(resposta);
+
+                    JSONObject object = array.getJSONObject(0);
+
+                    UtilTask task = new UtilTask(getActivity(), "C", "comentario");
+                    String campo = "comentario,usuarioPost,pai";
+                    String valor = "\"" + comentario.getText().toString() + "\"," + DadosUsuario.codigo + "," + object.getInt("valor");
+                    task.execute(campo, valor);
+
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
