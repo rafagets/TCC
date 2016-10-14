@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBase extends SQLiteOpenHelper {
 
     public DataBase(Context context){
-        super(context, "APP_INI", null, 1);
+        super(context, "usuario", null, 1);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.fragment.CabecalhoPost;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
