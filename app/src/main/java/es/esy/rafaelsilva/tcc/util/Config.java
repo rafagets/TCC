@@ -5,15 +5,15 @@ package es.esy.rafaelsilva.tcc.util;
  */
 public class Config {
 
-    public static String caminhoImageTumb       = "http://10.10.110.145/projetotcc/img/tumb/";
-    public static String caminhoImageIcons      = "http://10.10.110.145/projetotcc/img/icons_system/";
-    public static String caminhoImageProdutos   = "http://10.10.110.145/projetotcc/img/produtos/";
-    public static String urlMaster              = "http://10.10.110.145/projetotcc/crud.php";
+//    public static String caminhoImageTumb       = "http://10.10.110.145/projetotcc/img/tumb/";
+//    public static String caminhoImageIcons      = "http://10.10.110.145/projetotcc/img/icons_system/";
+//    public static String caminhoImageProdutos   = "http://10.10.110.145/projetotcc/img/produtos/";
+//    public static String urlMaster              = "http://10.10.110.145/projetotcc/crud.php";
 
-//    public static String caminhoImageTumb       = "http://192.168.1.105/projetotcc/img/tumb/";
-//    public static String caminhoImageIcons      = "http://192.168.1.105/projetotcc/img/icons_system/";
-//    public static String caminhoImageProdutos   = "http://192.168.1.105/projetotcc/img/produtos/";
-//    public static String urlMaster              = "http://192.168.1.105/projetotcc/crud.php";
+    public static String caminhoImageTumb       = "http://192.168.1.107/projetotcc/img/tumb/";
+    public static String caminhoImageIcons      = "http://192.168.1.107/projetotcc/img/icons_system/";
+    public static String caminhoImageProdutos   = "http://192.168.1.107/projetotcc/img/produtos/";
+    public static String urlMaster              = "http://192.168.1.107/projetotcc/crud.php";
 
 //    public static String caminhoImageTumb = "http://rdmlsys.esy.es/projetotcc/img/tumb/";
 //    public static String caminhoImageIcons = "http://rdmlsys.esy.es/projetotcc/img/icons_system/";
