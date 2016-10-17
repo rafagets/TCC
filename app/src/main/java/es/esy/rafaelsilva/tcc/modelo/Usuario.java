@@ -163,6 +163,31 @@ public class Usuario {
 		return null;
 
 	}
+
+	public Usuario getUsuarioObjEmail(String email){
+
+		JSONArray jsonArray;
+		DAO helper = new DAO();
+
+		String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
+		String[] v = new String[] { "R", "usuario", "email", email};
+
+		try {
+			jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+			String json = jsonArray.get(0).toString();
+
+			Usuario obj;
+			Gson gson = new Gson();
+			obj = gson.fromJson(json, Usuario.class);
+			return obj;
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
 //	public Usuario(String email, String senha, String profissao, String alimentacao) {
 //		this.email = email;
 //		this.senha = senha;

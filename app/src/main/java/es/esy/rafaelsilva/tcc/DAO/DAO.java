@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.DAO;
 
+
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,9 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-/**
- * Created by Rafael on 10/04/2016.
- */
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+
 public class DAO {
 
     public JSONObject getJSONOject(String acao, String serverUrl, String tabela, String[] valores) {
@@ -47,11 +47,20 @@ public class DAO {
 
             for (int i=1; i < valores.length; i++)
                 valor = valores[i];
+            String email, senha;
+
+            if (DadosUsuario.getUsuarioCorrente() != null){
+                email = DadosUsuario.getUsuarioCorrente().getEmail();
+                senha = DadosUsuario.getUsuarioCorrente().getSenha();
+            }else{
+                email = "1";
+                senha = "123456";
+            }
 
 
             String data = URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8");
                     data = URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8") +"&"+ data;
-                    data = "usuario=1&senha=12345&"+"acao="+acao+"&"+"tabela="+tabela+"&"+data;
+                    data = "usuario="+ email +"&senha="+ senha +"&acao="+acao+"&tabela="+tabela+"&"+data;
 
             Log.i("********** data", data);
             bw.write(data);

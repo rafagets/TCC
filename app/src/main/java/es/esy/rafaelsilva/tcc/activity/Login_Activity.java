@@ -36,23 +36,44 @@ public class Login_Activity extends AppCompatActivity {
         if(getIntent().getStringExtra("email") != null){
             txtEmail.setText(getIntent().getStringExtra("email"));
         }
+        if (DadosUsuario.getUsuarioCorrente() != null){
+            txtEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
+        }
+
 
         //conexao com banco de dados local 
         try {
 //            database = new DataBase(this);
 //            connection = database.getWritableDatabase();
-            dao = new UsuarioDao(this);
-            lista = dao.selecionarTodos();
-            for (Usuario usuario : lista) {
-                System.out.println("Nome: " + usuario.getNome()+"\nEmail: "+ usuario.getEmail()+"\nSenha: "+
-                        usuario.getSenha()+ "\nProfissao: "+ usuario.getProfissao()+ "\nAlimentação: "+usuario.getAlimentacao());
-                DadosUsuario.codigo = usuario.getCodigo();
-                DadosUsuario.nome = usuario.getNome();
-            }
-            Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
-            startActivity(intent);
+            if (getIntent().getStringExtra("tela") == null) {
 
-            Toast.makeText(Login_Activity.this, "Conexão estabelecida!", Toast.LENGTH_LONG).show();
+
+                dao = new UsuarioDao(this);
+                lista = dao.selecionarTodos();
+
+                if (lista.size() > 0) {
+
+                    for (Usuario usuario : lista) {
+                        System.out.println("Nome: " + usuario.getNome() + "\nEmail: " + usuario.getEmail() + "\nSenha: " +
+                                usuario.getSenha() + "\nProfissao: " + usuario.getProfissao() + "\nAlimentação: " + usuario.getAlimentacao());
+                            DadosUsuario.setUsuarioCorrente(usuario);
+// DadosUsuario.usuarioCorrente.setCodigo(usuario.getCodigo());
+//                        DadosUsuario.usuarioCorrente.setNome(usuario.getNome());
+//                        DadosUs
+
+                    }
+
+                    Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(Login_Activity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+
+
+            //Toast.makeText(Login_Activity.this, "Conexão estabelecida!", Toast.LENGTH_LONG).show();
 
         }catch(SQLException ex){
             Toast.makeText(Login_Activity.this, "Conexão não estabelecida!", Toast.LENGTH_LONG).show();

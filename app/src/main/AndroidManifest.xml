@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ.GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="br.com.paulistinhaperfumaria.erp_ts_ponto.MAPS_RECEIVE" />
@@ -44,6 +45,7 @@
         </activity>
         <activity android:name=".activity.Welcome_Activity" />
         <activity android:name=".activity.ComentariosPostActivity" />
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.CadastroUsuarioActivity"
             android:label="@string/title_activity_cadastro_usuario"

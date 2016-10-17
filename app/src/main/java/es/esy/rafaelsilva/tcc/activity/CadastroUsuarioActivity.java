@@ -1,8 +1,11 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
@@ -26,7 +30,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     EditText txtAlimentacao;
     CheckBox chkCarne, chkVegano, chkVegetariano;
     String alimentacao = "";
-//    CircleImageView imgUser;
+    //CircleImageView imgUser;
     Usuario usuario;
     UsuarioDao usuarioDao;
     DadosUsuario userCurrent;
@@ -46,11 +50,16 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         chkCarne = (CheckBox) findViewById(R.id.chkCarnivoro);
         chkVegano = (CheckBox) findViewById(R.id.chkVegano);
         chkVegetariano = (CheckBox) findViewById(R.id.chkVegetariano);
+        //imgUser = (CircleImageView) findViewById(R.id.imgUsuario);
+        //imgUser.setOnClickListener(OpcoesImagem());
 
         fabCadastrarUsuario = (FloatingActionButton) findViewById(R.id.fabCadastrarUsuario);
         fabCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
 //                imgUser = (CircleImageView) findViewById(R.id.imgUsuario);
                 if(!txtNome.getText().toString().equals("") || !txtEmail.getText().toString().equals("") || !txtSenha.getText().toString().equals("")
                         || !txtConfirmSenha.getText().toString().equals("") || !txtProfissao.getText().toString().equals("")){
@@ -70,22 +79,19 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     if (chkVegetariano.isChecked()) {
                         alimentacao = alimentacao + chkVegetariano.getText().toString().toLowerCase() + ",";
                     }
-                    System.out.println("variavel alimentacao antes de ficar pronta "+ alimentacao);
-                    System.out.println("tamanho: " + alimentacao.length());
-                    System.out.println("ultimo caracter: " + alimentacao.substring(alimentacao.length()-1));
+
                     if (alimentacao.substring(alimentacao.length() -1).equals(",")) {
                         alimentacao = alimentacao.substring(0, alimentacao.length() - 1);
-                        System.out.println("variavel alimentacao pronta "+ alimentacao);
                     }
                     //
 
                     if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
-                        //verifica no bd se o usuario existe, caso nao exista já cadastra
+                        //verifica no bd (webservice) se o usuario existe, caso nao exista já cadastra
                         UtilTask thread = new UtilTask(CadastroUsuarioActivity.this, "C", "usuario");
                         String campos = "nome, email, senha, profissao, alimentacao";//colocar nome dos campos
                         String values = "'" + txtNome.getText().toString() + "','" + txtEmail.getText().toString() + "','" + txtSenha.getText().toString() + "','"
                                 + txtProfissao.getText().toString() + "','" + alimentacao + "'";
-                        System.out.println("valores" + values);
+
                         thread.execute(campos, values);
                     }else{
                         Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
@@ -120,5 +126,43 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             }
         });
     }
+
+    private View.OnClickListener OpcoesImagem() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                escolhaImagem();
+            }
+        };
+    }
+    private void escolhaImagem() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+
+        //Titulo da janela
+        builder.setTitle("Opções");
+        //Conteudo da msg
+        builder.setMessage("Escolha uma das opções!");
+        builder.setPositiveButton("Imagem Existente",escolherImagem());
+        builder.setNegativeButton("Nova Imagem",tirarFoto());
+
+        //cria o alertDialog a partir do builder
+        android.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private DialogInterface.OnClickListener tirarFoto() {
+        Toast.makeText(this, "Implementar acesso a Camera", Toast.LENGTH_SHORT).show();
+     return null;
+    }
+
+    private DialogInterface.OnClickListener escolherImagem() {
+        Toast.makeText(this, "Implementar ao micro sd\n e memoria interna Storage", Toast.LENGTH_SHORT).show();
+        return null;
+    }
+
+    public void salvarImagem(){
+
+    }
+
 
 }

@@ -18,8 +18,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //cria a tabela, se ainda não existir no banco de dados
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME +
-            "(codigo INTEGER PRIMARY KEY, nome STRING NOT NULL, email STRING NOT NULL, senha STRING NOT NULL, profissao STRING NOT NULL, alimentacao STRING NOT NULL)");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+            "(codigo INTEGER PRIMARY KEY, nome STRING NOT NULL, email STRING NOT NULL, senha STRING NOT NULL, profissao STRING NOT NULL, alimentacao STRING NOT NULL, imagem BLOB)");
     }
 //force push
     @Override

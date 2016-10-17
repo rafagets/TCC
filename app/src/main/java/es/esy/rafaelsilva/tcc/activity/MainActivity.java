@@ -19,12 +19,13 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnAcessar);
         btnLogin.setOnClickListener(acessar());
     }
-//force push
+
     private View.OnClickListener acessar() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Login_Activity.class);
+                intent.putExtra("tela", "main");
                 startActivity(intent);
 
             }

@@ -10,13 +10,13 @@ import java.util.List;
 
 import es.esy.rafaelsilva.tcc.adapters.DbHelper;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 public class UsuarioDao {
 
     private SQLiteDatabase db;
     private DbHelper helper;
     Usuario usuario;
-//force push
     //instancia um objeto da classe es.esy.rafaelsilva.tcc.adapters.DbHelper
     public UsuarioDao(Context context) {
         helper = new DbHelper(context);
@@ -29,12 +29,12 @@ public class UsuarioDao {
         valores.put("senha", usuario.getSenha());
         valores.put("profissao", usuario.getProfissao());
         valores.put("alimentacao", usuario.getAlimentacao());
-
+       // valores.put("imagem", usuario.getImagem());
 
         db = helper.getWritableDatabase();
         long rowid = db.insert(DbHelper.TABLE_NAME, null, valores);
         helper.close();
-
+        System.out.println("****************************\nMostrando o rowID(" + rowid + ")\n***************************");
         return rowid;
     }
 
@@ -47,13 +47,14 @@ public class UsuarioDao {
                 new String[] {"nome, email, senha, profissao, alimentacao"}, null, null, null, null, null);
 
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String nome = String.valueOf(cursor.getInt(0));
-            String email = String.valueOf(cursor.getInt(1));
-            String senha = String.valueOf(cursor.getInt(2));
-            String profissao = String.valueOf(cursor.getInt(3));
-            String alimentacao = String.valueOf(cursor.getInt(4));
+        while (!cursor.isAfterLast()){
             usuario = new Usuario();
+            usuario.setNome(String.valueOf(cursor.getString(0)));
+            usuario.setEmail(String.valueOf(cursor.getString(1)));
+            usuario.setSenha(String.valueOf(cursor.getString(2)));
+            usuario.setProfissao(String.valueOf(cursor.getString(3)));
+            usuario.setAlimentacao(String.valueOf(cursor.getString(4)));
+
             lista.add(usuario);
             cursor.moveToNext();
         }
