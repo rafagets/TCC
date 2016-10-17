@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -424,6 +425,9 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             Gson gson = new Gson();
             obj = gson.fromJson(json, Comentario.class);
 
+//            obj.setQtdCurtidas(countCurtidas(obj.getCodigo()));
+//            obj.setQtdComentarios(countComentarios(obj.getCodigo()));
+
             obj.setCurtidaComentario(loadCurtidas(obj.getCodigo()));
             obj.setComentariosPost(getCoemntariosPost(obj.getCodigo()));
             return obj;
@@ -530,6 +534,64 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         return null;
     }
 
+
+//    private int countCurtidas(int codigo){
+//        JSONArray jsonArray;
+//        DAO helper = new DAO();
+//
+//        String[] p = new String[] { "acao", "tabela", "asteristico", "condicao", "valores"  };
+//        String[] v = new String[] { "R", "curtidacomentario", "count(codigo)", "comentario",  String.valueOf(codigo)};
+//
+//        try {
+//
+//            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+//
+//            try {
+//
+//                JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+//
+//                return jsonObject.getInt("valor");
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//        }catch (Exception e){
+//
+//        }
+//
+//        return 0;
+//    }
+//
+//    private int countComentarios(int codigo){
+//        JSONArray jsonArray;
+//        DAO helper = new DAO();
+//
+//        String[] p = new String[] { "acao", "tabela", "asteristico", "condicao", "valores"  };
+//        String[] v = new String[] { "R", "comentariopost", "count(codigo)", "coment",  String.valueOf(codigo) };
+//
+//        try {
+//
+//            jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
+//
+//            try {
+//
+//                JSONObject jsonObject = (JSONObject) jsonArray.get(0);
+//
+//                return jsonObject.getInt("valor");
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//        }catch (Exception e){
+//
+//        }
+//
+//        return 0;
+//    }
 
 
     private Usuario getUsuario(String codigo) {

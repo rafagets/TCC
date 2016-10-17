@@ -15,7 +15,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <!--<android.support.v4.widget.CircleImageView-->
             <!--android:layout_width="match_parent"-->
@@ -35,14 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtNome"
-            android:hint="Nome"
-            android:gravity="center"
-            android:layout_marginTop="16dp"/>
+        android:padding="16dp" >
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtConfirmSenha"
-            android:hint="Confirmação da Senha"
+            android:hint="Senha"
             android:inputType="textPassword"
             android:gravity="center"
             android:layout_marginTop="16dp"/>
@@ -74,46 +69,13 @@
             android:hint="Profissão"
             android:gravity="center"
             android:layout_marginTop="16dp"/>
-
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
+            android:id="@+id/txtAlimentacao"
             android:hint="Alimentação"
-            android:gravity="left"
-            android:layout_marginTop="16dp"
-            android:textSize="18dp"
-            android:layout_marginBottom="16dp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carne"
-                android:checked="false"
-                android:id="@+id/chkCarnivoro"
-                android:layout_weight="1"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vegano"
-                android:id="@+id/chkVegano"
-                android:checked="false"
-                android:layout_weight="1"/>
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vegetariano"
-                android:id="@+id/chkVegetariano"
-                android:checked="false"
-                android:layout_weight="1"/>
-            /
-        </LinearLayout>
-
+            android:gravity="center"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 
 </LinearLayout>

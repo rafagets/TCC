@@ -16,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.fragment.CabecalhoPost;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Olá "+ DadosUsuario.nome + "!");
+        setTitle("Olá Sabrina!");
 
 
 
@@ -131,9 +131,6 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }else if (id == R.id.nav_user){
-
-
-            //aqui abre a tela de cadastro de usuario
             Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
             startActivity(intent);
         }
