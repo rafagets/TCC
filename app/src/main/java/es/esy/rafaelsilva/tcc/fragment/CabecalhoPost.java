@@ -101,13 +101,4 @@ public class CabecalhoPost extends Fragment {
 
     }
 
-    public void postarComentario(String post){
-
-        UtilTask task = new UtilTask(getActivity(), "C", "comentario");
-        String campo = "comentario,usuarioPost,pai";
-        String valor = "\"" + comentario.getText().toString() + "\"," + DadosUsuario.codigo + "," + post;
-        task.execute(campo, valor);
-
-    }
-
 }

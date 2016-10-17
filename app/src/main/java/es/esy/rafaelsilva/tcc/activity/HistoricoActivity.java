@@ -70,6 +70,8 @@ public class HistoricoActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         params.put("acao", "R");
+        params.put("email", "sabrina@gmail.com");
+        params.put("senha", "123456");
         params.put("tabela", "lote");
         params.put("condicao", "codigo");
         params.put("valores", lote);
@@ -126,6 +128,8 @@ public class HistoricoActivity extends AppCompatActivity {
                     String produto = String.valueOf(lote.getProduto());
                     RequestParams params = new RequestParams();
                     params.put("acao", "R");
+                    params.put("email", "sabrina@gmail.com");
+                    params.put("senha", "123456");
                     params.put("tabela", "produto");
                     params.put("condicao", "codigo");
                     params.put("valores", produto);
@@ -170,6 +174,8 @@ public class HistoricoActivity extends AppCompatActivity {
 
                     RequestParams params = new RequestParams();
                     params.put("acao", "R");
+                    params.put("email", "sabrina@gmail.com");
+                    params.put("senha", "123456");
                     params.put("tabela", "avaliacao");
                     params.put("condicao", "produto");
                     params.put("valores", produto.getCodigo());
