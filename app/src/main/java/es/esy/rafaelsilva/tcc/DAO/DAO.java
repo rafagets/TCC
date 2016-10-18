@@ -1,6 +1,6 @@
 package es.esy.rafaelsilva.tcc.DAO;
 
-
+import android.content.Intent;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -19,8 +19,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
+import es.esy.rafaelsilva.tcc.activity.Login_Activity;
 
+/**
+ * Created by Rafael on 10/04/2016.
+ */
 public class DAO {
 
     public JSONObject getJSONOject(String acao, String serverUrl, String tabela, String[] valores) {
@@ -47,20 +51,10 @@ public class DAO {
 
             for (int i=1; i < valores.length; i++)
                 valor = valores[i];
-            String email, senha;
-
-            if (DadosUsuario.getUsuarioCorrente() != null){
-                email = DadosUsuario.getUsuarioCorrente().getEmail();
-                senha = DadosUsuario.getUsuarioCorrente().getSenha();
-            }else{
-                email = "1";
-                senha = "123456";
-            }
-
 
             String data = URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8");
                     data = URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8") +"&"+ data;
-                    data = "usuario="+ email +"&senha="+ senha +"&acao="+acao+"&tabela="+tabela+"&"+data;
+                    data = "email=sabrina@gmail.com&senha=123456&"+"acao="+acao+"&"+"tabela="+tabela+"&"+data;
 
             Log.i("********** data", data);
             bw.write(data);
@@ -80,6 +74,11 @@ public class DAO {
             bufferedReader.close();
             is.close();
             http.disconnect();
+
+            if (response.equals("\uFEFF\"ERROR_LOGIN\"")){
+                //implementar metodo que que retornara para a pagina de login
+                return null;
+            }
 
             try {
                 jsonObject = new JSONObject(response);
@@ -117,8 +116,12 @@ public class DAO {
 
             for (int i = 0; i < values.length; i++)
                 data += URLEncoder.encode(params[i], "UTF-8") + "=" + URLEncoder.encode(values[i], "UTF-8") + "&";
-                //retira o último & inserido nos dados de requisição
-                data = data.substring(0, data.lastIndexOf("&"));
+
+            //encrementa informaçoes para o login
+            data = "email=sabrina@gmail.com&senha=123456&"+data;
+
+            //retira o último & inserido nos dados de requisição
+            data = data.substring(0, data.lastIndexOf("&"));
 
             Log.i("********** data", data);
             bw.write(data);
@@ -141,6 +144,11 @@ public class DAO {
             bufferedReader.close();
             is.close();
             http.disconnect();
+
+            if (response.equals("\uFEFF\"ERROR_LOGIN\"")){
+                //implementar metodo que que retornara para a pagina de login
+                return null;
+            }
 
             try {
                 jsonArray = new JSONArray(response.toString());

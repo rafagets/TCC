@@ -97,40 +97,7 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected Boolean doInBackground(String... valores) {
-//        if (acao == "R" && contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")){
-//            String[] params;
-//            JSONArray jsonArray;
-//            DAO helper;
-//
-//            params = new String[] { "acao", "tabela","condicao","valores", "ordenacao" };
-//
-//            helper = new DAO();
-//
-//            try {
-//                jsonArray = helper.getJSONArray(Config.urlMaster, params, valores);
-//
-//                try {
-//                    lista = new ArrayList<>();
-//
-//                    for (int i = 0; i < jsonArray.length(); i++) {
-//                        String json = jsonArray.get(i).toString();
-//
-//                        Usuario usuario;
-//                        Gson gson = new Gson();
-//                        usuario = gson.fromJson(json, Usuario.class);
-//                        DadosUsuario.setUsuarioCorrente(usuario);
-//                        lista.add(usuario);
-//                    }
-//                    return true;
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }catch (Exception e){
-//
-//            }
-//
-//            return false;
-//        }
+
         valoresTemp = valores[1].split(",");
 
         JSONObject jsonObject;
@@ -144,7 +111,6 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
             usuario = new Usuario().getUsuarioObjEmail("'"+valoresTemp[1].substring(1,valoresTemp[1].length() - 1)+"'");
         }
 
-
         try {
             return jsonObject.getBoolean("flag");
         } catch (Exception e) {
@@ -157,67 +123,13 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean flag) {
-        //System.out.println("CONTEXTO--->" + contexto.getClass().getSimpleName());
+
         if (flag) {
             if (acao.equals("C")) {
 
                 if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")) {
 
-//                    usuario = new Usuario();
-//                    usuario.getUsuarioObjEmail("'"+valoresTemp[1].substring(1,valoresTemp[1].length() - 1)+"'");
-
-
-//                    RequestParams params = new RequestParams();
-//                    params.put("acao", "R");
-//                    params.put("tabela", "usuario");
-//                    params.put("condicao", "email");
-//                    params.put("valores", "'"+valoresTemp[1].substring(1,valoresTemp[1].length() - 1)+"'");
-//                    //*****************************************************************************
-//
-//
-//                        String url = Config.urlMaster;
-//
-//                        AsyncHttpClient client = new AsyncHttpClient();
-//                        client.post(contexto, url, params, new AsyncHttpResponseHandler() {
-//
-//                            @Override
-//                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                                String resposta =  new String(responseBody);
-//                                Log.e("+++++", "resposta: "+ resposta);
-//                                System.out.println("<<<<<<<< antes do try >>>>>>>");
-//                                JSONArray array;
-//                                try {
-//                                    System.out.println("<<<<<< entrei no try >>>>>");
-//                                    Usuario userCurrent;
-//                                    array = new JSONArray(resposta);
-//                                    String rr = array.get(0).toString();
-//                                    Gson gson = new Gson();
-//                                    userCurrent = gson.fromJson(rr, Usuario.class);
-//                                    DadosUsuario.setUsuarioCorrente(userCurrent);
-//                                    for(int i = 0; i <=  array.length(); i++ ){
-//                                        System.out.println("teste>>>>>>>>>>"+DadosUsuario.getUsuarioCorrente());
-//                                    }
-//                                } catch (JSONException e) {
-//                                    System.out.println("<<<<<<<< entrei no exception>>>>>>>>");
-//                                    Log.e("+++++", "Erro ao ler usuario recentemente cadastrado: ");
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                            @Override
-//                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//                                System.out.println("<<<<<<<<<<<< on Failure >>>>>>>>>>>");
-//                                Toast.makeText(contexto, "Falha ao carregar usuario", Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-                    System.out.println("<<<<<<<<<< fora do OnSuccess >>>>>>>>>");
-
-
-                    //*****************************************************************************
                     Toast.makeText(contexto, "Cadastro efetuado com sucesso!", Toast.LENGTH_LONG).show();
-                    //prepara o email para setar txtEmail login
-
-//                    usuario = new Usuario();
-//                    usuario = DadosUsuario.getUsuarioCorrente();
 
                     dao = new UsuarioDao(contexto);
 
@@ -231,8 +143,6 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
                         intent.putExtra("email",valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
                         //
                         contexto.startActivity(intent);
-//                    System.out.println("emailTemp sem editar: " + valoresTemp[1]);
-//                    System.out.println("editado: "+valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
                     }
                 }
             }
