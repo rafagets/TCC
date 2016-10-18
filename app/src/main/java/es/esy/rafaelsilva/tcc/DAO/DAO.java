@@ -52,9 +52,10 @@ public class DAO {
             for (int i=1; i < valores.length; i++)
                 valor = valores[i];
 
-            String data = URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8");
-                    data = URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8") +"&"+ data;
-                    data = "email=sabrina@gmail.com&senha=123456&"+"acao="+acao+"&"+"tabela="+tabela+"&"+data;
+            String  data  = "email=sabrina@gmail.com&senha=123456&"+"acao="+acao+"&"+"tabela="+tabela +"&";
+                    data += URLEncoder.encode("condicao", "UTF-8") + "=" + URLEncoder.encode(condicao, "UTF-8") +"&";
+                    data += URLEncoder.encode("valores", "UTF-8") + "=" + URLEncoder.encode(valor, "UTF-8");
+
 
             Log.i("********** data", data);
             bw.write(data);

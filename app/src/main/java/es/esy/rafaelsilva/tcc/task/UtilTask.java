@@ -90,8 +90,8 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        ProgressBar bar = new ProgressBar(contexto);
-        bar.incrementProgressBy(10);
+//        ProgressBar bar = new ProgressBar(contexto);
+//        bar.incrementProgressBy(10);
 
     }
 
