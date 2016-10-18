@@ -14,12 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    TextView txtUsuarioNome, txtUsuarioEmail;
+    ImageView imgUsuarioCorrente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,16 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //Colocando o nome e emaildo usuario atual no menu lateral
+        View view = navigationView.getHeaderView(0);
+        txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
+        txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
+        imgUsuarioCorrente = (ImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
+
+        txtUsuarioNome.setText(DadosUsuario.getUsuarioCorrente().getNome());
+        txtUsuarioEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
