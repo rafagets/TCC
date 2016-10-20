@@ -54,7 +54,7 @@ public class Login_Activity extends AppCompatActivity {
                 if (lista.size() > 0) {
 
                     for (Usuario usuario : lista) {
-                        System.out.println("Nome: " + usuario.getNome() + "\nEmail: " + usuario.getEmail() + "\nSenha: " +
+                        System.out.println("Codigo: "+usuario.getCodigo()+"\nNome: " + usuario.getNome() + "\nEmail: " + usuario.getEmail() + "\nSenha: " +
                                 usuario.getSenha() + "\nProfissao: " + usuario.getProfissao() + "\nAlimentação: " + usuario.getAlimentacao());
                             DadosUsuario.setUsuarioCorrente(usuario);
 // DadosUsuario.usuarioCorrente.setCodigo(usuario.getCodigo());
@@ -65,9 +65,11 @@ public class Login_Activity extends AppCompatActivity {
 
                     Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Intent intent = new Intent(Login_Activity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
 

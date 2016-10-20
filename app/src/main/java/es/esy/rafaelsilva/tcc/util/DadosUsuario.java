@@ -9,8 +9,8 @@ public class DadosUsuario {
 
     public static int codigo = 1;
     public static String nome = "Sabrina";
-//    public static String email ;
-//    public static String
+    public static String email ;
+
     public static Usuario usuarioCorrente;
 
     public static Usuario getUsuarioCorrente() {
@@ -21,5 +21,8 @@ public class DadosUsuario {
         DadosUsuario.usuarioCorrente = usuarioCorrente;
         DadosUsuario.codigo = usuarioCorrente.getCodigo();
         DadosUsuario.nome = usuarioCorrente.getNome();
+        codigo =  getUsuarioCorrente().getCodigo();
+        nome = getUsuarioCorrente().getNome();
+        email = getUsuarioCorrente().getEmail();
     }
 }

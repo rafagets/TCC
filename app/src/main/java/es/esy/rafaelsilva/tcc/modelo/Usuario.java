@@ -179,7 +179,11 @@ public class Usuario {
 			Usuario obj;
 			Gson gson = new Gson();
 			obj = gson.fromJson(json, Usuario.class);
+			System.out.println("TESTE>>>Codigo: "+obj.getCodigo()+"\nNome: " + obj.getNome() + "\nEmail: " + obj.getEmail() + "\nSenha: " +
+					obj.getSenha() + "\nProfissao: " + obj.getProfissao() + "\nAlimentação: " + obj.getAlimentacao());
 			return obj;
+
+
 
 		}catch (Exception e){
 			e.printStackTrace();

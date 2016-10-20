@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -31,9 +32,11 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Olá "+ DadosUsuario.nome + "!");
+        if (DadosUsuario.getUsuarioCorrente() != null){
+            setTitle("Olá "+ DadosUsuario.getUsuarioCorrente().getNome() + "!");
+            Toast.makeText(this, "Codigo: "+ DadosUsuario.codigo +"\nNome: "+DadosUsuario.nome+"\nEmail: "+DadosUsuario.email, Toast.LENGTH_LONG).show();
 
-
+        }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -54,8 +57,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,9 +69,10 @@ public class HomeActivity extends AppCompatActivity
         txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
         txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
         imgUsuarioCorrente = (ImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
-
-        txtUsuarioNome.setText(DadosUsuario.getUsuarioCorrente().getNome());
-        txtUsuarioEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
+        if (DadosUsuario.getUsuarioCorrente() != null) {
+            txtUsuarioNome.setText(DadosUsuario.getUsuarioCorrente().getNome());
+            txtUsuarioEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
     }

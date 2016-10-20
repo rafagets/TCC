@@ -24,13 +24,16 @@ public class UsuarioDao {
 
     public long inserir(Usuario usuario) {
         ContentValues valores = new ContentValues();
+        valores.put("codigo", usuario.getCodigo());
         valores.put("nome", usuario.getNome());
         valores.put("email", usuario.getEmail());
         valores.put("senha", usuario.getSenha());
         valores.put("profissao", usuario.getProfissao());
         valores.put("alimentacao", usuario.getAlimentacao());
-       // valores.put("imagem", usuario.getImagem());
 
+        if (usuario.getImagem() != null) {
+            valores.put("imagem", usuario.getImagem());
+        }
         db = helper.getWritableDatabase();
         long rowid = db.insert(DbHelper.TABLE_NAME, null, valores);
         helper.close();
@@ -44,16 +47,18 @@ public class UsuarioDao {
         db = helper.getReadableDatabase();
 
         Cursor cursor = db.query(DbHelper.TABLE_NAME,
-                new String[] {"nome, email, senha, profissao, alimentacao"}, null, null, null, null, null);
+                new String[] {"codigo, nome, email, senha, profissao, alimentacao"}, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             usuario = new Usuario();
-            usuario.setNome(String.valueOf(cursor.getString(0)));
-            usuario.setEmail(String.valueOf(cursor.getString(1)));
-            usuario.setSenha(String.valueOf(cursor.getString(2)));
-            usuario.setProfissao(String.valueOf(cursor.getString(3)));
-            usuario.setAlimentacao(String.valueOf(cursor.getString(4)));
+            usuario.setCodigo(cursor.getInt(0));
+            usuario.setNome(String.valueOf(cursor.getString(1)));
+            usuario.setEmail(String.valueOf(cursor.getString(2)));
+            usuario.setSenha(String.valueOf(cursor.getString(3)));
+            usuario.setProfissao(String.valueOf(cursor.getString(4)));
+            usuario.setAlimentacao(String.valueOf(cursor.getString(5)));
+
 
             lista.add(usuario);
             cursor.moveToNext();
