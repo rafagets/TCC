@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgUsuario"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        app:civ_border_width="0dp"
+        app:civ_border_color="@color/colorAccent"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbNome"
+        android:text="Rafael Silva"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/imgUsuario"
+        android:layout_toEndOf="@+id/imgUsuario"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbProfissao"
+        android:text="Programador em Google Inc"
+        android:textSize="14sp"
+        android:layout_below="@+id/lbNome"
+        android:layout_alignStart="@+id/lbNome"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lbEstilo"
+        android:text="Vegetariano"
+        android:textSize="12sp"
+        android:layout_below="@+id/lbProfissao"
+        android:layout_alignStart="@+id/lbNome"
+        android:textStyle="italic" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_alignBottom="@+id/imgUsuario"
+        android:layout_alignStart="@+id/lbEstilo">
+
+        <!--quantoddade de amigos e avaliaçoes-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/imgAmigos"
+                android:src="@drawable/ic_people" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lbTotalAmigos"
+                android:text="120"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="amigos"
+                android:id="@+id/textView" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/imgAvaliacoes"
+                android:src="@drawable/ic_star"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lbTotalAvaliacoes"
+                android:text="12"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="avaliações"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

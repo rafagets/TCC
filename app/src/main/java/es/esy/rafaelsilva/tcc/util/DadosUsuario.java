@@ -10,7 +10,6 @@ public class DadosUsuario {
     public static int codigo = 1;
     public static String nome = "Sabrina";
 //    public static String email ;
-//    public static String
     public static Usuario usuarioCorrente;
 
     public static Usuario getUsuarioCorrente() {

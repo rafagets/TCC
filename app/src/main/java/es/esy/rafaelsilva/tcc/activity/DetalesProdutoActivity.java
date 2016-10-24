@@ -15,7 +15,9 @@ public class DetalesProdutoActivity extends AppCompatActivity {
         setTitle("Maçã Gala");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { // manipula o menu back

@@ -43,7 +43,12 @@ import es.esy.rafaelsilva.tcc.util.Util;
  * Created by Rafael on 18/09/2016.
  */
 public class PostTask extends AsyncTask<String, Void, Boolean> {
+    @Override
+    protected Boolean doInBackground(String... strings) {
+        return null;
+    }
 
+    /*
     private SwipeRefreshLayout recarregar;
     private Context contexto;
     private List<Post> lista;
@@ -679,4 +684,5 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         return null;
     }
 
+*/
 }

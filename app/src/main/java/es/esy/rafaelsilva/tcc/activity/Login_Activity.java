@@ -91,7 +91,8 @@ public class Login_Activity extends AppCompatActivity {
                 Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
                 startActivity(intent);
 
-//                Intent intent = new Intent(Login_Activity.this, ReputacaoProdutoActivity.class);
+//                Intent intent = new Intent(Login_Activity.this, PerfilActivity.class);
+//                intent.putExtra("usuario", 1);
 //                startActivity(intent);
             }
         };

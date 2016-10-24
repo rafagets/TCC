@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
@@ -29,7 +30,15 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Olá "+ DadosUsuario.nome + "!");
 
-
+        CircleImageView imgUsuarioPrincipal = (CircleImageView) findViewById(R.id.imgUsuarioPrincipal);
+        imgUsuarioPrincipal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
+                intent.putExtra("usuario", 1);
+                startActivity(intent);
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
