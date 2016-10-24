@@ -38,7 +38,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     EditText txtProfissao;
     CheckBox chkCarne, chkVegano, chkVegetariano;
     String alimentacao = "";
-    ImageView imgUser;
+    CircleImageView imgUser;
     Usuario usuario;
     UsuarioDao usuarioDao;
     DadosUsuario userCurrent;
@@ -59,9 +59,9 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         chkCarne = (CheckBox) findViewById(R.id.chkCarnivoro);
         chkVegano = (CheckBox) findViewById(R.id.chkVegano);
         chkVegetariano = (CheckBox) findViewById(R.id.chkVegetariano);
-        imgUser = (ImageView) findViewById(R.id.imgUser);
+        imgUser = (CircleImageView) findViewById(R.id.imgUser);
         //imgUser.setOnClickListener(OpcoesImagem());
-        imgUser.setOnLongClickListener(OpcoesImagem());
+        imgUser.setOnClickListener(OpcoesImagem());
 
         fabCadastrarUsuario = (FloatingActionButton) findViewById(R.id.fabCadastrarUsuario);
         fabCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
@@ -136,12 +136,11 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         });
     }
 
-    private View.OnLongClickListener OpcoesImagem() {
-        return new View.OnLongClickListener() {
+    private View.OnClickListener OpcoesImagem() {
+        return new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                 escolhaImagem();
-                return false;
             }
         };
     }
@@ -158,7 +157,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 
         //Titulo da janela
-        builder.setTitle("Opções de Imagem d Perfil");
+        builder.setTitle("Opções de Imagem do Perfil");
         //Conteudo da msg
         builder.setMessage("Para adicionar uma imagem no seu perfil\n basta escolher uma das opções abaixo!");
 
