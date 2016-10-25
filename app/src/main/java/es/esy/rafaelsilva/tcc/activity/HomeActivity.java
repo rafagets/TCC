@@ -14,13 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    TextView txtUsuarioNome, txtUsuarioEmail;
+    ImageView imgUsuarioCorrente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +32,11 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Olá "+ DadosUsuario.nome + "!");
+        if (DadosUsuario.getUsuarioCorrente() != null){
+            setTitle("Olá "+ DadosUsuario.getUsuarioCorrente().getNome() + "!");
+            Toast.makeText(this, "Codigo: "+ DadosUsuario.codigo +"\nNome: "+DadosUsuario.nome+"\nEmail: "+DadosUsuario.email, Toast.LENGTH_LONG).show();
 
-        CircleImageView imgUsuarioPrincipal = (CircleImageView) findViewById(R.id.imgUsuarioPrincipal);
-        imgUsuarioPrincipal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
-                intent.putExtra("usuario", 1);
-                startActivity(intent);
-            }
-        });
+        }
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -59,8 +57,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,7 +64,17 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //Colocando o nome e emaildo usuario atual no menu lateral
+        View view = navigationView.getHeaderView(0);
+        txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
+        txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
+        imgUsuarioCorrente = (ImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
+        if (DadosUsuario.getUsuarioCorrente() != null) {
+            txtUsuarioNome.setText(DadosUsuario.getUsuarioCorrente().getNome());
+            txtUsuarioEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
+        }
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override

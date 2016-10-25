@@ -108,7 +108,7 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
 
         if(contexto.getClass().getSimpleName().equals("CadastroUsuarioActivity")){
             usuario = new Usuario();
-            usuario = new Usuario().getUsuarioObjEmail("'"+valoresTemp[1].substring(1,valoresTemp[1].length() - 1)+"'");
+            usuario = new Usuario().getUsuarioObjEmail("'"+valoresTemp[2].substring(1,valoresTemp[2].length() - 1)+"'");
         }
 
         try {
@@ -139,8 +139,9 @@ public class UtilTask extends AsyncTask<String, Integer, Boolean> {
                         System.out.println("Resultado dao.inserir : " + result);
                         DadosUsuario.setUsuarioCorrente(usuario);
                         Intent intent = new Intent(contexto, Login_Activity.class);
-                        intent.putExtra("nome", valoresTemp[0].substring(1,valoresTemp[0].length() - 1));
-                        intent.putExtra("email",valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
+                        intent.putExtra("codigo", valoresTemp[0].substring(1,valoresTemp[0].length() - 1));
+                        intent.putExtra("nome", valoresTemp[1].substring(1,valoresTemp[1].length() - 1));
+                        intent.putExtra("email",valoresTemp[2].substring(1,valoresTemp[2].length() - 1));
                         //
                         contexto.startActivity(intent);
                     }
