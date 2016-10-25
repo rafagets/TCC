@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import es.esy.rafaelsilva.tcc.util.App;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 
@@ -34,7 +35,7 @@ public class GetData<T>{
 
     public GetData(String intencao, Context contexto, Map<String, String> params) {
         this.params = params;
-        this.requisicao = Volley.newRequestQueue(contexto);
+        //this.requisicao = Volley.newRequestQueue(contexto);
         this.intencao = intencao;
     }
 
@@ -135,7 +136,8 @@ public class GetData<T>{
         };
 
         request.setTag("tag");
-        requisicao.add(request);
+        //requisicao.add(request);
+        App.getInstance().addToRequestQueue(request);
 
     }
 
