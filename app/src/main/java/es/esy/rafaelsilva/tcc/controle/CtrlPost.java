@@ -15,10 +15,10 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 /**
  * Created by Rafael on 23/10/2016.
  */
-public class CrtlPost {
+public class CtrlPost {
     private Context contexto;
 
-    public CrtlPost(Context contexto) {
+    public CtrlPost(Context contexto) {
         this.contexto = contexto;
     }
 

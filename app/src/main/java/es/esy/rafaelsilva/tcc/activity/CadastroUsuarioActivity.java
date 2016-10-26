@@ -7,17 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -25,9 +22,11 @@ import java.io.File;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Resposta;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
     private FloatingActionButton fabCadastrarUsuario;
@@ -96,12 +95,27 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
                         //txtNome.setText(txtNome.getText().toString().substring(0).toUpperCase()).toString().substring(0) =
                         //verifica no bd (webservice) se o usuario existe, caso nao exista já cadastra
-                        UtilTask thread = new UtilTask(CadastroUsuarioActivity.this, "C", "usuario");
+//                        UtilTask thread = new UtilTask(CadastroUsuarioActivity.this, "C", "usuario");
                         String campos = "nome, email, senha, profissao, alimentacao";//colocar nome dos campos
                         String values = "'" + txtNome.getText().toString() + "','" + txtEmail.getText().toString() + "','" + txtSenha.getText().toString() + "','"
                                 + txtProfissao.getText().toString() + "','" + alimentacao + "'";
+                        new CtrlUsuario(CadastroUsuarioActivity.this).salvar(values, campos, new CallbackSalvar() {
+                            @Override
+                            public void resultadoSalvar(Object obj) {
 
-                        thread.execute(campos, values);
+                                Resposta resposta = (Resposta) obj;
+
+                                Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
+                                intent.putExtra("email",txtEmail.getText().toString());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void falha() {
+                                    Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
+                            }
+                        });
+//                        thread.execute(campos, values);
                     }else{
                         Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
                     }
@@ -135,6 +149,8 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private View.OnClickListener OpcoesImagem() {
         return new View.OnClickListener() {

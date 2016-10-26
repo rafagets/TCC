@@ -15,6 +15,8 @@ import java.util.List;
 import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.DAO.DataBase;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
@@ -90,8 +92,9 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
-                startActivity(intent);
+                verificarUsuario();
+//                Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
+//                startActivity(intent);
 
 //                Intent intent = new Intent(Login_Activity.this, PerfilActivity.class);
 //                intent.putExtra("usuario", 1);
@@ -99,4 +102,28 @@ public class Login_Activity extends AppCompatActivity {
             }
         };
     }
+    public void verificarUsuario(){
+        new CtrlUsuario(Login_Activity.this).logar(txtEmail.getText().toString(), txtSenha.getText().toString(), new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                Usuario usuario = (Usuario) obj;
+                dao = new UsuarioDao(Login_Activity.this);
+
+                long result = dao.inserir(usuario);
+                //chamar a tela de login passando o usuario/email que acabou de cadastrar
+                if (result >= 0){
+                    System.out.println("Resultado dao.inserir : " + result);
+                    DadosUsuario.setUsuarioCorrente(usuario);
+                    Intent intent = new Intent(Login_Activity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(Login_Activity.this, "Email ou Senha Incorretos.\n Verifique os dados e tente novamente!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }

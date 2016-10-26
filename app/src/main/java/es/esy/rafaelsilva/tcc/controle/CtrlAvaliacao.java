@@ -10,16 +10,16 @@ import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
-import es.esy.rafaelsilva.tcc.modelo.Amigos;
+import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
  * Created by Rafael on 23/10/2016.
  */
-public class CrtlAmigos {
+public class CtrlAvaliacao {
     private Context contexto;
 
-    public CrtlAmigos(Context contexto) {
+    public CtrlAvaliacao(Context contexto) {
         this.contexto = contexto;
     }
 
@@ -28,12 +28,12 @@ public class CrtlAmigos {
 
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "amigos");
+        params.put("tabela", "avaliacao");
         params.put("condicao", "pai");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<Amigos> getData = new GetData<>("objeto", contexto, params);
-        getData.executar(Amigos.class, new VolleyCallback() {
+        GetData<Avaliacao> getData = new GetData<>("objeto", contexto, params);
+        getData.executar(Avaliacao.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -56,11 +56,11 @@ public class CrtlAmigos {
 
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "amigos");
+        params.put("tabela", "avaliacao");
         params.put("ordenacao", parametro);
 
-        GetData<Amigos> getData = new GetData<>("lista", contexto, params);
-        getData.executar(Amigos.class, new VolleyCallback() {
+        GetData<Avaliacao> getData = new GetData<>("lista", contexto, params);
+        getData.executar(Avaliacao.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -79,7 +79,7 @@ public class CrtlAmigos {
 
     }
 
-    public void salvar(Amigos usuario){
+    public void salvar(Avaliacao avaliacao){
 
     }
 
@@ -90,7 +90,7 @@ public class CrtlAmigos {
     public void contar (String parametro, final CallbackTrazer callback){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "amigos");
+        params.put("tabela", "avaliacao");
         params.put("asteristico", "count(codigo)");
         params.put("ordenacao", "WHERE "+ parametro);
 
@@ -108,7 +108,7 @@ public class CrtlAmigos {
 
             @Override
             public void erro(String resposta) {
-
+                callback.falha();
             }
         });
     }

@@ -89,7 +89,7 @@ public class GetData<T>{
 
                                     callback.sucesso(obj);
                                 } catch (JSONException e) {
-                                    //e.printStackTrace();
+                                    e.printStackTrace();
                                     //Log.e("*** " + clazz.getSimpleName(), "null object");
                                     callback.erro(clazz.getSimpleName() + ": não foi possivel trazer o objeto");
                                 }

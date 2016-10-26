@@ -10,15 +10,16 @@ import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
-import es.esy.rafaelsilva.tcc.modelo.Produto;
+import es.esy.rafaelsilva.tcc.modelo.Amigos;
+import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
  * Created by Rafael on 23/10/2016.
  */
-public class CrtlProduto {
+public class CtrlAmigos {
     private Context contexto;
 
-    public CrtlProduto(Context contexto) {
+    public CtrlAmigos(Context contexto) {
         this.contexto = contexto;
     }
 
@@ -27,12 +28,12 @@ public class CrtlProduto {
 
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "produto");
-        params.put("condicao", "codigo");
+        params.put("tabela", "amigos");
+        params.put("condicao", "pai");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<Produto> getData = new GetData<>("objeto", contexto, params);
-        getData.executar(Produto.class, new VolleyCallback() {
+        GetData<Amigos> getData = new GetData<>("objeto", contexto, params);
+        getData.executar(Amigos.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -55,11 +56,11 @@ public class CrtlProduto {
 
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "produto");
+        params.put("tabela", "amigos");
         params.put("ordenacao", parametro);
 
-        GetData<Produto> getData = new GetData<>("lista", contexto, params);
-        getData.executar(Produto.class, new VolleyCallback() {
+        GetData<Amigos> getData = new GetData<>("lista", contexto, params);
+        getData.executar(Amigos.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -78,11 +79,37 @@ public class CrtlProduto {
 
     }
 
-    public void salvar(Produto produto){
+    public void salvar(Amigos usuario){
 
     }
 
     public void excluir(int codigo){
 
+    }
+
+    public void contar (String parametro, final CallbackTrazer callback){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "R");
+        params.put("tabela", "amigos");
+        params.put("asteristico", "count(codigo)");
+        params.put("ordenacao", "WHERE "+ parametro);
+
+        GetData<Resposta> getData = new GetData<>("objeto", contexto, params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                callback.resultadoTrazer(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+
+            }
+        });
     }
 }
