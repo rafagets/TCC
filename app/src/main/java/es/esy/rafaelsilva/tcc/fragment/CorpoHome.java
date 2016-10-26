@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.controle.CrtlPost;
+import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.task.MontarView;
@@ -56,7 +56,7 @@ public class CorpoHome extends Fragment {
 
     public void carregarComentarios() {
 
-        new CrtlPost(getActivity()).listar("ORDER BY data DESC", new CallbackListar() {
+        new CtrlPost(getActivity()).listar("ORDER BY data DESC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 posts = new ArrayList<>();

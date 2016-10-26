@@ -86,12 +86,7 @@ public class HistoricoActivity extends AppCompatActivity {
         });
 
         ImageView btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
-        btLocalizacao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        btLocalizacao.setOnClickListener(verMapa());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +96,16 @@ public class HistoricoActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private View.OnClickListener verMapa() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HistoricoActivity.this, Mapa_Activity.class);
+                startActivity(intent);
+            }
+        };
     }
 
     private void getLotes(RequestParams params) {
