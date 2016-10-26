@@ -3,26 +3,25 @@ package es.esy.rafaelsilva.tcc.DAO;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 import es.esy.rafaelsilva.tcc.util.App;
 import es.esy.rafaelsilva.tcc.util.Config;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 
 /**
  * Created by Rafael on 18/10/2016.
@@ -79,12 +78,19 @@ public class GetData<T>{
                             }else if (intencao.equals("objeto")){
 
                                 try {
-                                    array = new JSONArray(response.toString());
-
-                                    String json = array.getJSONObject(0).toString();
                                     T obj;
-                                    Gson gson = new Gson();
-                                    obj = gson.fromJson(json, clazz);
+                                    if (clazz.getSimpleName().equals("Resposta")){
+                                        String json = response.toString();
+
+                                        Gson gson = new Gson();
+                                        obj = gson.fromJson(json, clazz);
+                                    }else {
+                                        array = new JSONArray(response.toString());
+
+                                        String json = array.getJSONObject(0).toString();
+                                        Gson gson = new Gson();
+                                        obj = gson.fromJson(json, clazz);
+                                    }
                                     //Log.i("*** "+clazz.getSimpleName(), response);
 
                                     callback.sucesso(obj);
