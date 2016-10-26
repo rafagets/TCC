@@ -12,9 +12,9 @@ import java.text.SimpleDateFormat;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
-import es.esy.rafaelsilva.tcc.controle.CrtlAvaliacao;
-import es.esy.rafaelsilva.tcc.controle.CrtlProduto;
-import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
+import es.esy.rafaelsilva.tcc.controle.CtrlProduto;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
@@ -50,7 +50,7 @@ public class ViewAvaliacao {
     }
 
     private void getAvaliacao(){
-        new CrtlAvaliacao(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
+        new CtrlAvaliacao(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 av = (Avaliacao) obj;
@@ -65,7 +65,7 @@ public class ViewAvaliacao {
     }
 
     private void getUsuario(){
-        new CrtlUsuario(contexto).trazer(av.getUsuario(), new CallbackTrazer() {
+        new CtrlUsuario(contexto).trazer(av.getUsuario(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 usu = (Usuario) obj;
@@ -80,7 +80,7 @@ public class ViewAvaliacao {
     }
 
     private void getProduto(){
-        new CrtlProduto(contexto).trazer(av.getProduto(), new CallbackTrazer() {
+        new CtrlProduto(contexto).trazer(av.getProduto(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 prod = (Produto) obj;

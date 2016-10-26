@@ -15,10 +15,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
-import es.esy.rafaelsilva.tcc.controle.CrtlComentario;
-import es.esy.rafaelsilva.tcc.controle.CrtlComentarioPost;
-import es.esy.rafaelsilva.tcc.controle.CrtlCurtidaComentario;
-import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
+import es.esy.rafaelsilva.tcc.controle.CtrlComentarioPost;
+import es.esy.rafaelsilva.tcc.controle.CtrlCurtidaComentario;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlCurtidaComentario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
@@ -57,7 +58,7 @@ public class ViewComentario {
     }
 
     private void getComentario(){
-        new CrtlComentario(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
+        new CtrlComentario(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 c = (Comentario) obj;
@@ -72,7 +73,7 @@ public class ViewComentario {
     }
 
     private void getUsuario(){
-        new CrtlUsuario(contexto).trazer(c.getUsuarioPost(), new CallbackTrazer() {
+        new CtrlUsuario(contexto).trazer(c.getUsuarioPost(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 u = (Usuario) obj;
@@ -87,7 +88,7 @@ public class ViewComentario {
     }
 
     private void getComentarioPost(){
-        new CrtlComentarioPost(contexto).listar("WHERE coment = " + c.getCodigo(), new CallbackListar() {
+        new CtrlComentarioPost(contexto).listar("WHERE coment = " + c.getCodigo(), new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 cp = new ArrayList<>();
@@ -104,7 +105,7 @@ public class ViewComentario {
     }
 
     private void getCurtidasComentarios(){
-        new CrtlCurtidaComentario(contexto).listar("WHERE comentario = " + c.getCodigo(), new CallbackListar() {
+        new CtrlCurtidaComentario(contexto).listar("WHERE comentario = " + c.getCodigo(), new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 cc = new ArrayList<>();
@@ -193,7 +194,7 @@ public class ViewComentario {
                 public boolean onLongClick(View view) {
 
                     if (flag2[0]) {
-                        new CrtlCurtidaComentario(contexto).excluir(c.getCodigo());
+                        new CtrlCurtidaComentario(contexto).excluir(c.getCodigo());
                         addOne.setImageResource(R.drawable.ic_add_one);
 
                         int curtiu = 0;
@@ -217,7 +218,7 @@ public class ViewComentario {
                 public void onClick(View view) {
 
                     if (!flag2[0]) {
-                        new CrtlCurtidaComentario(contexto).curtir(c.getCodigo());
+                        new CtrlCurtidaComentario(contexto).curtir(c.getCodigo());
                         addOne.setImageResource(R.drawable.ic_added);
 
                         int curtiu = 0;

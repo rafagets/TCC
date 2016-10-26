@@ -11,8 +11,8 @@ import java.text.SimpleDateFormat;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
-import es.esy.rafaelsilva.tcc.controle.CrtlAmigos;
-import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
@@ -47,7 +47,7 @@ public class ViewAmizade {
     }
 
     private void getAmizade(){
-        new CrtlAmigos(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
+        new CtrlAmigos(contexto).trazer(post.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 a = (Amigos) obj;
@@ -62,7 +62,7 @@ public class ViewAmizade {
     }
 
     private void getUsuario(){
-        new CrtlUsuario(contexto).trazer(a.getAmigoAdd(), new CallbackTrazer() {
+        new CtrlUsuario(contexto).trazer(a.getAmigoAdd(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 usu = (Usuario) obj;
@@ -77,7 +77,7 @@ public class ViewAmizade {
     }
 
     private void getAmigo(){
-        new CrtlUsuario(contexto).trazer(a.getAmigoAce(), new CallbackTrazer() {
+        new CtrlUsuario(contexto).trazer(a.getAmigoAce(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 amigo = (Usuario) obj;

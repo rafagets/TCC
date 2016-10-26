@@ -18,10 +18,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.controle.CrtlAmigos;
-import es.esy.rafaelsilva.tcc.controle.CrtlAvaliacao;
-import es.esy.rafaelsilva.tcc.controle.CrtlPost;
-import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
+import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
+import es.esy.rafaelsilva.tcc.controle.CtrlPost;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
@@ -84,7 +84,7 @@ public class PerfilActivity2 extends AppCompatActivity {
     // seta os dados principais do usuario alvo
     private void getUsuario(final int usu) {
 
-        new CrtlUsuario(this).trazer(usu, new CallbackTrazer() {
+        new CtrlUsuario(this).trazer(usu, new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 usuario = (Usuario) obj;
@@ -101,7 +101,7 @@ public class PerfilActivity2 extends AppCompatActivity {
     }
 
     private void setTotalAvaliacoes() {
-        new CrtlAvaliacao(this).contar("usuario = " + usuario.getCodigo(), new CallbackTrazer() {
+        new CtrlAvaliacao(this).contar("usuario = " + usuario.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 Resposta resp = (Resposta) obj;
@@ -119,7 +119,7 @@ public class PerfilActivity2 extends AppCompatActivity {
 
     private void setTotalAmigos() {
 
-        new CrtlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
+        new CtrlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 Resposta resp = (Resposta) obj;
@@ -152,7 +152,7 @@ public class PerfilActivity2 extends AppCompatActivity {
     private void getPosts() {
 
         //"WHERE usuario = " + 1 + " ORDER BY data DESC"
-        new CrtlPost(this).listar("ORDER BY data DESC", new CallbackListar() {
+        new CtrlPost(this).listar("ORDER BY data DESC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 listaPost = new ArrayList<>();

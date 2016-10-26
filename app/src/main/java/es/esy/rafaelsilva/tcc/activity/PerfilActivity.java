@@ -1,22 +1,20 @@
 package es.esy.rafaelsilva.tcc.activity;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +22,9 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.controle.CrtlAmigos;
-import es.esy.rafaelsilva.tcc.controle.CrtlAvaliacao;
-import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
+import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
+import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
@@ -104,7 +102,7 @@ public class PerfilActivity extends AppCompatActivity {
     // seta os dados principais do usuario alvo
     private void getUsuario(final int usu) {
 
-        new CrtlUsuario(this).trazer(usu, new CallbackTrazer() {
+        new CtrlUsuario(this).trazer(usu, new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 usuario = (Usuario) obj;
@@ -121,7 +119,7 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void setTotalAvaliacoes() {
-        new CrtlAvaliacao(this).contar("usuario = " + usuario.getCodigo(), new CallbackTrazer() {
+        new CtrlAvaliacao(this).contar("usuario = " + usuario.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 Resposta resp = (Resposta) obj;
@@ -139,7 +137,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     private void setTotalAmigos() {
 
-        new CrtlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
+        new CtrlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 Resposta resp = (Resposta) obj;
@@ -161,7 +159,13 @@ public class PerfilActivity extends AppCompatActivity {
         nome.setText(usuario.getNome());
         profissao.setText(usuario.getProfissao());
         estilo.setText(usuario.getAlimentacao());
-        new ImageLoaderTask(imgUsuario).execute(Config.caminhoImageTumb + usuario.getImagem());
+
+        if (usuario.getImagem() != null) {
+            new ImageLoaderTask(imgUsuario).execute(Config.caminhoImageTumb + usuario.getImagem());
+        }else{
+            imgUsuario.setImageResource(R.drawable.ic_usuario);
+            imgUsuario.setBackgroundColor(getResources().getColor(R.color.cardview_light_background));
+        }
 
     }
     // *****************************************
