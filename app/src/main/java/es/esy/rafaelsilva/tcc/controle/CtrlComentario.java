@@ -15,11 +15,11 @@ import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 /**
  * Created by Rafael on 21/10/2016.
  */
-public class CrtlComentario {
+public class CtrlComentario {
 
     private Context contexto;
 
-    public CrtlComentario(Context contexto) {
+    public CtrlComentario(Context contexto) {
         this.contexto = contexto;
     }
 
