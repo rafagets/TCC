@@ -79,20 +79,19 @@ public class GetData<T>{
 
                                 try {
                                     T obj;
-                                    if (clazz.getSimpleName().equals("Resposta")){
+                                    try {
                                         String json = response.toString();
-
                                         Gson gson = new Gson();
                                         obj = gson.fromJson(json, clazz);
-                                    }else {
+                                    }catch (Exception e){
                                         array = new JSONArray(response.toString());
 
                                         String json = array.getJSONObject(0).toString();
                                         Gson gson = new Gson();
                                         obj = gson.fromJson(json, clazz);
                                     }
-                                    //Log.i("*** "+clazz.getSimpleName(), response);
 
+                                    //Log.i("*** "+clazz.getSimpleName(), response);
                                     callback.sucesso(obj);
                                 } catch (JSONException e) {
                                     //e.printStackTrace();

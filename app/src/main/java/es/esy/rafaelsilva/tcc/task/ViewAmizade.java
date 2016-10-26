@@ -1,6 +1,7 @@
 package es.esy.rafaelsilva.tcc.task;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import java.text.SimpleDateFormat;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CrtlAmigos;
 import es.esy.rafaelsilva.tcc.controle.CrtlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
@@ -100,8 +102,21 @@ public class ViewAmizade {
             data = (TextView) v.findViewById(R.id.lbData);
             nome.setText(usu.getNome());
 
-            ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
-            downImg.execute(Config.caminhoImageTumb + usu.getImagem());
+            if (usu.getImagem() != null) {
+                ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
+                downImg.execute(Config.caminhoImageTumb + usu.getImagem());
+            }else{
+                imgUsuario.setImageResource(R.drawable.ic_usuario);
+            }
+
+            imgUsuario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(contexto, PerfilActivity.class);
+                    intent.putExtra("usuario", usu.getCodigo());
+                    contexto.startActivity(intent);
+                }
+            });
 
             String[] temp = post.getData().split(" ");
             long date = System.currentTimeMillis();

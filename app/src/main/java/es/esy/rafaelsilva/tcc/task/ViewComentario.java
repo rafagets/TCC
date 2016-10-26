@@ -14,6 +14,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
+import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CrtlComentario;
 import es.esy.rafaelsilva.tcc.controle.CrtlComentarioPost;
 import es.esy.rafaelsilva.tcc.controle.CrtlCurtidaComentario;
@@ -138,8 +139,21 @@ public class ViewComentario {
             final boolean[] flag2 = {false};
             int curtido = 0;
 
-            ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
-            downImg.execute(Config.caminhoImageTumb + u.getImagem());
+            if (u.getImagem() != null) {
+                ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
+                downImg.execute(Config.caminhoImageTumb + u.getImagem());
+            }else{
+                imgUsuario.setImageResource(R.drawable.ic_usuario);
+            }
+
+            imgUsuario.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(contexto, PerfilActivity.class);
+                    intent.putExtra("usuario", u.getCodigo());
+                    contexto.startActivity(intent);
+                }
+            });
 
             nome.setText(u.getNome());
             post.setText(c.getComentario());
