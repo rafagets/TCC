@@ -140,12 +140,7 @@ public class ViewComentario {
             final boolean[] flag2 = {false};
             int curtido = 0;
 
-            if (u.getImagem() != null) {
-                ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
-                downImg.execute(Config.caminhoImageTumb + u.getImagem());
-            }else{
-                imgUsuario.setImageResource(R.drawable.ic_usuario);
-            }
+            u.setImagemPerfil(imgUsuario);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override

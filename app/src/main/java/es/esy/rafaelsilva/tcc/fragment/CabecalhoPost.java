@@ -2,7 +2,9 @@ package es.esy.rafaelsilva.tcc.fragment;
 
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -23,9 +25,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
 import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
 import es.esy.rafaelsilva.tcc.task.PostComentarioTask;
 import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.Config;
@@ -37,7 +45,9 @@ import es.esy.rafaelsilva.tcc.util.Util;
  */
 public class CabecalhoPost extends Fragment {
 
-    EditText comentario;
+    private EditText comentario;
+    private CircleImageView imgUsuarioPrincipal;
+    private Usuario usuario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +59,31 @@ public class CabecalhoPost extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayout comentar = (LinearLayout) getActivity().findViewById(R.id.lyComentar);
+        imgUsuarioPrincipal = (CircleImageView) getActivity().findViewById(R.id.imgUsuarioPrincipal);
+
+        new CtrlUsuario(getActivity()).trazer(DadosUsuario.codigo, new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                usuario = (Usuario) obj;
+                new ImageLoaderTask(imgUsuarioPrincipal).
+                        execute(Config.caminhoImageTumb + usuario.getImagem());
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
+
+
+        imgUsuarioPrincipal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PerfilActivity.class);
+                startActivity(intent);
+            }
+        });
+
         comentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

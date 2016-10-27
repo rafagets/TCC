@@ -105,12 +105,7 @@ public class ViewAvaliacao {
             data = (TextView) v.findViewById(R.id.lbData);
             nome.setText(usu.getNome());
 
-            if (usu.getImagem() != null) {
-                ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
-                downImg.execute(Config.caminhoImageTumb + usu.getImagem());
-            }else{
-                imgUsuario.setImageResource(R.drawable.ic_usuario);
-            }
+            usu.setImagemPerfil(imgUsuario);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,9 +133,7 @@ public class ViewAvaliacao {
             avaliacao = (TextView) v.findViewById(R.id.lbAvaliacao);
             estrela = (RatingBar) v.findViewById(R.id.estrelas);
 
-            ImageLoaderTask downImg2 = new ImageLoaderTask(imgProduto);
-            downImg2.execute(Config.caminhoImageProdutos + prod.getImgicone());
-
+            prod.setImgIcone(imgProduto);
             produto.setText(prod.getNome());
             avaliacao.setText(av.getComentario());
             estrela.setRating(av.getEstrelas());

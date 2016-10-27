@@ -43,7 +43,7 @@ public class Login_Activity extends AppCompatActivity {
         }
 
 
-        //conexao com banco de dados local 
+        //conexao com banco de dados local
         try {
 //            database = new DataBase(this);
 //            connection = database.getWritableDatabase();
@@ -52,13 +52,18 @@ public class Login_Activity extends AppCompatActivity {
 
                 dao = new UsuarioDao(this);
                 lista = dao.selecionarTodos();
-
                 if (lista.size() > 0) {
 
                     for (Usuario usuario : lista) {
-                        System.out.println("Codigo: "+usuario.getCodigo()+"\nNome: " + usuario.getNome() + "\nEmail: " + usuario.getEmail() + "\nSenha: " +
-                                usuario.getSenha() + "\nProfissao: " + usuario.getProfissao() + "\nAlimentação: " + usuario.getAlimentacao());
-                            DadosUsuario.setUsuarioCorrente(usuario);
+                        System.out.println(
+                                "Codigo: "+usuario.getCodigo()+
+                                        "\nNome: " + usuario.getNome() +
+                                        "\nEmail: " + usuario.getEmail() +
+                                        "\nSenha: " + usuario.getSenha() +
+                                        "\nProfissao: " + usuario.getProfissao() +
+                                        "\nAlimentação: " + usuario.getAlimentacao()
+                        );
+                        DadosUsuario.setUsuarioCorrente(usuario);
 // DadosUsuario.usuarioCorrente.setCodigo(usuario.getCodigo());
 //                        DadosUsuario.usuarioCorrente.setNome(usuario.getNome());
 //                        DadosUs
@@ -84,7 +89,13 @@ public class Login_Activity extends AppCompatActivity {
         }
 
         btnEntrar = (Button) findViewById(R.id.btnEntrar);
-        btnEntrar.setOnClickListener(entrar());
+        btnEntrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Login_Activity.this, PerfilActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private View.OnClickListener entrar() {

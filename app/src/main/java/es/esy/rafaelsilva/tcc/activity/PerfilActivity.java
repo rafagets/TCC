@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,9 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
 import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.fragment.PerfilAmigos;
+import es.esy.rafaelsilva.tcc.fragment.PerfilAtividade;
+import es.esy.rafaelsilva.tcc.fragment.PerfilSobre;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
@@ -112,7 +116,6 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void falha() {
                 Toast.makeText(PerfilActivity.this,"Erro ao carregar usuario", Toast.LENGTH_LONG).show();
-                setTotalAvaliacoes();
             }
         });
 
@@ -159,14 +162,7 @@ public class PerfilActivity extends AppCompatActivity {
         nome.setText(usuario.getNome());
         profissao.setText(usuario.getProfissao());
         estilo.setText(usuario.getAlimentacao());
-
-        if (usuario.getImagem() != null) {
-            new ImageLoaderTask(imgUsuario).execute(Config.caminhoImageTumb + usuario.getImagem());
-        }else{
-            imgUsuario.setImageResource(R.drawable.ic_usuario);
-            imgUsuario.setBackgroundColor(getResources().getColor(R.color.cardview_light_background));
-        }
-
+        usuario.setImagemPerfil(imgUsuario);
     }
     // *****************************************
 
@@ -211,7 +207,13 @@ public class PerfilActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0: return PerfilSobre.newInstance(position);
+                case 1: return PerfilAtividade.newInstance(position);
+                case 2: return PerfilAmigos.newInstance(position);
+            }
+            return null;
+            //return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
@@ -233,61 +235,5 @@ public class PerfilActivity extends AppCompatActivity {
             return null;
         }
     }
-// viggi as uygys
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        private ArrayList<Post> posts;
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_atividade, container, false);
-
-//            final LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
-//            final SwipeRefreshLayout recarregar = (SwipeRefreshLayout) rootView.findViewById(R.id.recarregar);
-//
-//            new CrtlPost(getActivity()).listar("ORDER BY data DESC", new CallbackListar() {
-//                @Override
-//                public void resultadoListar(List<Object> lista) {
-//                    posts = new ArrayList<>();
-//                    for (Object obj : lista)
-//                        posts.add((Post) obj);
-//
-//                    new MontarView(getActivity(), layout, posts, recarregar).execute();
-//                }
-//
-//                @Override
-//                public void falha() {
-//                    recarregar.setRefreshing(false);
-//                }
-//            });
-
-            return rootView;
-        }
-    }
-
 
 }

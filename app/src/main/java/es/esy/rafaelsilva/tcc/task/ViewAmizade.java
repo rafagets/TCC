@@ -102,12 +102,7 @@ public class ViewAmizade {
             data = (TextView) v.findViewById(R.id.lbData);
             nome.setText(usu.getNome());
 
-            if (usu.getImagem() != null) {
-                ImageLoaderTask downImg = new ImageLoaderTask(imgUsuario);
-                downImg.execute(Config.caminhoImageTumb + usu.getImagem());
-            }else{
-                imgUsuario.setImageResource(R.drawable.ic_usuario);
-            }
+            usu.setImagemPerfil(imgUsuario);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,8 +131,7 @@ public class ViewAmizade {
             profissaoAmigo = (TextView) v.findViewById(R.id.lbProfissaoAmigo);
             estiloAmigo = (TextView) v.findViewById(R.id.lbEstiloAmigo);
 
-            ImageLoaderTask downImg2 = new ImageLoaderTask(imgAmigo);
-            downImg2.execute(Config.caminhoImageTumb + amigo.getImagem());
+            amigo.setImagemPerfil(imgAmigo);
             nomeAmigo.setText(amigo.getNome());
             profissaoAmigo.setText(amigo.getProfissao());
             estiloAmigo.setText(amigo.getAlimentacao());

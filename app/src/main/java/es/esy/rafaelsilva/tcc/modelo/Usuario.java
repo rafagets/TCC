@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 public class Usuario {
@@ -191,6 +194,15 @@ public class Usuario {
 
 		return null;
 
+	}
+
+	public void setImagemPerfil(CircleImageView img){
+		if (imagem != null) {
+			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imagem);
+		}else{
+			img.setImageResource(R.drawable.ic_usuario);
+			//img.setBackgroundColor(R.color.cardview_light_background);
+		}
 	}
 //	public Usuario(String email, String senha, String profissao, String alimentacao) {
 //		this.email = email;

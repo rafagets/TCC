@@ -1,8 +1,9 @@
 package es.esy.rafaelsilva.tcc.fragment;
 
-import android.app.Fragment;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,27 +20,36 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.task.MontarView;
 
-/**
- * Created by Rafael on 25/08/2016.
- */
-public class CorpoHome extends Fragment {
+public class PerfilAtividade extends Fragment {
 
+    private static final String ARG_SECTION_NUMBER = "section_number";
     public SwipeRefreshLayout recarregar;
     private LinearLayout layout;
     private List<Post> posts;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_corpo_home, container, false);
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static PerfilAtividade newInstance(int sectionNumber) {
+        PerfilAtividade fragment = new PerfilAtividade();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public PerfilAtividade() {
+
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_perfil_atividade, container, false);
 
-        layout = (LinearLayout) getActivity().findViewById(R.id.relativeLayout);
-        recarregar = (SwipeRefreshLayout) getActivity().findViewById(R.id.recarregar);
+        layout = (LinearLayout) rootView.findViewById(R.id.relativeLayout);
+        recarregar = (SwipeRefreshLayout) rootView.findViewById(R.id.recarregar);
         recarregar.setRefreshing(true);
 
         carregarComentarios();
@@ -52,12 +62,12 @@ public class CorpoHome extends Fragment {
             }
         });
 
+        return rootView;
     }
-
 
     public void carregarComentarios() {
 
-        new CtrlPost(getActivity()).listar("ORDER BY data DESC", new CallbackListar() {
+        new CtrlPost(getActivity()).listar("WHERE usuario = "+ 2 +" ORDER BY data DESC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 posts = new ArrayList<>();
@@ -87,6 +97,4 @@ public class CorpoHome extends Fragment {
 //        PostTask postTask = new PostTask(getActivity(), recarregar);
 //        postTask.execute("R", "post", "ORDER BY data DESC");
     }
-
-
 }

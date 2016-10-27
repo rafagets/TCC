@@ -7,7 +7,10 @@ import org.json.JSONArray;
 import java.io.Serializable;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
+import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
 import es.esy.rafaelsilva.tcc.util.Config;
 
 public class Produto implements Serializable {
@@ -115,6 +118,23 @@ public class Produto implements Serializable {
 		this.categoria = categoria;
 	}
 
+	public void setImgIcone(CircleImageView img){
+		if (imgicone != null) {
+			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgicone);
+		}else{
+			img.setImageResource(R.drawable.ic_usuario);
+			//img.setBackgroundColor(R.color.cardview_light_background);
+		}
+	}
+
+	public void setImgFundo(CircleImageView img){
+		if (imgheader != null) {
+			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgheader);
+		}else{
+			img.setImageResource(R.drawable.fundo);
+			//img.setBackgroundColor(R.color.cardview_light_background);
+		}
+	}
 
 
 	public Produto getProdutoObj(int codigo){
@@ -141,4 +161,5 @@ public class Produto implements Serializable {
 		return null;
 
 	}
+
 }
