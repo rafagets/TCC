@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -38,9 +40,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
     CheckBox chkCarne, chkVegano, chkVegetariano;
     String alimentacao = "";
     CircleImageView imgUser;
-    Usuario usuario;
-    UsuarioDao usuarioDao;
-    DadosUsuario userCurrent;
+    ProgressDialog dialog;
     public static final int IMG_SDCARD = 1;
     public static final int IMG_CAM = 1;
 
@@ -66,6 +66,10 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         fabCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                dialog = new ProgressDialog(CadastroUsuarioActivity.this);
+                dialog.setMessage("Cadastrando, aguarde...");
+                dialog.show();
 
 //                imgUser = (CircleImageView) findViewById(R.id.imgUsuario);
                 if(!txtNome.getText().toString().equals("") || !txtEmail.getText().toString().equals("") || !txtSenha.getText().toString().equals("")
@@ -99,53 +103,40 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         String campos = "nome, email, senha, profissao, alimentacao";//colocar nome dos campos
                         String values = "'" + txtNome.getText().toString() + "','" + txtEmail.getText().toString() + "','" + txtSenha.getText().toString() + "','"
                                 + txtProfissao.getText().toString() + "','" + alimentacao + "'";
+
                         new CtrlUsuario(CadastroUsuarioActivity.this).salvar(values, campos, new CallbackSalvar() {
                             @Override
                             public void resultadoSalvar(Object obj) {
-
+                                dialog.dismiss();
                                 Resposta resposta = (Resposta) obj;
+                                if (resposta.isFlag()) {
+                                    Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
+                                    intent.putExtra("email", txtEmail.getText().toString());
 
-                                Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
-                                intent.putExtra("email",txtEmail.getText().toString());
-                                startActivity(intent);
+
+                                    Toast.makeText(CadastroUsuarioActivity.this, "Cadastrado! \nPor questão de segurança, digite a senha que acabou de criar e faça o login",Toast.LENGTH_LONG).show();
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
+                                }
                             }
 
                             @Override
                             public void falha() {
-                                    Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
+                                dialog.dismiss();
+                                Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
                             }
                         });
-//                        thread.execute(campos, values);
                     }else{
+                        dialog.dismiss();
                         Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
                     }
 
                 }else{
+                    dialog.dismiss();
                     Snackbar.make(view, "Verifique se preencheu todas informações", Snackbar.LENGTH_LONG)
                        .setAction("Action", null).show();
                 }
-
-
-//                usuario = new Usuario();
-//
-//                usuario.setEmail(txtEmail.getText().toString());
-//                usuario.setSenha(txtSenha.getText().toString());
-//                usuario.setProfissao(txtProfissao.getText().toString());
-//                usuario.setAlimentacao(txtAlimentacao.getText().toString());
-//                UtilTask util = new UtilTask(
-//                        es.esy.rafaelsilva.tcc.activity.CadastroUsuarioActivity.this,  // contexto
-//                        "C",                // acão
-//                        "usuario"       // tabela que sera salva
-//                );
-//                util.execute(c.nomes(), c.valores());
-//                if (usuarioDao.inserir(usuario) >= 0)
-//                    Toast.makeText(es.esy.rafaelsilva.tcc.activity.CadastroUsuarioActivity.this, "Cadastrado com Sucesso!", Toast.LENGTH_LONG).show();
-//                 //= txtEmail.getText().toString();
-//
-//                else
-//                    Toast.makeText(es.esy.rafaelsilva.tcc.activity.CadastroUsuarioActivity.this, "Erro ao tentar cadastrar produto", Toast.LENGTH_LONG).show();
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                       .setAction("Action", null).show();
             }
         });
     }

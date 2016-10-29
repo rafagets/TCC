@@ -39,7 +39,8 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
     protected Integer doInBackground(Void... voids) {
 
         final int[] viewInseridas = {0};
-        for (Post p : post){
+        if (post.size() > 0)
+            for (Post p : post){
 
                 if (p.getTipo() == 1) {
 
@@ -150,8 +151,7 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
                     }
 
                 }
-
-        }
+            }
 
         return viewInseridas[0];
     }

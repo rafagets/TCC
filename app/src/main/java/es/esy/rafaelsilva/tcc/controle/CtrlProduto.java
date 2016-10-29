@@ -31,7 +31,7 @@ public class CtrlProduto {
         params.put("condicao", "codigo");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<Produto> getData = new GetData<>("objeto", contexto, params);
+        GetData<Produto> getData = new GetData<>("objeto", params);
         getData.executar(Produto.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -58,7 +58,7 @@ public class CtrlProduto {
         params.put("tabela", "produto");
         params.put("ordenacao", parametro);
 
-        GetData<Produto> getData = new GetData<>("lista", contexto, params);
+        GetData<Produto> getData = new GetData<>("lista", params);
         getData.executar(Produto.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {

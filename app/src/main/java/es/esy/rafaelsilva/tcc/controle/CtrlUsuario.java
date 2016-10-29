@@ -2,8 +2,6 @@ package es.esy.rafaelsilva.tcc.controle;
 
 import android.content.Context;
 
-import com.android.volley.VolleyError;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +15,7 @@ import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
- * Created by Rafael on 21/10/2016.
+ * Criado por Rafael em 21/10/2016, enjoy it.
  */
 public class CtrlUsuario {
 
@@ -36,7 +34,7 @@ public class CtrlUsuario {
         params.put("condicao", "codigo");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<Usuario> getData = new GetData<>("objeto", contexto, params);
+        GetData<Usuario> getData = new GetData<>("objeto", params);
         getData.executar(Usuario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -59,12 +57,12 @@ public class CtrlUsuario {
     public void logar(String email, String senha, final CallbackTrazer callback){
 
         Map<String, String> params = new HashMap<>();
-        params.put("acao", "R");
+        params.put("acao", "L");
         params.put("tabela", "usuario");
-        params.put("condicao", "email, senha");
-        params.put("valores",email + " and " + senha);
+        params.put("condicao", "senha");
+        params.put("valores", "'" +senha+ "' AND email = '" +email+ "'");
 
-        GetData<Usuario> getData = new GetData<>("objeto", contexto, params);
+        GetData<Usuario> getData = new GetData<>("objeto", params);
         getData.executar(Usuario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -91,7 +89,7 @@ public class CtrlUsuario {
         params.put("tabela", "usuario");
         params.put("ordenacao", parametro);
 
-        GetData<Usuario> getData = new GetData<>("lista", contexto, params);
+        GetData<Usuario> getData = new GetData<>("lista", params);
         getData.executar(Usuario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -118,11 +116,15 @@ public class CtrlUsuario {
         params.put("condicao", campos);
         params.put("valores", valores);
 
-        GetData<Resposta> getData = new GetData<>("objeto", contexto, params);
+        GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
-                callbackSalvar.resultadoSalvar(resposta);
+                Resposta resp = (Resposta) resposta;
+                if (resp.isFlag())
+                    callbackSalvar.resultadoSalvar(resp);
+                else
+                    callbackSalvar.falha();
             }
 
             @Override
@@ -132,7 +134,7 @@ public class CtrlUsuario {
 
             @Override
             public void erro(String resposta) {
-
+                callbackSalvar.falha();
             }
         });
 

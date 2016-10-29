@@ -8,11 +8,12 @@ import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.CurtidaComentario;
-import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
  * Created by Rafael on 21/10/2016.
@@ -34,7 +35,7 @@ public class CtrlCurtidaComentario {
         params.put("condicao", "codigo");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<CurtidaComentario> getData = new GetData<>("objeto", contexto, params);
+        GetData<CurtidaComentario> getData = new GetData<>("objeto", params);
         getData.executar(CurtidaComentario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -61,7 +62,7 @@ public class CtrlCurtidaComentario {
         params.put("tabela", "curtidacomentario");
         params.put("ordenacao", parametro);
 
-        GetData<CurtidaComentario> getData = new GetData<>("lista", contexto, params);
+        GetData<CurtidaComentario> getData = new GetData<>("lista", params);
         getData.executar(CurtidaComentario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -81,16 +82,56 @@ public class CtrlCurtidaComentario {
 
     }
 
-    public void excluir(int codigo){
-        UtilTask util = new UtilTask(contexto, "D", "curtidacomentario");
-        util.execute("usuario", String.valueOf(DadosUsuario.codigo) + " AND comentario = " + codigo);
+    public void excluir(int codigo, final CallbackSalvar callback){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "D");
+        params.put("tabela", "curtidacomentario");
+        params.put("condicao", "usuario");
+        params.put("valores", String.valueOf(DadosUsuario.codigo) + " AND comentario = " + codigo);
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                callback.resultadoSalvar(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callback.falha();
+            }
+        });
     }
 
-    public void curtir(int comentario){
-        UtilTask util = new UtilTask(contexto, "C", "curtidacomentario");
-        String campos = "comentario,usuario";
-        String values = comentario + "," + DadosUsuario.codigo;
-        util.execute(campos, values);
+    public void curtir(int comentario, final CallbackSalvar callback){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "C");
+        params.put("tabela", "curtidacomentario");
+        params.put("condicao", "comentario, usuario");
+        params.put("valores", String.valueOf(comentario) +","+ DadosUsuario.codigo);
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                callback.resultadoSalvar(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callback.falha();
+            }
+        });
     }
 
 }

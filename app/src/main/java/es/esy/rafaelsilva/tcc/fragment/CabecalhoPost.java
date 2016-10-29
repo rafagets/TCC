@@ -27,8 +27,12 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.MainActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
+import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
+import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
 import es.esy.rafaelsilva.tcc.modelo.Post;
@@ -38,6 +42,7 @@ import es.esy.rafaelsilva.tcc.task.PostComentarioTask;
 import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
@@ -65,8 +70,14 @@ public class CabecalhoPost extends Fragment {
             @Override
             public void resultadoTrazer(Object obj) {
                 usuario = (Usuario) obj;
-                new ImageLoaderTask(imgUsuarioPrincipal).
-                        execute(Config.caminhoImageTumb + usuario.getImagem());
+                if (usuario == null){
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("error", true);
+                    startActivity(intent);
+                    getActivity().finish();
+                }else {
+                    usuario.setImagemPerfil(imgUsuarioPrincipal);
+                }
             }
 
             @Override
@@ -106,11 +117,8 @@ public class CabecalhoPost extends Fragment {
 
                 if (!comentario.getText().toString().equals("")) {
 
-                    //"C", CabecalhoPost.this, "post"
-                    PostComentarioTask task = new PostComentarioTask("C", comentario.getText().toString(),"post", getActivity());
-                    String campo = "usuario";
-                    String valor = String.valueOf(DadosUsuario.codigo);
-                    task.execute(campo, valor);
+                    // inicio a sequencia que ira realizar um post
+                    postarUm();;
 
                 }else{
                     Toast.makeText(getActivity(), "Digite um comentário.", Toast.LENGTH_LONG).show();
@@ -134,6 +142,74 @@ public class CabecalhoPost extends Fragment {
 //        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
+    }
+
+    public void postarUm(){
+        new CtrlPost(getActivity()).salvar("usuario", String.valueOf(DadosUsuario.codigo), new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.isFlag())
+                    postarDois();
+                else
+                    Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void postarDois(){
+        new CtrlPost(getActivity()).trazer("usuario = " + String.valueOf(DadosUsuario.codigo), new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                Post rsp = (Post) obj;
+                postarTres(rsp.getCodigo());
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void postarTres(final int pai){
+        new CtrlComentario(getActivity()).salvar(pai, comentario.getText().toString(), new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.isFlag())
+                    Toast.makeText(getActivity(), "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(getActivity(), "falha", Toast.LENGTH_LONG).show();
+                postarQuatro(pai);
+            }
+        });
+    }
+
+    public void postarQuatro(int pai){
+        new CtrlPost(getActivity()).excluir(pai, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.isFlag())
+                    Toast.makeText(getActivity(), "Não foi possível postar \nPost cancelado.", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getActivity(), "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
     }
 
 }

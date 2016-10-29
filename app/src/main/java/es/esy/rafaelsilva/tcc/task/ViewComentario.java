@@ -21,6 +21,7 @@ import es.esy.rafaelsilva.tcc.controle.CtrlCurtidaComentario;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.controle.CtrlCurtidaComentario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
@@ -30,6 +31,7 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
@@ -189,8 +191,21 @@ public class ViewComentario {
                 public boolean onLongClick(View view) {
 
                     if (flag2[0]) {
-                        new CtrlCurtidaComentario(contexto).excluir(c.getCodigo());
                         addOne.setImageResource(R.drawable.ic_add_one);
+                        new CtrlCurtidaComentario(contexto).excluir(c.getCodigo(), new CallbackSalvar() {
+                            @Override
+                            public void resultadoSalvar(Object obj) {
+                                Resposta rsp = (Resposta) obj;
+                                if (!rsp.isFlag())
+                                    addOne.setImageResource(R.drawable.ic_added);
+                            }
+
+                            @Override
+                            public void falha() {
+                                addOne.setImageResource(R.drawable.ic_added);
+                            }
+                        });
+
 
                         int curtiu = 0;
                         if (cc != null)
@@ -213,8 +228,21 @@ public class ViewComentario {
                 public void onClick(View view) {
 
                     if (!flag2[0]) {
-                        new CtrlCurtidaComentario(contexto).curtir(c.getCodigo());
                         addOne.setImageResource(R.drawable.ic_added);
+                        new CtrlCurtidaComentario(contexto).curtir(c.getCodigo(), new CallbackSalvar() {
+                            @Override
+                            public void resultadoSalvar(Object obj) {
+                                Resposta rsp = (Resposta) obj;
+                                if (!rsp.isFlag())
+                                    addOne.setImageResource(R.drawable.ic_add_one);
+                            }
+
+                            @Override
+                            public void falha() {
+                                addOne.setImageResource(R.drawable.ic_add_one);
+                            }
+                        });
+
 
                         int curtiu = 0;
                         if (cc != null)

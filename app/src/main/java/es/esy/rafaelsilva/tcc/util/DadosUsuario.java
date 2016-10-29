@@ -10,19 +10,19 @@ public class DadosUsuario {
     public static int codigo = 1;
     public static String nome = "Sabrina";
     public static String email ;
+    public static String senha;
 
-    public static Usuario usuarioCorrente;
+    public static Usuario usuario;
 
-    public static Usuario getUsuarioCorrente() {
-        return usuarioCorrente;
+    public static Usuario getUsuario() {
+        return usuario;
     }
 
     public static void setUsuarioCorrente(Usuario usuarioCorrente) {
-        DadosUsuario.usuarioCorrente = usuarioCorrente;
+        DadosUsuario.usuario = usuarioCorrente;
         DadosUsuario.codigo = usuarioCorrente.getCodigo();
         DadosUsuario.nome = usuarioCorrente.getNome();
-        codigo =  getUsuarioCorrente().getCodigo();
-        nome = getUsuarioCorrente().getNome();
-        email = getUsuarioCorrente().getEmail();
+        DadosUsuario.email = usuarioCorrente.getEmail();
+        DadosUsuario.senha = usuarioCorrente.getSenha();
     }
 }

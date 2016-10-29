@@ -16,6 +16,7 @@ public class UsuarioDao {
 
     private SQLiteDatabase db;
     private DbHelper helper;
+
     Usuario usuario;
     //instancia um objeto da classe es.esy.rafaelsilva.tcc.adapters.DbHelper
     public UsuarioDao(Context context) {
@@ -75,6 +76,12 @@ public class UsuarioDao {
         helper.close();
 
         return rows;
+    }
+
+    public void excluirTudo(){
+        db = helper.getWritableDatabase();
+        db.delete(DbHelper.TABLE_NAME,"",null);
+        helper.close();
     }
 
     public int alterar(Usuario usuario) {

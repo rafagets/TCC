@@ -32,7 +32,7 @@ public class CtrlAmigos {
         params.put("condicao", "pai");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<Amigos> getData = new GetData<>("objeto", contexto, params);
+        GetData<Amigos> getData = new GetData<>("objeto", params);
         getData.executar(Amigos.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -59,7 +59,7 @@ public class CtrlAmigos {
         params.put("tabela", "amigos");
         params.put("ordenacao", parametro);
 
-        GetData<Amigos> getData = new GetData<>("lista", contexto, params);
+        GetData<Amigos> getData = new GetData<>("lista", params);
         getData.executar(Amigos.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -94,7 +94,7 @@ public class CtrlAmigos {
         params.put("asteristico", "count(codigo)");
         params.put("ordenacao", "WHERE "+ parametro);
 
-        GetData<Resposta> getData = new GetData<>("objeto", contexto, params);
+        GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {

@@ -1,11 +1,9 @@
 package es.esy.rafaelsilva.tcc.DAO;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -13,7 +11,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +19,17 @@ import java.util.Map;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 import es.esy.rafaelsilva.tcc.util.App;
 import es.esy.rafaelsilva.tcc.util.Config;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 /**
- * Created by Rafael on 18/10/2016.
+ * Criado por Rafael em 18/10/2016, enjoy it.
  */
 public class GetData<T>{
 
-    private RequestQueue requisicao;
     private Map<String, String> params;
     private String intencao;
 
-    public GetData(String intencao, Context contexto, Map<String, String> params) {
+    public GetData(String intencao, Map<String, String> params) {
         this.params = params;
         //this.requisicao = Volley.newRequestQueue(contexto);
         this.intencao = intencao;
@@ -51,57 +48,59 @@ public class GetData<T>{
                         if (!response.equals("\uFEFF\"ERROR_LOGIN\"")) {
 
                             JSONArray array;
-                            if (intencao.equals("lista")) {
+                            switch (intencao) {
+                                case "lista":
 
-                                try {
-                                    array = new JSONArray(response.toString());
-
-                                    List<Object> lista = new ArrayList<>();
-                                    for (int i = 0; i < array.length(); i++) {
-                                        String json = array.get(i).toString();
-                                        T obj;
-                                        Gson gson = new Gson();
-                                        obj = gson.fromJson(json, clazz);
-
-                                        lista.add(obj);
-                                    }
-
-                                    //Log.i("*** "+clazz.getSimpleName(), response);
-                                    callback.sucessoLista(lista);
-
-                                } catch (JSONException e) {
-                                    //e.printStackTrace();
-                                    //Log.e("*** " + clazz.getSimpleName(), "null list");
-                                    callback.erro(clazz.getSimpleName() + ": não foi possivel trazer a lista: ");
-                                }
-
-                            }else if (intencao.equals("objeto")){
-
-                                try {
-                                    T obj;
                                     try {
-                                        String json = response.toString();
-                                        Gson gson = new Gson();
-                                        obj = gson.fromJson(json, clazz);
-                                    }catch (Exception e){
-                                        array = new JSONArray(response.toString());
+                                        array = new JSONArray(response);
 
-                                        String json = array.getJSONObject(0).toString();
-                                        Gson gson = new Gson();
-                                        obj = gson.fromJson(json, clazz);
+                                        List<Object> lista = new ArrayList<>();
+                                        for (int i = 0; i < array.length(); i++) {
+                                            String json = array.get(i).toString();
+                                            T obj;
+                                            Gson gson = new Gson();
+                                            obj = gson.fromJson(json, clazz);
+
+                                            lista.add(obj);
+                                        }
+
+                                        Log.i("*** " + clazz.getSimpleName(), response);
+                                        callback.sucessoLista(lista);
+
+                                    } catch (JSONException e) {
+                                        //e.printStackTrace();
+                                        //Log.e("*** " + clazz.getSimpleName(), "null list");
+                                        callback.erro(clazz.getSimpleName() + ": não foi possivel trazer a lista: ");
                                     }
 
-                                    //Log.i("*** "+clazz.getSimpleName(), response);
-                                    callback.sucesso(obj);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    //Log.e("*** " + clazz.getSimpleName(), "null object");
-                                    callback.erro(clazz.getSimpleName() + ": não foi possivel trazer o objeto");
-                                }
+                                    break;
+                                case "objeto":
 
-                            }else{
-                                callback.erro("por favor verificar a intencao");
-                                Log.d("*** Atenção ***", "verificar o parametro intencao");
+                                    try {
+                                        T obj;
+                                        try {
+                                            Gson gson = new Gson();
+                                            obj = gson.fromJson(response, clazz);
+                                        } catch (Exception e) {
+                                            array = new JSONArray(response);
+                                            String json = array.getJSONObject(0).toString();
+                                            Gson gson = new Gson();
+                                            obj = gson.fromJson(json, clazz);
+                                        }
+
+                                        Log.i("*** " + clazz.getSimpleName(), response);
+                                        callback.sucesso(obj);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        //Log.e("*** " + clazz.getSimpleName(), "null object");
+                                        callback.erro(clazz.getSimpleName() + ": não foi possivel trazer o objeto");
+                                    }
+
+                                    break;
+                                default:
+                                    callback.erro("por favor verificar a intencao");
+                                    Log.d("*** Atenção ***", "verificar o parametro intencao");
+                                    break;
                             }
 
                         }else{
@@ -121,8 +120,14 @@ public class GetData<T>{
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
                 //params = new HashMap<>();
-                params.put("email", "sabrina@gmail.com");
-                params.put("senha", "123456");
+                if (DadosUsuario.email != null && DadosUsuario.senha != null) {
+                    params.put("email", DadosUsuario.email);
+                    params.put("senha", DadosUsuario.senha);
+                }else{
+                    params.put("email", "cadastro");
+                    params.put("senha", "masterkey");
+                }
+
                 return(params);
             }
 

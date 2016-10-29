@@ -32,10 +32,8 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (DadosUsuario.getUsuarioCorrente() != null){
-            setTitle("Olá "+ DadosUsuario.getUsuarioCorrente().getNome() + "!");
-            Toast.makeText(this, "Codigo: "+ DadosUsuario.codigo +"\nNome: "+DadosUsuario.nome+"\nEmail: "+DadosUsuario.email, Toast.LENGTH_LONG).show();
-
+        if (DadosUsuario.getUsuario() != null){
+            setTitle("Olá "+ DadosUsuario.getUsuario().getNome() + "!");
         }
 
 
@@ -69,9 +67,9 @@ public class HomeActivity extends AppCompatActivity
         txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
         txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
         imgUsuarioCorrente = (ImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
-        if (DadosUsuario.getUsuarioCorrente() != null) {
-            txtUsuarioNome.setText(DadosUsuario.getUsuarioCorrente().getNome());
-            txtUsuarioEmail.setText(DadosUsuario.getUsuarioCorrente().getEmail());
+        if (DadosUsuario.getUsuario() != null) {
+            txtUsuarioNome.setText(DadosUsuario.getUsuario().getNome());
+            txtUsuarioEmail.setText(DadosUsuario.getUsuario().getEmail());
         }
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -151,6 +149,11 @@ public class HomeActivity extends AppCompatActivity
             //aqui abre a tela de cadastro de usuario
             Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
             startActivity(intent);
+        }else if(id == R.id.nav_logout){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("error", true);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

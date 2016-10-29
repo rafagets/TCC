@@ -1,5 +1,7 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -33,6 +35,8 @@ public class Usuario {
 	private int status;
 
 	private String imagem;
+
+	private Bitmap imgBitmap;
 
 	private String profissao;
 

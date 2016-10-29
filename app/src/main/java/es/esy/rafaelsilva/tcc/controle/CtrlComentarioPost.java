@@ -32,7 +32,7 @@ public class CtrlComentarioPost {
         params.put("condicao", "comentario");
         params.put("valores", String.valueOf(codigo));
 
-        GetData<ComentarioPost> getData = new GetData<>("objeto", contexto, params);
+        GetData<ComentarioPost> getData = new GetData<>("objeto", params);
         getData.executar(ComentarioPost.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
@@ -59,7 +59,7 @@ public class CtrlComentarioPost {
         params.put("tabela", "comentariopost");
         params.put("ordenacao", parametro);
 
-        GetData<ComentarioPost> getData = new GetData<>("lista", contexto, params);
+        GetData<ComentarioPost> getData = new GetData<>("lista", params);
         getData.executar(ComentarioPost.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
