@@ -95,11 +95,16 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
             if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
 
-                String campos = "nome, sobrenome, email, senha, alimentacao";
+                String campos = "nome, " +
+                        "email, " +
+                        "senha, " +
+                        "sobrenome, " +
+                        "alimentacao";
+
                 String values = "'" + txtNome.getText().toString() +
-                        "','" + txtSobrenome.getText().toString() +
                         "','" + txtEmail.getText().toString() +
                         "','" + txtSenha.getText().toString() +
+                        "','" + txtSobrenome.getText().toString() +
                         "','" + alimentacao.getSelectedItem().toString() + "'";
 
                 new CtrlUsuario(CadastroUsuarioActivity.this).salvar(values, campos, new CallbackSalvar() {
