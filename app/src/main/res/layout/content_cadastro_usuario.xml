@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,117 +12,225 @@
     tools:context="es.esy.rafaelsilva.tcc.activity.CadastroUsuarioActivity"
     tools:showIn="@layout/activity_cadastro_usuario"
     android:orientation="vertical">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:id="@+id/scrollView">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/colorAccent"
-            android:id="@+id/imgUser"
-            android:src="@drawable/ic_account_circle_black_24dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"/>
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtNome"
+                android:hint="Nome"
+                android:inputType="textPersonName"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtSobrenome"
+                android:hint="Sobrenome"
+                android:inputType="textPersonName"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtNome"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtEmail"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtSobrenome"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtSenha"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtEmail" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtConfirmSenha"
+                android:hint="Confirmação da Senha"
+                android:inputType="textPassword"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtSenha" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:hint="Alimentação"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtConfirmSenha"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:spinnerMode="dialog"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_below="@+id/textView"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="60dp"
+                android:padding="20dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnCadastrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CADASTRAR"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:background="@color/colorAccent"
+        android:textColor="@color/background_material_light"
+        android:layout_alignParentBottom="true" />
+
+
+<!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center">-->
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--app:civ_border_width="2dp"-->
+            <!--app:civ_border_color="@color/colorAccent"-->
             <!--android:id="@+id/imgUser"-->
             <!--android:src="@drawable/ic_account_circle_black_24dp"-->
-            <!--android:scaleType="center"-->
-            <!--/>-->
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtNome"
-            android:hint="Nome"
-            android:gravity="center"
-            android:layout_marginTop="16dp"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtEmail"
-            android:hint="E-mail"
-            android:gravity="center"
-            android:layout_marginTop="16dp"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtSenha"
-            android:hint="Senha"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword" />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtConfirmSenha"
-            android:hint="Confirmação da Senha"
-            android:inputType="textPassword"
-            android:gravity="center"
-            android:layout_marginTop="16dp"/>
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="10dp"/>-->
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtProfissao"
-            android:hint="Profissão"
-            android:gravity="center"
-            android:layout_marginTop="16dp"/>
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="16dp">-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtNome"-->
+            <!--android:hint="Nome"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtEmail"-->
+            <!--android:hint="E-mail"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtSenha"-->
+            <!--android:hint="Senha"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:inputType="textPassword" />-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtConfirmSenha"-->
+            <!--android:hint="Confirmação da Senha"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:hint="Alimentação"
-            android:gravity="left"
-            android:layout_marginTop="16dp"
-            android:textSize="18dp"
-            android:layout_marginBottom="16dp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carne"
-                android:checked="false"
-                android:id="@+id/chkCarnivoro"
-                android:layout_weight="1"/>
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtProfissao"-->
+            <!--android:hint="Profissão"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vegano"
-                android:id="@+id/chkVegano"
-                android:checked="false"
-                android:layout_weight="1"/>
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/textView"-->
+            <!--android:hint="Alimentação"-->
+            <!--android:gravity="left"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_marginBottom="16dp" />-->
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vegetariano"
-                android:id="@+id/chkVegetariano"
-                android:checked="false"
-                android:layout_weight="1"/>
-            /
-        </LinearLayout>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Carne"-->
+                <!--android:checked="false"-->
+                <!--android:id="@+id/chkCarnivoro"-->
+                <!--android:layout_weight="1"/>-->
 
-    </LinearLayout>
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Vegano"-->
+                <!--android:id="@+id/chkVegano"-->
+                <!--android:checked="false"-->
+                <!--android:layout_weight="1"/>-->
 
-</LinearLayout>
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Vegetariano"-->
+                <!--android:id="@+id/chkVegetariano"-->
+                <!--android:checked="false"-->
+                <!--android:layout_weight="1"/>-->
+            <!--/-->
+        <!--</LinearLayout>-->
 
-</ScrollView>
+    <!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
+</RelativeLayout>

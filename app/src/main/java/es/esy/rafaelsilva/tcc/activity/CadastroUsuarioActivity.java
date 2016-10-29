@@ -14,9 +14,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -31,16 +35,15 @@ import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
-    private FloatingActionButton fabCadastrarUsuario;
     EditText txtNome;
     EditText txtEmail;
     EditText txtSenha;
     EditText txtConfirmSenha;
-    EditText txtProfissao;
-    CheckBox chkCarne, chkVegano, chkVegetariano;
-    String alimentacao = "";
-    CircleImageView imgUser;
+    EditText txtSobrenome;
+    Spinner alimentacao;
+    Button cadastrar;
     ProgressDialog dialog;
+
     public static final int IMG_SDCARD = 1;
     public static final int IMG_CAM = 1;
 
@@ -50,98 +53,103 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_usuario);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        txtNome         =   (EditText) findViewById(R.id.txtNome);
-        txtEmail        =   (EditText) findViewById(R.id.txtEmail);
-        txtSenha        =   (EditText) findViewById(R.id.txtSenha);
-        txtConfirmSenha =   (EditText) findViewById(R.id.txtConfirmSenha);
-        txtProfissao    =   (EditText) findViewById(R.id.txtProfissao);
-        chkCarne = (CheckBox) findViewById(R.id.chkCarnivoro);
-        chkVegano = (CheckBox) findViewById(R.id.chkVegano);
-        chkVegetariano = (CheckBox) findViewById(R.id.chkVegetariano);
-        imgUser = (CircleImageView) findViewById(R.id.imgUser);
-        //imgUser.setOnClickListener(OpcoesImagem());
-        imgUser.setOnClickListener(OpcoesImagem());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Cadastro");
 
-        fabCadastrarUsuario = (FloatingActionButton) findViewById(R.id.fabCadastrarUsuario);
-        fabCadastrarUsuario.setOnClickListener(new View.OnClickListener() {
+        txtNome         = (EditText) findViewById(R.id.txtNome);
+        txtEmail        = (EditText) findViewById(R.id.txtEmail);
+        txtSenha        = (EditText) findViewById(R.id.txtSenha);
+        txtConfirmSenha = (EditText) findViewById(R.id.txtConfirmSenha);
+        txtSobrenome    = (EditText) findViewById(R.id.txtSobrenome);
+        alimentacao     = (Spinner) findViewById(R.id.spinner) ;
+        cadastrar       = (Button) findViewById(R.id.btnCadastrar) ;
+
+        /*popula o spinner
+        * os valores se encontram em um xml no endereço:
+        * re/values/alimentacao*/
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.alimentacao_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        alimentacao.setAdapter(adapter);
+
+        cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                dialog = new ProgressDialog(CadastroUsuarioActivity.this);
-                dialog.setMessage("Cadastrando, aguarde...");
-                dialog.show();
-
-//                imgUser = (CircleImageView) findViewById(R.id.imgUsuario);
-                if(!txtNome.getText().toString().equals("") || !txtEmail.getText().toString().equals("") || !txtSenha.getText().toString().equals("")
-                        || !txtConfirmSenha.getText().toString().equals("") || !txtProfissao.getText().toString().equals("")){
-
-                    //monto a string alimentacao
-                    if (!chkVegetariano.isChecked() && !chkCarne.isChecked() && !chkVegano.isChecked()){
-                        Toast.makeText(CadastroUsuarioActivity.this, "Informe qual sua alimentação!\ne Tente novamente", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    alimentacao = "";
-                    if (chkCarne.isChecked()) {
-                        alimentacao = alimentacao + chkCarne.getText().toString().toLowerCase() + ",";
-                    }
-                    if (chkVegano.isChecked()) {
-                        alimentacao = alimentacao + chkVegano.getText().toString().toLowerCase() + ",";
-                    }
-                    if (chkVegetariano.isChecked()) {
-                        alimentacao = alimentacao + chkVegetariano.getText().toString().toLowerCase() + ",";
-                    }
-
-                    if (alimentacao.substring(alimentacao.length() -1).equals(",")) {
-                        alimentacao = alimentacao.substring(0, alimentacao.length() - 1);
-                    }
-                    //
-
-                    if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
-                        //txtNome.setText(txtNome.getText().toString().substring(0).toUpperCase()).toString().substring(0) =
-                        //verifica no bd (webservice) se o usuario existe, caso nao exista já cadastra
-//                        UtilTask thread = new UtilTask(CadastroUsuarioActivity.this, "C", "usuario");
-                        String campos = "nome, email, senha, profissao, alimentacao";//colocar nome dos campos
-                        String values = "'" + txtNome.getText().toString() + "','" + txtEmail.getText().toString() + "','" + txtSenha.getText().toString() + "','"
-                                + txtProfissao.getText().toString() + "','" + alimentacao + "'";
-
-                        new CtrlUsuario(CadastroUsuarioActivity.this).salvar(values, campos, new CallbackSalvar() {
-                            @Override
-                            public void resultadoSalvar(Object obj) {
-                                dialog.dismiss();
-                                Resposta resposta = (Resposta) obj;
-                                if (resposta.isFlag()) {
-                                    Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
-                                    intent.putExtra("email", txtEmail.getText().toString());
-
-
-                                    Toast.makeText(CadastroUsuarioActivity.this, "Cadastrado! \nPor questão de segurança, digite a senha que acabou de criar e faça o login",Toast.LENGTH_LONG).show();
-                                    startActivity(intent);
-                                }else{
-                                    Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                            @Override
-                            public void falha() {
-                                dialog.dismiss();
-                                Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }else{
-                        dialog.dismiss();
-                        Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
-                    }
-
-                }else{
-                    dialog.dismiss();
-                    Snackbar.make(view, "Verifique se preencheu todas informações", Snackbar.LENGTH_LONG)
-                       .setAction("Action", null).show();
-                }
+                cadastrar();
             }
         });
+
     }
 
+    private void cadastrar(){
+        dialog = new ProgressDialog(CadastroUsuarioActivity.this);
+        dialog.setMessage("Cadastrando, aguarde...");
+        dialog.show();
 
+        if(!txtNome.getText().toString().equals("") ||
+                !txtEmail.getText().toString().equals("") ||
+                !txtSenha.getText().toString().equals("")
+                || !txtConfirmSenha.getText().toString().equals("") ||
+                !txtSobrenome.getText().toString().equals("")){
+
+
+
+            if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
+
+                String campos = "nome, sobrenome, email, senha, alimentacao";
+                String values = "'" + txtNome.getText().toString() +
+                        "','" + txtSobrenome.getText().toString() +
+                        "','" + txtEmail.getText().toString() +
+                        "','" + txtSenha.getText().toString() +
+                        "','" + alimentacao.getSelectedItem().toString() + "'";
+
+                new CtrlUsuario(CadastroUsuarioActivity.this).salvar(values, campos, new CallbackSalvar() {
+                    @Override
+                    public void resultadoSalvar(Object obj) {
+                        dialog.dismiss();
+                        Resposta resposta = (Resposta) obj;
+                        if (resposta.isFlag()) {
+                            Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
+                            intent.putExtra("email", txtEmail.getText().toString());
+
+                            Toast.makeText(CadastroUsuarioActivity.this, "Cadastrado! \nPor questão de segurança, digite a senha que acabou de criar e faça o login",Toast.LENGTH_LONG).show();
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void falha() {
+                        dialog.dismiss();
+                        Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
+                    }
+                });
+            }else{
+                dialog.dismiss();
+                Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
+            }
+
+        }else{
+            dialog.dismiss();
+            Toast.makeText(CadastroUsuarioActivity.this, "Preencha todos os campos.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { // manipula o menu back
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private View.OnClickListener OpcoesImagem() {
         return new View.OnClickListener() {
@@ -152,14 +160,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
         };
     }
 
-//    private View.OnClickListener O)pcoesImagem() {
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                escolhaImagem();
-//            }
-//        };
-//    }
     private void escolhaImagem() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
 
@@ -212,7 +212,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(pathImg);
 
-                imgUser.setImageBitmap(bitmap);
+                //imgUser.setImageBitmap(bitmap);
 
             }
         }

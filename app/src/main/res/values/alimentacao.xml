@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="alimentacao_array">
+        <item>Padrão</item>
+        <item>Natural</item>
+        <item>Orgânica</item>
+        <item>Macrobiótica</item>
+        <item>Integral</item>
+        <item>Vegetariana</item>
+        <item>Veganismo</item>
+        <item>Sem glúten e lactose</item>
+        <item>Carnivoro</item>
+    </string-array>
+</resources>

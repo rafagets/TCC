@@ -10,13 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.gson.Gson;
-
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
-import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.task.ReputacaoTask;
 
