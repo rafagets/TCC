@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class Login_Activity extends AppCompatActivity {
     private SQLiteDatabase connection;
     private Button btnEntrar;
     EditText txtEmail, txtSenha;
+    TextView lblRedefSenha;
     UsuarioDao dao;
     List<Usuario> lista;
 
@@ -34,7 +36,8 @@ public class Login_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtSenha = (EditText) findViewById(R.id.txtSenha);
-
+        lblRedefSenha = (TextView) findViewById(R.id.lblRedefinirSenha);
+        lblRedefSenha.setOnLongClickListener(verMapa());
         if(getIntent().getStringExtra("email") != null){
             txtEmail.setText(getIntent().getStringExtra("email"));
         }
@@ -96,6 +99,19 @@ public class Login_Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private View.OnLongClickListener verMapa() {
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                Intent intent = new Intent(Login_Activity.this, Mapa_Activity.class);
+                startActivity(intent);
+
+                return false;
+            }
+        };
     }
 
     private View.OnClickListener entrar() {
