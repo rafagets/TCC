@@ -46,7 +46,7 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
- * Created by Rafael on 25/08/2016.
+ * Criado por Rafael em 25/08/2016, enjoy it.
  */
 public class CabecalhoPost extends Fragment {
 
@@ -76,7 +76,7 @@ public class CabecalhoPost extends Fragment {
                     startActivity(intent);
                     getActivity().finish();
                 }else {
-                    usuario.setImagemPerfil(imgUsuarioPrincipal);
+                    usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
                 }
             }
 

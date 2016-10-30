@@ -102,7 +102,7 @@ public class ViewAmizade {
             data = (TextView) v.findViewById(R.id.lbData);
             nome.setText(usu.getNome());
 
-            usu.setImagemPerfil(imgUsuario);
+            usu.setImagemPerfil(imgUsuario, contexto);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,7 +131,7 @@ public class ViewAmizade {
             profissaoAmigo = (TextView) v.findViewById(R.id.lbProfissaoAmigo);
             estiloAmigo = (TextView) v.findViewById(R.id.lbEstiloAmigo);
 
-            amigo.setImagemPerfil(imgAmigo);
+            amigo.setImagemPerfil(imgAmigo, contexto);
             nomeAmigo.setText(amigo.getNome());
             profissaoAmigo.setText(amigo.getProfissao());
             estiloAmigo.setText(amigo.getAlimentacao());

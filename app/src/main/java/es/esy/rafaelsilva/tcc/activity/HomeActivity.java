@@ -23,8 +23,7 @@ import android.widget.Toast;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     TextView txtUsuarioNome, txtUsuarioEmail;
     ImageView imgUsuarioCorrente;
 
@@ -64,7 +63,7 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //Colocando o nome e emaildo usuario atual no menu lateral
+        //Colocando o nome e email do usuario atual no menu lateral
         View view = navigationView.getHeaderView(0);
         txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
         txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
@@ -98,14 +97,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         mensagem.show();
-
-
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
     }
 
     @Override

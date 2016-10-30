@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.adapters.Atividades;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.modelo.Post;
@@ -84,8 +86,7 @@ public class CorpoHome extends Fragment {
                 recarregar.setRefreshing(false);
             }
         });
-//        PostTask postTask = new PostTask(getActivity(), recarregar);
-//        postTask.execute("R", "post", "ORDER BY data DESC");
+
     }
 
 

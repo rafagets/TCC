@@ -1,8 +1,10 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
@@ -200,9 +202,14 @@ public class Usuario {
 
 	}
 
-	public void setImagemPerfil(CircleImageView img){
+	public void setImagemPerfil(CircleImageView img, Context contexto){
 		if (imagem != null) {
-			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imagem);
+			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imagem);
+			Picasso.with(contexto)
+					.load(Config.caminhoImageTumb + imagem)
+					.placeholder(R.drawable.ic_usuario)
+					.error(R.drawable.ic_usuario)
+					.into(img);
 		}else{
 			img.setImageResource(R.drawable.ic_usuario);
 			//img.setBackgroundColor(R.color.cardview_light_background);

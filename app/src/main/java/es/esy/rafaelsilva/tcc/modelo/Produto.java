@@ -1,6 +1,9 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
@@ -118,18 +121,28 @@ public class Produto implements Serializable {
 		this.categoria = categoria;
 	}
 
-	public void setImgIcone(CircleImageView img){
+	public void setImgIcone(CircleImageView img, Context contexto){
 		if (imgicone != null) {
-			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgicone);
+			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgicone);
+			Picasso.with(contexto)
+					.load(Config.caminhoImageProdutos + imgicone)
+					.placeholder(R.drawable.ic_usuario)
+					.error(R.drawable.ic_usuario)
+					.into(img);
 		}else{
 			img.setImageResource(R.drawable.ic_usuario);
 			//img.setBackgroundColor(R.color.cardview_light_background);
 		}
 	}
 
-	public void setImgFundo(CircleImageView img){
+	public void setImgFundo(CircleImageView img, Context contexto){
 		if (imgheader != null) {
-			new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgheader);
+			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgheader);
+			Picasso.with(contexto)
+					.load(Config.caminhoImageProdutos + imgheader)
+					.placeholder(R.drawable.ic_usuario)
+					.error(R.drawable.ic_usuario)
+					.into(img);
 		}else{
 			img.setImageResource(R.drawable.fundo);
 			//img.setBackgroundColor(R.color.cardview_light_background);

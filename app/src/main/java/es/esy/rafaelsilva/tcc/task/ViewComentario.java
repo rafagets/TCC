@@ -142,7 +142,7 @@ public class ViewComentario {
             final boolean[] flag2 = {false};
             int curtido = 0;
 
-            u.setImagemPerfil(imgUsuario);
+            u.setImagemPerfil(imgUsuario, contexto);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override

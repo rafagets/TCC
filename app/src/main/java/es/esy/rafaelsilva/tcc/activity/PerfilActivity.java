@@ -162,7 +162,10 @@ public class PerfilActivity extends AppCompatActivity {
         nome.setText(usuario.getNome());
         profissao.setText(usuario.getProfissao());
         estilo.setText(usuario.getAlimentacao());
-        usuario.setImagemPerfil(imgUsuario);
+        if (usuario.getImagem() != null)
+            usuario.setImagemPerfil(imgUsuario, this);
+        else
+            imgUsuario.setImageResource(R.drawable.ic_usuario_white);
     }
     // *****************************************
 

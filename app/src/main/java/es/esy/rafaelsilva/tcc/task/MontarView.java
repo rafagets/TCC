@@ -18,7 +18,7 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import static java.lang.Thread.sleep;
 
 /**
- * Created by Rafael on 23/10/2016.
+ * Criado por Rafael em 23/10/2016, enjoy it.
  */
 public class MontarView extends AsyncTask<Void, Void, Integer> {
     private Context contexto;
@@ -68,7 +68,7 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
                     }
 
                     while (!flag) {
-                        if (flag == false)
+                        if (!flag)
                             flag = true;
 
                         try {
@@ -104,7 +104,7 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
                     }
 
                     while (!flag) {
-                        if (flag == false)
+                        if (!flag)
                             flag = true;
 
                         try {
@@ -140,7 +140,7 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
                     }
 
                     while (!flag) {
-                        if (flag == false)
+                        if (!flag)
                             flag = true;
 
                         try {
@@ -158,19 +158,19 @@ public class MontarView extends AsyncTask<Void, Void, Integer> {
 
     @Override
     protected void onPostExecute(Integer viewsInseridas) {
-        if (viewsInseridas == 0){
-            ImageView falha = new ImageView(contexto);
-            falha.setImageResource(R.drawable.back_falha_carregar);
-            layout.addView(falha);
-
-            falha.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    layout.removeAllViews();
-                    recarregar.setRefreshing(true);
-                }
-            });
-        }
+//        if (viewsInseridas == 0){
+//            ImageView falha = new ImageView(contexto);
+//            falha.setImageResource(R.drawable.back_falha_carregar);
+//            layout.addView(falha);
+//
+//            falha.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    layout.removeAllViews();
+//                    recarregar.setRefreshing(true);
+//                }
+//            });
+//        }
         recarregar.setRefreshing(false);
     }
 }

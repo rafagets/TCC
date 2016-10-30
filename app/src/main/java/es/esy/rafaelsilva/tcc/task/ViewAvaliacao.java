@@ -105,7 +105,7 @@ public class ViewAvaliacao {
             data = (TextView) v.findViewById(R.id.lbData);
             nome.setText(usu.getNome());
 
-            usu.setImagemPerfil(imgUsuario);
+            usu.setImagemPerfil(imgUsuario, contexto);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -133,7 +133,7 @@ public class ViewAvaliacao {
             avaliacao = (TextView) v.findViewById(R.id.lbAvaliacao);
             estrela = (RatingBar) v.findViewById(R.id.estrelas);
 
-            prod.setImgIcone(imgProduto);
+            prod.setImgIcone(imgProduto, contexto);
             produto.setText(prod.getNome());
             avaliacao.setText(av.getComentario());
             estrela.setRating(av.getEstrelas());

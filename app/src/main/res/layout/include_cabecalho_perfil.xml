@@ -11,7 +11,6 @@
         android:layout_height="100dp"
         android:id="@+id/imgUsuario"
         android:layout_marginRight="6dp"
-        android:src="@drawable/ic_account_circle_black_24dp"
         app:civ_border_width="0dp"
         app:civ_border_color="@color/colorAccent"
         android:layout_alignParentStart="true"

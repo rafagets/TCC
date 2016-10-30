@@ -115,8 +115,6 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                         if (resposta.isFlag()) {
                             Intent intent = new Intent(CadastroUsuarioActivity.this, Login_Activity.class);
                             intent.putExtra("email", txtEmail.getText().toString());
-
-                            Toast.makeText(CadastroUsuarioActivity.this, "Cadastrado! \nPor questão de segurança, digite a senha que acabou de criar e faça o login",Toast.LENGTH_LONG).show();
                             startActivity(intent);
                         }else{
                             Toast.makeText(CadastroUsuarioActivity.this, "Falha ao cadastrar usuario",Toast.LENGTH_LONG).show();
@@ -131,7 +129,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                 });
             }else{
                 dialog.dismiss();
-                Toast.makeText(CadastroUsuarioActivity.this, "Confirmação da senha não coincidecom a senha!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CadastroUsuarioActivity.this, "Senhas diferentes. Verifique.", Toast.LENGTH_LONG).show();
             }
 
         }else{
