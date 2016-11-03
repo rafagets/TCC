@@ -3,29 +3,42 @@ package es.esy.rafaelsilva.tcc.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.SearchView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.adapters.Pesquisa;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    TextView txtUsuarioNome, txtUsuarioEmail;
-    ImageView imgUsuarioCorrente;
+    private ListView listView;
+    private List<Usuario> listaUsuarios;
+    private Pesquisa adapter;
+    private View fragmentCabecalho;
+    private View fragmentCorpo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +78,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //Colocando o nome e email do usuario atual no menu lateral
         View view = navigationView.getHeaderView(0);
-        txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
-        txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
-        imgUsuarioCorrente = (ImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
+        TextView txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
+        TextView txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
         if (DadosUsuario.getUsuario() != null) {
             txtUsuarioNome.setText(DadosUsuario.getUsuario().getNome());
             txtUsuarioEmail.setText(DadosUsuario.getUsuario().getEmail());
         }
         navigationView.setNavigationItemSelectedListener(this);
+
+        fragmentCabecalho = findViewById(R.id.cabecalho_post);
+        fragmentCorpo =  findViewById(R.id.corpo_home);
 
     }
 
@@ -109,7 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -117,28 +132,94 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search){
-            final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(item);
-            searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            listView = (ListView) findViewById(R.id.listView);
+            new CtrlUsuario(this).listar("", new CallbackListar() {
                 @Override
-                public boolean onQueryTextSubmit(String query) {
-                    searchViewAndroidActionBar.clearFocus();
-                    return true;
+                public void resultadoListar(List<Object> lista) {
+                    listaUsuarios = new ArrayList<>();
+
+                    for (Object obj : lista) {
+                        listaUsuarios.add((Usuario) obj);
+                    }
+
+
+                    if (listaUsuarios != null){
+                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+                        listView.setAdapter(adapter);
+                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+                        listView.setAdapter(adapter);
+
+                        listView.setVisibility(View.VISIBLE);
+                        fragmentCabecalho.setVisibility(View.GONE);
+                        fragmentCorpo.setVisibility(View.GONE);
+
+                        monitorarPesquisa(item);
+
+                    }
+
                 }
 
                 @Override
-                public boolean onQueryTextChange(String newText) {
-                    return false;
+                public void falha() {
+
                 }
             });
+
         }
-
-
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /*Aqui é onde a grande magica da pesquisa acontece!*/
+    private void monitorarPesquisa(MenuItem item){
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(item);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                /*Atravez do adapter criado especialmente para esse fim
+                * o componente pega os cliques do teclado e manda para
+                * o adapter filtara as opçoes dinamicamente */
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+
+        });
+
+        searchViewAndroidActionBar.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                return false;
+            }
+        });
+
+        /*Aqui verifica se o usuario iniciou ou saiu da busca
+        * assim, utiliza-se manipulaçoes de visibilidade das view*/
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                listView.setVisibility(View.GONE);
+                fragmentCabecalho.setVisibility(View.VISIBLE);
+                fragmentCorpo.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

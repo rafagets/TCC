@@ -1,25 +1,27 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Switch;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
@@ -29,20 +31,35 @@ import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.fragment.PerfilAmigos;
 import es.esy.rafaelsilva.tcc.fragment.PerfilAtividade;
 import es.esy.rafaelsilva.tcc.fragment.PerfilSobre;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
-import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 public class PerfilActivity extends AppCompatActivity {
 
     // dados usuario logado
+    private List<Amigos> meusAmigos;
     private Usuario usuario;
+    private int usu;
     private TextView nome, profissao, estilo, totalAmigos, totalAvaliacoes;
-    CircleImageView imgUsuario;
+    private CircleImageView imgUsuario;
+    private ImageView desfazerAmizade;
+    private RelativeLayout relativeLayout;
+    private ProgressBar progressBar;
+    private FloatingActionButton fab;
+
+    public Usuario getUsuarioRequisitado(){
+        return usuario;
+    }
+
+    public int getUsuarioCodigo(){
+        return usu;
+    }
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -77,6 +94,8 @@ public class PerfilActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         nome = (TextView) findViewById(R.id.lbNome);
         profissao = (TextView) findViewById(R.id.lbProfissao);
@@ -84,20 +103,59 @@ public class PerfilActivity extends AppCompatActivity {
         totalAmigos = (TextView) findViewById(R.id.lbTotalAmigos);
         totalAvaliacoes = (TextView) findViewById(R.id.lbTotalAvaliacoes);
         imgUsuario = (CircleImageView) findViewById(R.id.imgUsuario);
+        desfazerAmizade = (ImageView) findViewById(R.id.imgDesfazerAmizade);
 
-        if (getIntent().getIntExtra("usuario", 0) == 0)
+        if (getIntent().getIntExtra("usuario", 0) == 0) {
             getUsuario(DadosUsuario.codigo);
-        else
+            usu = DadosUsuario.codigo;
+        }else {
             getUsuario(getIntent().getIntExtra("usuario", 0));
+            usu = getIntent().getIntExtra("usuario", 0);
+        }
 
-      FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-      fab.setOnClickListener(new View.OnClickListener() {
+        /* Adiciona a pessoa como amigo */
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                      .setAction("Action", null).show();
+
+              AlertDialog.Builder mensagem = new AlertDialog.Builder(PerfilActivity.this);
+              mensagem.setTitle("Criar amizade");
+              mensagem.setMessage("Voce criará um laço de amizade com "+usuario.getNome()+" \nÉ isso mesmo que deseja?");
+
+              mensagem.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                      new CtrlAmigos(PerfilActivity.this).AddAmigo(usuario.getCodigo(), new CallbackSalvar() {
+                          @Override
+                          public void resultadoSalvar(Object obj) {
+                              Resposta resp = (Resposta) obj;
+                              if (resp.isFlag()) {
+                                  fab.setVisibility(View.GONE);
+                                  totalAmigos.setText(String.valueOf(Integer.parseInt(totalAmigos.getText().toString()) + 1));
+                                  Toast.makeText(PerfilActivity.this, "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
+                                  trazerMeusAmigos();
+                              }
+                          }
+
+                          @Override
+                          public void falha() {
+                              Toast.makeText(PerfilActivity.this, "Não foi possível, tente mais tarde.", Toast.LENGTH_LONG).show();
+                          }
+                      });
+                  }
+              });
+
+              mensagem.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialogInterface, int i) {
+                      Toast.makeText(PerfilActivity.this, "A amizade com "+usuario.getNome()+" NÃO foi feita.", Toast.LENGTH_SHORT).show();
+                  }
+              });
+              mensagem.show();
+
           }
-      });
+        });
 
     }
 
@@ -105,7 +163,6 @@ public class PerfilActivity extends AppCompatActivity {
 
     // seta os dados principais do usuario alvo
     private void getUsuario(final int usu) {
-
         new CtrlUsuario(this).trazer(usu, new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
@@ -118,7 +175,6 @@ public class PerfilActivity extends AppCompatActivity {
                 Toast.makeText(PerfilActivity.this,"Erro ao carregar usuario", Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private void setTotalAvaliacoes() {
@@ -139,7 +195,6 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void setTotalAmigos() {
-
         new CtrlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
@@ -154,10 +209,10 @@ public class PerfilActivity extends AppCompatActivity {
                 setDadosUsuario();
             }
         });
-
     }
 
     private void setDadosUsuario(){
+        trazerMeusAmigos();
         setTitle(usuario.getNome());
         nome.setText(usuario.getNome());
         profissao.setText(usuario.getProfissao());
@@ -166,6 +221,112 @@ public class PerfilActivity extends AppCompatActivity {
             usuario.setImagemPerfil(imgUsuario, this);
         else
             imgUsuario.setImageResource(R.drawable.ic_usuario_white);
+
+        monitorarCliqueImagemPerfil();
+
+        relativeLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void trazerMeusAmigos(){
+        new CtrlAmigos(this).listar("WHERE amigoAdd = " + DadosUsuario.codigo, new CallbackListar() {
+            @Override
+            public void resultadoListar(List<Object> lista) {
+                if (meusAmigos == null)
+                    meusAmigos = new ArrayList<>();
+                else
+                    meusAmigos.clear();
+
+                for (Object obj : lista)
+                    meusAmigos.add((Amigos) obj);
+
+                if (verificarPerfilEmFoco()){
+                    if (usu != DadosUsuario.codigo)
+                        fab.setVisibility(View.VISIBLE);
+                }else{
+                    desfazerAmizade.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void falha() {
+                System.out.println("falha trazer amigos usuario");
+            }
+        });
+    }
+
+    private boolean verificarPerfilEmFoco(){
+        if (meusAmigos != null && meusAmigos.size() > 0) {
+            for (Amigos amigos : meusAmigos){
+                if (amigos.getAmigoAce() == usu){
+                    monitorarBtRemoverAmizade(amigos.getCodigo(), amigos.getPai());
+                    return false;
+                }
+            }
+            return true;
+        }
+        return true;
+    }
+
+    private void monitorarCliqueImagemPerfil(){
+        imgUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(PerfilActivity.this);
+//                View v = getLayoutInflater().inflate(R.layout.inflater_dialog_image_full, null);
+//                ImageView imgUsuarioFull = (ImageView) v.findViewById(R.id.imgUsuarioFull);
+                ImageView imgUsuarioFull = new ImageView(PerfilActivity.this);
+                usuario.setImagemGrande(imgUsuarioFull, PerfilActivity.this);
+                mensagem.setView(imgUsuarioFull);
+                mensagem.show();
+
+            }
+        });
+    }
+
+    private void monitorarBtRemoverAmizade(final int codigo, final int pai){
+        desfazerAmizade.setImageResource(R.drawable.ic_exclude_amigo);
+        desfazerAmizade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(PerfilActivity.this);
+                mensagem.setTitle("Desfazer amizade");
+                mensagem.setMessage("Seu laço de amizade com "+usuario.getNome()+" será desfeito \nÉ isso mesmo que deseja?");
+
+                mensagem.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new CtrlAmigos(PerfilActivity.this).excluir(codigo, pai, new CallbackExcluir() {
+                            @Override
+                            public void resultadoExcluir(boolean flag) {
+                                if (flag) {
+                                    Toast.makeText(PerfilActivity.this, "Amizade desfeita", Toast.LENGTH_SHORT).show();
+                                    totalAmigos.setText(String.valueOf(Integer.parseInt(totalAmigos.getText().toString()) - 1));
+                                    fab.setVisibility(View.VISIBLE);
+                                    desfazerAmizade.setVisibility(View.INVISIBLE);
+                                    trazerMeusAmigos();
+                                }else
+                                    Toast.makeText(PerfilActivity.this, "Falha, amizade não desfeita", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void falha() {
+                                Toast.makeText(PerfilActivity.this, "Falha, amizade não desfeita", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+                mensagem.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(PerfilActivity.this, usuario.getNome()+" ainda é seu amigo \uD83D\uDC4D", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                mensagem.show();
+            }
+        });
     }
     // *****************************************
 
@@ -211,9 +372,9 @@ public class PerfilActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
-                case 0: return PerfilSobre.newInstance(position);
-                case 1: return PerfilAtividade.newInstance(position);
-                case 2: return PerfilAmigos.newInstance(position);
+                case 0: return PerfilAtividade.newInstance(position);
+                case 1: return PerfilAmigos.newInstance(position);
+                case 2: return PerfilSobre.newInstance(position);
             }
             return null;
             //return PlaceholderFragment.newInstance(position + 1);
@@ -229,11 +390,11 @@ public class PerfilActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SOBRE";
-                case 1:
                     return "ATIVIDADE";
-                case 2:
+                case 1:
                     return "AMIGOS";
+                case 2:
+                    return "SOBRE";
             }
             return null;
         }

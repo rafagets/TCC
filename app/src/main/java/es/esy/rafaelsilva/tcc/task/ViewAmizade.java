@@ -62,33 +62,43 @@ public class ViewAmizade {
     }
 
     private void getUsuario(){
-        new CtrlUsuario(contexto).trazer(a.getAmigoAdd(), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                usu = (Usuario) obj;
-                getAmigo();
-            }
+        try {
+            new CtrlUsuario(contexto).trazer(a.getAmigoAdd(), new CallbackTrazer() {
+                @Override
+                public void resultadoTrazer(Object obj) {
+                    usu = (Usuario) obj;
+                    getAmigo();
+                }
 
-            @Override
-            public void falha() {
-                callback.view(null);
-            }
-        });
+                @Override
+                public void falha() {
+                    callback.view(null);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            callback.view(null);
+        }
     }
 
     private void getAmigo(){
-        new CtrlUsuario(contexto).trazer(a.getAmigoAce(), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                amigo = (Usuario) obj;
-                montar();
-            }
+        try {
+            new CtrlUsuario(contexto).trazer(a.getAmigoAce(), new CallbackTrazer() {
+                @Override
+                public void resultadoTrazer(Object obj) {
+                    amigo = (Usuario) obj;
+                    montar();
+                }
 
-            @Override
-            public void falha() {
-                callback.view(null);
-            }
-        });
+                @Override
+                public void falha() {
+                    callback.view(null);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            callback.view(null);
+        }
     }
 
     private void montar(){
@@ -136,6 +146,8 @@ public class ViewAmizade {
             profissaoAmigo.setText(amigo.getProfissao());
             estiloAmigo.setText(amigo.getAlimentacao());
 
+            monitorarCliqueImgAmigo(imgAmigo);
+
             callback.view(v);
             Log.i("*** OK","View de AMIZADE do Post ["+this.post.getCodigo()+"] adicionada.");
 
@@ -144,6 +156,17 @@ public class ViewAmizade {
             callback.view(null);
             e.printStackTrace();
         }
+    }
+
+    private void monitorarCliqueImgAmigo(CircleImageView imgAmigo) {
+        imgAmigo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(contexto, PerfilActivity.class);
+                intent.putExtra("usuario", amigo.getCodigo());
+                contexto.startActivity(intent);
+            }
+        });
     }
 
 }

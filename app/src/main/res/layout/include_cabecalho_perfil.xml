@@ -6,113 +6,137 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/imgUsuario"
-        android:layout_marginRight="6dp"
-        app:civ_border_width="0dp"
-        app:civ_border_color="@color/colorAccent"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp" />
-
-    <TextView
+    <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lbNome"
-        android:text="Rafael Silva"
-        android:textSize="18sp"
-        android:layout_alignTop="@+id/imgUsuario"
-        android:layout_toEndOf="@+id/imgUsuario"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp" />
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.Holo.ProgressBar"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        android:layout_marginTop="16dp"/>
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lbProfissao"
-        android:text="Programador em Google Inc"
-        android:textSize="14sp"
-        android:layout_below="@+id/lbNome"
-        android:layout_alignStart="@+id/lbNome"/>
+        android:id="@+id/relativeLayout"
+        android:visibility="invisible">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lbEstilo"
-        android:text="Vegetariano"
-        android:textSize="12sp"
-        android:layout_below="@+id/lbProfissao"
-        android:layout_alignStart="@+id/lbNome"
-        android:textStyle="italic" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/imgUsuario"
+            android:layout_marginRight="6dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="10dp" />
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_alignBottom="@+id/imgUsuario"
-        android:layout_alignStart="@+id/lbEstilo">
-
-        <!--quantoddade de amigos e avaliaçoes-->
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/lbNome"
+            android:text="Nome"
+            android:textSize="18sp"
+            android:layout_alignTop="@+id/imgUsuario"
+            android:layout_toEndOf="@+id/imgUsuario"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbProfissao"
+            android:text="Profissão"
+            android:textSize="14sp"
+            android:layout_below="@+id/lbNome"
+            android:layout_alignStart="@+id/lbNome"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbEstilo"
+            android:text="Alimentação"
+            android:textSize="12sp"
+            android:layout_below="@+id/lbProfissao"
+            android:layout_alignStart="@+id/lbNome"
+            android:textStyle="italic" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_weight="1">
+            android:orientation="horizontal"
+            android:layout_alignBottom="@+id/imgUsuario"
+            android:layout_alignStart="@+id/lbEstilo">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/imgAmigos"
-                android:src="@drawable/ic_people" />
-
-            <TextView
+            <!--quantoddade de amigos e avaliaçoes-->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lbTotalAmigos"
-                android:text="120"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp" />
+                android:gravity="center_vertical"
+                android:layout_weight="1">
 
-            <TextView
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/imgAmigos"
+                    android:src="@drawable/ic_people" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbTotalAmigos"
+                    android:text="-"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="amigos"
+                    android:id="@+id/textView" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="amigos"
-                android:id="@+id/textView" />
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/imgAvaliacoes"
+                    android:src="@drawable/ic_star"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbTotalAvaliacoes"
+                    android:text="-"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="avaliações"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/imgAvaliacoes"
-                android:src="@drawable/ic_star"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lbTotalAvaliacoes"
-                android:text="12"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="avaliações"/>
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgDesfazerAmizade"
+            android:layout_marginTop="13dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

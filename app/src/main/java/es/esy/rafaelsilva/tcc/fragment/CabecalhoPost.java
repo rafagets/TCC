@@ -32,6 +32,7 @@ import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
@@ -195,11 +196,10 @@ public class CabecalhoPost extends Fragment {
     }
 
     public void postarQuatro(int pai){
-        new CtrlPost(getActivity()).excluir(pai, new CallbackSalvar() {
+        new CtrlPost(getActivity()).excluir(pai, new CallbackExcluir() {
             @Override
-            public void resultadoSalvar(Object obj) {
-                Resposta rsp = (Resposta) obj;
-                if (rsp.isFlag())
+            public void resultadoExcluir(boolean flag) {
+                if (flag)
                     Toast.makeText(getActivity(), "Não foi possível postar \nPost cancelado.", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(getActivity(), "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
@@ -207,7 +207,7 @@ public class CabecalhoPost extends Fragment {
 
             @Override
             public void falha() {
-
+                Toast.makeText(getActivity(), "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
             }
         });
     }

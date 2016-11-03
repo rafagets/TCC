@@ -5,33 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/imgUsuario"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/ic_usuario"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/colorAccent"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/lbNome"
+        android:layout_marginTop="3dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nome"
+        android:text="Nome"
         android:id="@+id/lbNome"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/imgUsuario"
-        android:layout_marginRight="6dp"
-        android:src="@drawable/ic_face"
-        app:civ_border_width="1dp"
-        app:civ_border_color="@color/colorAccent"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"/>
+        android:textSize="18sp"
+        android:maxLength="13"
+        android:layout_marginTop="16dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/imgAddAmigo"
-        android:src="@drawable/ic_add_amigo"
         android:layout_below="@+id/imgUsuario"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-30dp"/>
+        android:layout_alignEnd="@+id/imgUsuario"
+        android:layout_marginTop="-20dp"
+        android:layout_marginRight="-6dp" />
+
 </RelativeLayout>

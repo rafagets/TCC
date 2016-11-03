@@ -1,16 +1,21 @@
 package es.esy.rafaelsilva.tcc.controle;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
+import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
@@ -18,6 +23,11 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
  */
 public class CtrlAmigos {
     private Context contexto;
+    private int codigoAmizade; // guarda o codigo do amigo
+    private int papa; // guarda o codigo do post em que a amizade é vinculada.
+    private CallbackSalvar callbackSalvar;
+    private CallbackExcluir callbackExcluir;
+
 
     public CtrlAmigos(Context contexto) {
         this.contexto = contexto;
@@ -79,12 +89,17 @@ public class CtrlAmigos {
 
     }
 
-    public void salvar(Amigos usuario){
-
+    public void AddAmigo(int codigoAmizade, final CallbackSalvar callbackSalvar){
+        this.callbackSalvar = callbackSalvar;
+        this.codigoAmizade = codigoAmizade;
+        postarUm();
     }
 
-    public void excluir(int codigo){
-
+    public void excluir(int codigoAmizade, int pai, CallbackExcluir callbackExcluir){
+        this.codigoAmizade = codigoAmizade;
+        this.callbackExcluir = callbackExcluir;
+        this.papa = pai;
+        this.excluirUm();
     }
 
     public void contar (String parametro, final CallbackTrazer callback){
@@ -112,4 +127,137 @@ public class CtrlAmigos {
             }
         });
     }
+
+    /* Inicio da logica de adição de uma nova amizade*/
+    /* Faz um post */
+    private void postarUm(){
+        new CtrlPost(contexto).salvar("usuario, tipo", String.valueOf(DadosUsuario.codigo) +","+ 2, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.isFlag())
+                    postarDois();
+                else
+                    Toast.makeText(contexto, "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /* Busca o codigo do post feito anteriormente */
+    private void postarDois(){
+        new CtrlPost(contexto).trazer("usuario = " + String.valueOf(DadosUsuario.codigo) +" ORDER BY codigo DESC", new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                Post rsp = (Post) obj;
+                postarTres(rsp.getCodigo());
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /* Salva a amizade */
+    private void postarTres(final int pai){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "C");
+        params.put("tabela", "amigos");
+        params.put("condicao", "amigoAdd, amigoAce, pai");
+        params.put("valores", String.valueOf(DadosUsuario.codigo +","+ codigoAmizade +","+ pai));
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                callbackSalvar.resultadoSalvar(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+                postarQuatro(pai);
+            }
+        });
+    }
+
+    /* Caso de algum erro, anula a amizade */
+    private void postarQuatro(int pai){
+        new CtrlPost(contexto).excluir(pai, new CallbackExcluir() {
+            @Override
+            public void resultadoExcluir(boolean flag) {
+                if (flag)
+                    Toast.makeText(contexto, "Não foi possível postar \nPost cancelado.", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(contexto, "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    /* Inicio da logica de exclusao de uma amizade */
+    /* Exclui a amizade e logo em seguida exclui o post em que é vinculado no passo dois*/
+    private void excluirUm(){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "D");
+        params.put("tabela", "amigos");
+        params.put("condicao", "codigo");
+        params.put("valores", String.valueOf(codigoAmizade));
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag())
+                    excluirDois();
+                else
+                    callbackExcluir.resultadoExcluir(false);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackExcluir.falha();
+            }
+        });
+    }
+
+    private void excluirDois(){
+        new CtrlPost(contexto).excluir(papa, new CallbackExcluir() {
+            @Override
+            public void resultadoExcluir(boolean flag) {
+                if (flag)
+                    callbackExcluir.resultadoExcluir(true);
+                else
+                    callbackExcluir.resultadoExcluir(false);
+            }
+
+            @Override
+            public void falha() {
+                callbackExcluir.falha();
+            }
+        });
+    }
+
 }

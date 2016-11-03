@@ -1,10 +1,9 @@
 package es.esy.rafaelsilva.tcc.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Post;
-import es.esy.rafaelsilva.tcc.task.MontarView;
+import es.esy.rafaelsilva.tcc.task.ViewAmizade;
+import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
+import es.esy.rafaelsilva.tcc.task.ViewComentario;
 
 public class PerfilAtividade extends Fragment {
 
@@ -26,6 +29,7 @@ public class PerfilAtividade extends Fragment {
     public SwipeRefreshLayout recarregar;
     private LinearLayout layout;
     private List<Post> posts;
+    private int usuario;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -66,15 +70,16 @@ public class PerfilAtividade extends Fragment {
     }
 
     public void carregarComentarios() {
-
-        new CtrlPost(getActivity()).listar("WHERE usuario = "+ 2 +" ORDER BY data DESC", new CallbackListar() {
+        usuario = ((PerfilActivity) getActivity()).getUsuarioCodigo();
+        new CtrlPost(getActivity()).listar("WHERE usuario = "+ usuario +" ORDER BY data DESC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 posts = new ArrayList<>();
                 for (Object obj : lista)
                     posts.add((Post) obj);
 
-                new MontarView(getActivity(), layout, posts, recarregar).execute();
+                if (posts.size() > 0)
+                    montarView(0);
             }
 
             @Override
@@ -94,7 +99,60 @@ public class PerfilAtividade extends Fragment {
                 recarregar.setRefreshing(false);
             }
         });
-//        PostTask postTask = new PostTask(getActivity(), recarregar);
-//        postTask.execute("R", "post", "ORDER BY data DESC");
+    }
+
+    private void montarView(final int posicao){
+        if (posicao <= posts.size() - 1) {
+            if (posts.get(posicao).getTipo() == 1) {
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post, null);
+                new ViewComentario(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else if (posts.get(posicao).getTipo() == 2){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_add_amigo, null);
+                new ViewAmizade(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else if (posts.get(posicao).getTipo() == 3){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_avaliacao, null);
+                new ViewAvaliacao(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else {
+                montarView(posicao + 1);
+            }
+        }else{
+            recarregar.setRefreshing(false);
+        }
     }
 }

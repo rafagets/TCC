@@ -65,33 +65,43 @@ public class ViewAvaliacao {
     }
 
     private void getUsuario(){
-        new CtrlUsuario(contexto).trazer(av.getUsuario(), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                usu = (Usuario) obj;
-                getProduto();
-            }
+        try {
+            new CtrlUsuario(contexto).trazer(av.getUsuario(), new CallbackTrazer() {
+                @Override
+                public void resultadoTrazer(Object obj) {
+                    usu = (Usuario) obj;
+                    getProduto();
+                }
 
-            @Override
-            public void falha() {
-                callback.view(null);
-            }
-        });
+                @Override
+                public void falha() {
+                    callback.view(null);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            callback.view(null);
+        }
     }
 
     private void getProduto(){
-        new CtrlProduto(contexto).trazer(av.getProduto(), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                prod = (Produto) obj;
-                montar();
-            }
+        try {
+            new CtrlProduto(contexto).trazer(av.getProduto(), new CallbackTrazer() {
+                @Override
+                public void resultadoTrazer(Object obj) {
+                    prod = (Produto) obj;
+                    montar();
+                }
 
-            @Override
-            public void falha() {
-                callback.view(null);
-            }
-        });
+                @Override
+                public void falha() {
+                    callback.view(null);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            callback.view(null);
+        }
     }
 
     private boolean montar(){

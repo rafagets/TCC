@@ -6,17 +6,16 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/recarregar"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:orientation="vertical" />
+
+    <GridView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <GridView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gridView"
-            android:numColumns="auto_fit" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/gridView"
+        android:numColumns="3" />
 
 </FrameLayout>

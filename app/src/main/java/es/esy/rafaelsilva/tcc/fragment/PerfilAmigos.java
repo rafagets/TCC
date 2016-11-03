@@ -4,24 +4,32 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.adapters.AmigosAdapter;
 import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
+import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 public class PerfilAmigos extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private List<Amigos> amigos;
+    private int usuario;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -42,28 +50,49 @@ public class PerfilAmigos extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_perfil_amigos, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_perfil_amigos, container, false);
 
-        new CtrlAmigos(getActivity()).listar("", new CallbackListar() {
+        /* Busca o usuario alvo da pesquisa*/
+        usuario = ((PerfilActivity) getActivity()).getUsuarioCodigo();
+        /* Busca a lista de amigos e monta o adapter*/
+        buscar(rootView);
+
+        return rootView;
+
+    }
+
+    private void buscar(final View rootView){
+        new CtrlAmigos(getActivity()).listar("WHERE amigoAdd = " + usuario, new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 amigos = new ArrayList<>();
                 for (Object obj : lista)
                     amigos.add((Amigos) obj);
 
-                AmigosAdapter adapter = new AmigosAdapter(amigos, getActivity());
-                GridView gridView = (GridView) getActivity().findViewById(R.id.gridView);
-                gridView.setAdapter(adapter);
+                if (amigos != null) {
+                    AmigosAdapter adapter = new AmigosAdapter(amigos, getActivity());
+                    GridView gridView = (GridView) getActivity().findViewById(R.id.gridView);
+                    gridView.setAdapter(adapter);
+                }else{
+                    LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
+                    layout.removeAllViewsInLayout();
+                    ImageView falha = new ImageView(getActivity());
+                    falha.setImageResource(R.drawable.back_falha_carregar);
+                    layout.addView(falha);
+                }
 
             }
 
             @Override
             public void falha() {
-
+                LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
+                layout.removeAllViewsInLayout();
+                ImageView falha = new ImageView(getActivity());
+                falha.setImageResource(R.drawable.back_falha_carregar);
+                layout.addView(falha);
+                layout.setVisibility(View.VISIBLE);
             }
         });
-
-        return rootView;
     }
 
 }

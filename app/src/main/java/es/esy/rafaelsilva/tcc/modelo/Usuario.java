@@ -2,6 +2,7 @@ package es.esy.rafaelsilva.tcc.modelo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -207,6 +208,20 @@ public class Usuario {
 			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imagem);
 			Picasso.with(contexto)
 					.load(Config.caminhoImageTumb + imagem)
+					.placeholder(R.drawable.ic_usuario)
+					.error(R.drawable.ic_usuario)
+					.into(img);
+		}else{
+			img.setImageResource(R.drawable.ic_usuario);
+			//img.setBackgroundColor(R.color.cardview_light_background);
+		}
+	}
+
+	public void setImagemGrande(ImageView img, Context contexto){
+		if (imagem != null) {
+			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imagem);
+			Picasso.with(contexto)
+					.load("https://scontent.fbau1-1.fna.fbcdn.net/v/t1.0-9/13781688_1073107406102106_4830451090249100377_n.jpg?oh=96e251797cbb2f19d7c423082e0f96e8&oe=58992E1D")
 					.placeholder(R.drawable.ic_usuario)
 					.error(R.drawable.ic_usuario)
 					.into(img);

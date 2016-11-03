@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
@@ -104,7 +105,8 @@ public class CtrlPost {
         });
     }
 
-    public void excluir(int codigo, final CallbackSalvar callbackSalvar){
+    public void excluir(int codigo, final CallbackExcluir callbackExcluir){
+
         Map<String, String> params = new HashMap<>();
         params.put("acao", "D");
         params.put("tabela", "post");
@@ -115,7 +117,11 @@ public class CtrlPost {
         getData.executar(Resposta.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
-                callbackSalvar.resultadoSalvar(resposta);
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag())
+                    callbackExcluir.resultadoExcluir(true);
+                else
+                    callbackExcluir.resultadoExcluir(false);
             }
 
             @Override
@@ -125,7 +131,7 @@ public class CtrlPost {
 
             @Override
             public void erro(String resposta) {
-                callbackSalvar.falha();
+                callbackExcluir.falha();
             }
         });
     }

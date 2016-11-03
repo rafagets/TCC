@@ -75,18 +75,24 @@ public class ViewComentario {
     }
 
     private void getUsuario(){
-        new CtrlUsuario(contexto).trazer(c.getUsuarioPost(), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                u = (Usuario) obj;
-                getComentarioPost();
-            }
+        try {
+            new CtrlUsuario(contexto).trazer(c.getUsuarioPost(), new CallbackTrazer() {
+                @Override
+                public void resultadoTrazer(Object obj) {
+                    u = (Usuario) obj;
+                    getComentarioPost();
+                }
 
-            @Override
-            public void falha() {
-                callback.view(null);
-            }
-        });
+                @Override
+                public void falha() {
+                    callback.view(null);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            callback.view(null);
+        }
+
     }
 
     private void getComentarioPost(){

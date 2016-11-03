@@ -15,7 +15,7 @@ import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 /**
- * Created by Rafael on 14/10/2016.
+ * Criado por Rafael em 14/10/2016, enjoy it.
  */
 public class PostComentarioTask extends AsyncTask<String, Integer, Boolean> {
     private String acao;
