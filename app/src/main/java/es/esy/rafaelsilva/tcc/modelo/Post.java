@@ -1,5 +1,7 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
+import java.util.Objects;
+
 /**
  * Created by Rafael on 18/09/2016.
  */
@@ -19,33 +21,14 @@ public class Post {
     private int filha;
     private int tipo;
     private int usuario;
-    private Usuario usuarioObj;
-    private Comentario comentarioObj;
-    private Amigos amigosObj;
-    private Avaliacao avaliacaoObj;
+    private int editado;
 
-    public Amigos getAmigosObj() {
-        return amigosObj;
+    public int getEditado() {
+        return editado;
     }
 
-    public void setAmigosObj(Amigos amigosObj) {
-        this.amigosObj = amigosObj;
-    }
-
-    public Avaliacao getAvaliacaoObj() {
-        return avaliacaoObj;
-    }
-
-    public void setAvaliacaoObj(Avaliacao avaliacaoObj) {
-        this.avaliacaoObj = avaliacaoObj;
-    }
-
-    public Comentario getComentarioObj() {
-        return comentarioObj;
-    }
-
-    public void setComentarioObj(Comentario comentarioObj) {
-        this.comentarioObj = comentarioObj;
+    public void setEditado(int editado) {
+        this.editado = editado;
     }
 
     public int getUsuario() {
@@ -54,14 +37,6 @@ public class Post {
 
     public void setUsuario(int usuario) {
         this.usuario = usuario;
-    }
-
-    public Usuario getUsuarioObj() {
-        return usuarioObj;
-    }
-
-    public void setUsuarioObj(Usuario usuarioObj) {
-        this.usuarioObj = usuarioObj;
     }
 
     public int getCodigo() {
@@ -102,5 +77,26 @@ public class Post {
 
     public void setTipo(int tipo) {
         this.tipo = tipo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this != obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        Post post = (Post) obj;
+        return Objects.equals(editado, post.editado)
+                && Objects.equals(codigo, post.codigo)
+                && Objects.equals(status, post.status)
+                && Objects.equals(data, post.data)
+                && Objects.equals(filha, post.filha)
+                && Objects.equals(tipo, post.tipo)
+                && Objects.equals(usuario, post.usuario);
     }
 }

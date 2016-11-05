@@ -39,6 +39,7 @@ import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
+import es.esy.rafaelsilva.tcc.util.Util;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -80,6 +81,12 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
+
+        /*Verifica se o usuario tem conexao com a internet*/
+        if (!Util.existeConexao(this)) {
+            Toast.makeText(this,"Que pena, você está sem Internet. \nTente mais tarde \uD83D\uDC4D", Toast.LENGTH_LONG).show();
+            this.finish();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -400,4 +407,9 @@ public class PerfilActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }

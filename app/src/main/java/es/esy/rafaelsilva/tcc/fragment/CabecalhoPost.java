@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -110,16 +113,25 @@ public class CabecalhoPost extends Fragment {
 
         // defino a view que contem os dados para abertura da mesa
         View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_coment, null);
-        mensagem.setView(view);
-        comentario = (EditText) view.findViewById(R.id.txtPost);
 
+        comentario = (EditText) view.findViewById(R.id.txtPost);
+        CircleImageView imgUsuarioLogado = (CircleImageView) view.findViewById(R.id.imgUsuarioLogado);
+        Spinner spinner = (Spinner) view.findViewById(R.id.status);
+
+        String[] status = new String[] {"Público","Amigos","Privado"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, status);
+        spinner.setAdapter(adapter);
+
+        usuario.setImagemPerfil(imgUsuarioLogado, getActivity());
+
+        mensagem.setView(view);
         mensagem.setPositiveButton("Postar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialoge, int which) {
 
                 if (!comentario.getText().toString().equals("")) {
 
                     // inicio a sequencia que ira realizar um post
-                    postarUm();;
+                    postarUm();
 
                 }else{
                     Toast.makeText(getActivity(), "Digite um comentário.", Toast.LENGTH_LONG).show();
@@ -146,12 +158,12 @@ public class CabecalhoPost extends Fragment {
     }
 
     public void postarUm(){
-        new CtrlPost(getActivity()).salvar("usuario", String.valueOf(DadosUsuario.codigo), new CallbackSalvar() {
+        new CtrlPost(getActivity()).postar("usuario", String.valueOf(DadosUsuario.codigo), comentario.getText().toString(), new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 Resposta rsp = (Resposta) obj;
                 if (rsp.isFlag())
-                    postarDois();
+                    Toast.makeText(getActivity(), "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
             }
@@ -159,55 +171,6 @@ public class CabecalhoPost extends Fragment {
             @Override
             public void falha() {
                 Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void postarDois(){
-        new CtrlPost(getActivity()).trazer("usuario = " + String.valueOf(DadosUsuario.codigo), new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                Post rsp = (Post) obj;
-                postarTres(rsp.getCodigo());
-            }
-
-            @Override
-            public void falha() {
-                Toast.makeText(getActivity(), "Falha ao postar", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void postarTres(final int pai){
-        new CtrlComentario(getActivity()).salvar(pai, comentario.getText().toString(), new CallbackSalvar() {
-            @Override
-            public void resultadoSalvar(Object obj) {
-                Resposta rsp = (Resposta) obj;
-                if (rsp.isFlag())
-                    Toast.makeText(getActivity(), "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void falha() {
-                Toast.makeText(getActivity(), "falha", Toast.LENGTH_LONG).show();
-                postarQuatro(pai);
-            }
-        });
-    }
-
-    public void postarQuatro(int pai){
-        new CtrlPost(getActivity()).excluir(pai, new CallbackExcluir() {
-            @Override
-            public void resultadoExcluir(boolean flag) {
-                if (flag)
-                    Toast.makeText(getActivity(), "Não foi possível postar \nPost cancelado.", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(getActivity(), "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void falha() {
-                Toast.makeText(getActivity(), "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
             }
         });
     }

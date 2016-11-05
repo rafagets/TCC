@@ -1,6 +1,7 @@
 package es.esy.rafaelsilva.tcc.controle;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
 import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
@@ -132,6 +134,81 @@ public class CtrlPost {
             @Override
             public void erro(String resposta) {
                 callbackExcluir.falha();
+            }
+        });
+    }
+    
+    public void postar(String condicao, String valores, final String comentarioFeito, final CallbackSalvar callbackSalvar){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "C");
+        params.put("tabela", "post");
+        params.put("condicao", condicao);
+        params.put("valores", valores);
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                postarDois(comentarioFeito);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+            }
+        });
+    }
+
+    private void postarDois(final String comentarioFeito){
+        this.trazer("usuario = " + String.valueOf(DadosUsuario.codigo) +" ORDER BY codigo DESC LIMIT 1", new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                Post rsp = (Post) obj;
+                postarTres(rsp.getCodigo(), comentarioFeito);
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "Falha ao postar", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void postarTres(final int pai, String comentarioFeito){
+        new CtrlComentario(contexto).salvar(pai, comentarioFeito, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.isFlag())
+                    Toast.makeText(contexto, "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "falha", Toast.LENGTH_LONG).show();
+                postarQuatro(pai);
+            }
+        });
+    }
+
+    private void postarQuatro(int pai){
+        new CtrlPost(contexto).excluir(pai, new CallbackExcluir() {
+            @Override
+            public void resultadoExcluir(boolean flag) {
+                if (flag)
+                    Toast.makeText(contexto, "Não foi possível postar \nPost cancelado.", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(contexto, "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(contexto, "Não foi possível postar \nPost pendente.", Toast.LENGTH_LONG).show();
             }
         });
     }

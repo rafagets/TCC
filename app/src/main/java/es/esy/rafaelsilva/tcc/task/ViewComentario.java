@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.ComentarioSP;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosPostActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
@@ -38,6 +39,7 @@ import es.esy.rafaelsilva.tcc.util.Util;
  * Created by Rafael on 23/10/2016.
  */
 public class ViewComentario {
+    private ComentarioSP sp;
     private CallbackView callback;
     private View view;
     private Context contexto;
@@ -46,17 +48,34 @@ public class ViewComentario {
     private Usuario u; // ok
     private List<ComentarioPost> cp; // ok
     private List<CurtidaComentario> cc; // ok
-    private boolean[] flag = { true, true, true, true };
+    private boolean existeSP = false;
 
     public ViewComentario(Context contexto, View view, Post post) {
         this.contexto = contexto;
         this.view = view;
         this.post = post;
+        this.sp = new ComentarioSP(contexto, "TCC_COMENTARIO_"+post.getCodigo());
     }
 
     public void getView(CallbackView callback){
         this.callback = callback;
-        getComentario();
+
+        Post postSP = sp.lerPost();
+        if (postSP != null) {
+            if (postSP.getEditado() == post.getEditado()) {
+                c = sp.lerComentario();
+                u = sp.lerUsuario();
+                cp = sp.lerCP();
+                cc = sp.lerCC();
+
+                existeSP = true;
+                montar();
+            }else {
+                getComentario();
+            }
+        }else{
+            getComentario();
+        }
     }
 
     private void getComentario(){
@@ -131,6 +150,11 @@ public class ViewComentario {
     }
 
     private boolean montar(){
+
+        if (!existeSP){
+            sp.salvar(cc,c,cp,post,u);
+        }
+
         try {
             final TextView nome, post, data, qtdAddOne, numComent;
             CircleImageView imgUsuario;

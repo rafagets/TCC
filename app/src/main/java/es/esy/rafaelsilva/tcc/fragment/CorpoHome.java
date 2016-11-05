@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.ListaPostsSP;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
@@ -31,6 +33,7 @@ public class CorpoHome extends Fragment {
     public SwipeRefreshLayout recarregar;
     private LinearLayout layout;
     private List<Post> posts;
+    private boolean flag = false;
 
     @Nullable
     @Override
@@ -68,24 +71,49 @@ public class CorpoHome extends Fragment {
                 for (Object obj : lista)
                     posts.add((Post) obj);
 
-                if (posts.size() > 0)
+                if (posts.size() > 0) {
+
+                    ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
+                    List<Post> postsSP = sp.lerPosts();
+
+                    if (postsSP == null){
+                        sp.salvar(posts);
+                    }else {
+                        if (posts.equals(postsSP)) {
+                            flag = true;
+                        }else{
+                            sp.salvar(posts);
+                        }
+                    }
+
                     montarView(0);
+                }
             }
 
             @Override
             public void falha() {
-                ImageView falha = new ImageView(getActivity());
-                falha.setImageResource(R.drawable.back_falha_carregar);
-                layout.addView(falha);
 
-                falha.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        carregarComentarios();
-                        layout.removeAllViews();
-                        recarregar.setRefreshing(true);
-                    }
-                });
+                try {
+                    Toast.makeText(getActivity(),
+                            "Falha ao conectar com servidor \uD83D\uDE22As funções foram limitadas ",
+                            Toast.LENGTH_LONG).show();
+
+                    posts = new ListaPostsSP(getActivity(), "TCC_POST").lerPosts();
+                    montarView(0);
+                }catch (Exception e){
+                    ImageView falha = new ImageView(getActivity());
+                    falha.setImageResource(R.drawable.back_falha_carregar);
+                    layout.addView(falha);
+
+                    falha.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            carregarComentarios();
+                            layout.removeAllViews();
+                            recarregar.setRefreshing(true);
+                        }
+                    });
+                }
                 recarregar.setRefreshing(false);
             }
         });

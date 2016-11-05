@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.AvaliacaoSP;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
@@ -28,6 +29,7 @@ import es.esy.rafaelsilva.tcc.util.Util;
  * Created by Rafael on 23/10/2016.
  */
 public class ViewAvaliacao {
+    private AvaliacaoSP sp;
     private CallbackView callback;
     private View v;
     private Context contexto;
@@ -35,6 +37,7 @@ public class ViewAvaliacao {
     private Avaliacao av;
     private Usuario usu;
     private Produto prod;
+    private boolean existeSP = false;
 //    private List<ComentarioPost> cp; // ok
 //    private List<CurtidaComentario> cc; // ok
 
@@ -42,11 +45,27 @@ public class ViewAvaliacao {
         this.contexto = contexo;
         this.post = post;
         this.v = view;
+        this.sp = new AvaliacaoSP(contexto, "TCC_AVALIACAO_"+post.getCodigo());
     }
 
     public void getView(CallbackView callback) {
         this.callback = callback;
-        getAvaliacao();
+
+        Post postSP = sp.lerPost();
+        if (postSP != null) {
+            if (postSP.getEditado() == post.getEditado()) {
+                av = sp.lerAvaliacao();
+                usu = sp.lerUsuario();
+                prod = sp.lerProduto();
+
+                existeSP = true;
+                montar();
+            }else {
+                getAvaliacao();
+            }
+        }else{
+            getAvaliacao();
+        }
     }
 
     private void getAvaliacao(){
@@ -105,6 +124,11 @@ public class ViewAvaliacao {
     }
 
     private boolean montar(){
+
+        if (!existeSP){
+            sp.salvar(post,av,prod,usu);
+        }
+
         try {
             final TextView nome, data, produto, avaliacao;
             CircleImageView imgUsuario, imgProduto;
