@@ -16,7 +16,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -24,12 +26,15 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.controle.CtrlHistorico;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
@@ -45,6 +50,12 @@ public class HistoricoActivity extends AppCompatActivity {
     private ProgressBar bar;
     private Lote lote;
     public Produto produto;
+    ImageView btLocalizacao;
+    String lote1;
+    double [] latitude;//= {-21.671406};
+    double [] longitude;// = {-49.726823};
+    List<Historico> hist;
+    String coord = "";
 
     public Produto getProduto() {
         return produto;
@@ -65,8 +76,11 @@ public class HistoricoActivity extends AppCompatActivity {
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.VISIBLE);
 
-        String lote = String.valueOf(getIntent().getStringExtra("lote"));
-        Log.e("+++++++++++++++", lote);
+        lote1 = String.valueOf(getIntent().getStringExtra("lote"));
+        Log.e("+++++++++++++++", lote1);
+
+        coord = buscaCoordenadas(lote1);
+        System.out.println("coord"+ coord);
 
         RequestParams params = new RequestParams();
         params.put("acao", "R");
@@ -85,7 +99,7 @@ public class HistoricoActivity extends AppCompatActivity {
             }
         });
 
-        ImageView btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
+        btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
         btLocalizacao.setOnClickListener(verMapa());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -102,7 +116,13 @@ public class HistoricoActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                String coordenadas;
+//                coordenadas  = buscaCoordenadas(lote1);
+
                 Intent intent = new Intent(HistoricoActivity.this, Mapa_Activity.class);
+
+                intent.putExtra("local",coord);
                 startActivity(intent);
             }
         };
@@ -273,5 +293,33 @@ public class HistoricoActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private String buscaCoordenadas(String lote) {
+
+        new CtrlHistorico(this).listar(lote, new CallbackListar() {
+
+            @Override
+            public void resultadoListar(List<Object> lista) {
+                hist = new ArrayList<>();
+                int i = 0;
+                latitude = new double[lista.size() + 1];
+                longitude = new double[lista.size() + 1];
+                for(Object obj : lista){
+                    hist.add((Historico) obj);
+                    latitude[i] = hist.get(i).getLatitude();
+                    longitude[i] = hist.get(i).getLongitude();
+                    coord = String.valueOf(latitude[i])+","+String.valueOf(longitude[i]);
+
+                    i++;
+                }
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(HistoricoActivity.this, "Falha ao carregar coordenadas!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return coord;
     }
 }
