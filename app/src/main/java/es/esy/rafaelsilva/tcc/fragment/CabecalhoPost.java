@@ -70,26 +70,7 @@ public class CabecalhoPost extends Fragment {
         LinearLayout comentar = (LinearLayout) getActivity().findViewById(R.id.lyComentar);
         imgUsuarioPrincipal = (CircleImageView) getActivity().findViewById(R.id.imgUsuarioPrincipal);
 
-        new CtrlUsuario(getActivity()).trazer(DadosUsuario.codigo, new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                usuario = (Usuario) obj;
-                if (usuario == null){
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra("error", true);
-                    startActivity(intent);
-                    getActivity().finish();
-                }else {
-                    usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
-                }
-            }
-
-            @Override
-            public void falha() {
-
-            }
-        });
-
+        getUsuario();
 
         imgUsuarioPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +83,12 @@ public class CabecalhoPost extends Fragment {
         comentar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postarComent();
+                if (usuario != null)
+                    postarComent();
+                else {
+                    Toast.makeText(getActivity(), "Sem conexão\nTente mais tarde.", Toast.LENGTH_LONG).show();
+                    getUsuario();
+                }
             }
         });
     }
@@ -122,7 +108,8 @@ public class CabecalhoPost extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, status);
         spinner.setAdapter(adapter);
 
-        usuario.setImagemPerfil(imgUsuarioLogado, getActivity());
+        if (usuario != null)
+            usuario.setImagemPerfil(imgUsuarioLogado, getActivity());
 
         mensagem.setView(view);
         mensagem.setPositiveButton("Postar", new DialogInterface.OnClickListener() {
@@ -175,4 +162,25 @@ public class CabecalhoPost extends Fragment {
         });
     }
 
+    public void getUsuario() {
+        new CtrlUsuario(getActivity()).trazer(DadosUsuario.codigo, new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                usuario = (Usuario) obj;
+                if (usuario == null){
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("error", true);
+                    startActivity(intent);
+                    getActivity().finish();
+                }else {
+                    usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
+                }
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
+    }
 }

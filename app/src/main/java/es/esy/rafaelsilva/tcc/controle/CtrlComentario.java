@@ -62,7 +62,7 @@ public class CtrlComentario {
         params.put("tabela", "comentario");
         params.put("ordenacao", parametro);
 
-        GetData<Comentario> getData = new GetData<>("objeto", params);
+        GetData<Comentario> getData = new GetData<>("lista", params);
         getData.executar(Comentario.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
