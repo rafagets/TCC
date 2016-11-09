@@ -238,12 +238,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_send) {
 
-        }else if (id == R.id.nav_user){
-
+        }else if (id == R.id.nav_edit_user){
+    Intent intent = new Intent(HomeActivity.this, AtualizaCadastroUsuarioActivity.class);
+            startActivity(intent);
 
             //aqui abre a tela de cadastro de usuario
-            Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
+//            startActivity(intent);
         }else if(id == R.id.nav_logout){
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("error", true);

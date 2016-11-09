@@ -3,9 +3,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_user"
+            android:id="@+id/nav_edit_user"
             android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Add New User" />
+            android:title="Editar Meus Dados" />
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"

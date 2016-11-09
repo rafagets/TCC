@@ -34,11 +34,14 @@ import es.esy.rafaelsilva.tcc.adapters.Pesquisa;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
+import es.esy.rafaelsilva.tcc.util.Util;
 
 public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
+    int codigo;
     EditText txtNome;
     EditText txtSobrenome;
     EditText txtRua;
@@ -77,7 +80,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         txtDataNasc = (EditText) findViewById(R.id.txtDataNasc);
         txtProfissao = (EditText) findViewById(R.id.txtProfissao);
         alimentacao = (Spinner) findViewById(R.id.spinner);
-        btnAtualizar = (Button) findViewById(R.id.btnCadastrar);
+        btnAtualizar = (Button) findViewById(R.id.btnAtualizarCad);
 
         /*popula o spinner
         * os valores se encontram em um xml no endereço:
@@ -86,28 +89,19 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         alimentacao.setAdapter(adapter);
         //carrega as informações do usuario
-        new CtrlUsuario(this).listar("codigo='"+ DadosUsuario.getUsuario().getCodigo()+"'", new CallbackListar() {
+        new CtrlUsuario(this).trazer(DadosUsuario.getUsuario().getCodigo(), new CallbackTrazer() {
             @Override
-            public void resultadoListar(List<Object> lista) {
-                listaUsuarios = new ArrayList<>();
-
-                for (Object obj : lista) {
-                    listaUsuarios.add((Usuario) obj);
-                }
-
-
-                if (listaUsuarios != null){
-
-                    txtNome.setText(listaUsuarios.get(0).getNome());
-                    txtSobrenome.setText(listaUsuarios.get(0).getSobrenome());
-                    txtRua.setText(listaUsuarios.get(0).getRua());
-                    txtNumero.setText(listaUsuarios.get(0).getNumero());
-                    txtCep.setText(listaUsuarios.get(0).getCep());
-                    txtDataNasc.setText(listaUsuarios.get(0).getDataNasc());
-                    txtProfissao.setText(listaUsuarios.get(0).getProfissao());
-
-                }
-
+            public void resultadoTrazer(Object obj) {
+                    Usuario usuario;
+                    usuario = (Usuario) obj;
+                    txtNome.setText(usuario.getNome());
+                    txtSobrenome.setText(usuario.getSobrenome());
+                    txtRua.setText(usuario.getRua());
+                    txtNumero.setText(String.valueOf(usuario.getNumero()));
+                    txtCep.setText(String.valueOf(usuario.getCep()));
+                    txtDataNasc.setText(Util.formatDateOfDB(String.valueOf(usuario.getDataNasc())));
+                    txtProfissao.setText(usuario.getProfissao());
+                    codigo = usuario.getCodigo();
             }
 
             @Override
@@ -122,7 +116,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         btnAtualizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                atualizarCadastro();
+                atualizarCadastro(codigo);
             }
         });
 
@@ -131,7 +125,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void atualizarCadastro() {
+    private void atualizarCadastro(int codigo) {
         dialog = new ProgressDialog(AtualizaCadastroUsuarioActivity.this);
         dialog.setMessage("Atualizando, aguarde...");
         dialog.show();
@@ -145,7 +139,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
 
             //if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
 
-            String campos = "codigo='"+ listaUsuarios.get(0).getCodigo();
+            String campos = "codigo="+ codigo;
 //                    "sobrenome, " +
 //                    "rua, " +
 //                    "numero, " +
@@ -158,7 +152,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
                     "rua='" + txtRua.getText().toString() + "',"+
                     "numero='" + txtNumero.getText().toString() + "'," +
                     "cep='" + txtCep.getText().toString() + "'," +
-                    "datanasc='" + txtDataNasc.getText().toString() + "'," +
+                    "datanasc='" +  Util.formatDateToDB(txtDataNasc.getText().toString()) + "'," +
                     "profissao='" + txtProfissao.getText().toString() + "'," +
                     "alimentacao='" + alimentacao.getSelectedItem().toString() + "'";
 
@@ -169,11 +163,9 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Resposta resposta = (Resposta) obj;
                     if (resposta.isFlag()) {
-//                        Intent intent = new Intent(AtualizaCadastroUsuarioActivity.this, Login_Activity.class);
-//                        intent.putExtra("email", txtEmail.getText().toString());
-//                        startActivity(intent);
+                        Toast.makeText(AtualizaCadastroUsuarioActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(AtualizaCadastroUsuarioActivity.this, "Falha ao cadastrar usuario", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AtualizaCadastroUsuarioActivity.this, "Falha ao atualizar usuario", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -289,40 +281,40 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "AtualizaCadastroUsuario Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://es.esy.rafaelsilva.tcc.activity/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AtualizaCadastroUsuario Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app URL is correct.
+//                Uri.parse("android-app://es.esy.rafaelsilva.tcc.activity/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "AtualizaCadastroUsuario Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://es.esy.rafaelsilva.tcc.activity/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+//        // ATTENTION: This was auto-generated to implement the App Indexing API.
+//        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "AtualizaCadastroUsuario Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app URL is correct.
+//                Uri.parse("android-app://es.esy.rafaelsilva.tcc.activity/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
     }
     /*	// CALL IN CAM
         public void callIntentImgCam(View view){

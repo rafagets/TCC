@@ -4,10 +4,32 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+
 /**
  * Created by Rafael on 12/09/2016.
  */
 public class Util {
+
+    public static List<Double> list;
+
+    public static String formatDateToDB(String data){
+        data = data.toString().replace("/","");
+        data = (data.toString().substring(4) +
+                data.toString().substring(2,4) +
+                data.toString().substring(0,2));//   99999999
+        return data;
+    }
+    public static String formatDateOfDB(String data){
+        data = data.toString().replace("-","/");
+        data = (data.toString().substring(8) + "/"+
+                data.toString().substring(5,7) + "/"+
+                data.toString().substring(0,4));//   9999-99-99
+                                                //   0123456789
+        return data;
+    }
 
     public static String formatHoraHHMM(String data){
         String[]    temp = data.split(" ");
@@ -82,5 +104,13 @@ public class Util {
         }else{
             return false;
         }
+    }
+
+    public static List<Double> getList() {
+        return list;
+    }
+
+    public static void setList(List<Double> list) {
+        Util.list = list;
     }
 }
