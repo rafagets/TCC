@@ -21,6 +21,15 @@ public class Historico {
 	private int lote;
 	private int tipo;
 	private Tipo tipoObj;
+	private String cordenadas;
+
+	public String getCordenadas() {
+		return cordenadas;
+	}
+
+	public void setCordenadas(String cordenadas) {
+		this.cordenadas = cordenadas;
+	}
 
 	public int getCodigo() {
 		return codigo;

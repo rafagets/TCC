@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
+import es.esy.rafaelsilva.tcc.util.Util;
 
 public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -44,6 +45,7 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
     private LocationManager gps;
     private boolean isOn;
     List<Historico> hist;
+    private String cordenadas = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +56,14 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
 //        }
 //        verificarGps();
         //******************************************************
-        Gson gson = new Gson();
-        String json = getIntent().getStringExtra("historico");
-        Type type = new TypeToken<List<Historico>>(){}.getType();
-
-        hist = gson.fromJson(json, type);
+        if (getIntent().getStringExtra("historico") != null) {
+            Gson gson = new Gson();
+            String json = getIntent().getStringExtra("historico");
+            Type type = new TypeToken<List<Historico>>() {}.getType();
+            hist = gson.fromJson(json, type);
+        }else{
+            cordenadas = getIntent().getStringExtra("cordenadas");
+        }
         //*******************************************************
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -110,18 +115,29 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         try {
-            //if(getIntent().getStringExtra("local") != null){
-                for(Historico h :hist){
-                //String[] coord = getIntent().getStringExtra("local").split(",");// = buscaCoordenadas(getIntent().getStringExtra("lote"));
-                //String[] coord = {"-21.7975502","-49.9270204"}; coordenadas de getulina
-                LatLng local = new LatLng(h.getLatitude(), h.getLongitude());
-                mMap = googleMap;
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-                mMap.addMarker(new MarkerOptions().position(local).title(h.getNome()));
-                System.out.println(local);
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(local));
-                mMap.setMyLocationEnabled(true);
+            MarkerOptions options = new MarkerOptions();
+
+            if (hist != null) {
+                for (Historico h : hist) {
+                    String[] cordenadas = h.getCordenadas().split(", ");
+                    LatLng local = new LatLng(Double.parseDouble(cordenadas[0]), Double.parseDouble(cordenadas[1]));
+                    options.position(local);
+                    options.title(Util.formatDataDDmesYYYY(h.getData())).visible(true);
+                    options.snippet(h.getNome()).visible(true);
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(local));
+                    googleMap.addMarker(options);
+                }
+            }else{
+                String[] cordenadas = this.cordenadas.split(", ");
+                LatLng local = new LatLng(Double.parseDouble(cordenadas[0]), Double.parseDouble(cordenadas[1]));
+                options.position(local);
+                options.title(Util.formatDataDDmesYYYY(getIntent().getStringExtra("data"))).visible(true);
+                options.snippet(getIntent().getStringExtra("nome")).visible(true);
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(local));
+                googleMap.addMarker(options);
             }
+            googleMap.setMinZoomPreference(10);
+
         }catch(SecurityException ex){
             Log.e(TAG, "Error", ex);
         }

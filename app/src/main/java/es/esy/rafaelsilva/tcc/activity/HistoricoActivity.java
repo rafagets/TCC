@@ -324,6 +324,7 @@ public class HistoricoActivity extends AppCompatActivity {
                 intent.putExtra("estrelas", (float) 2.5);
                 intent.putExtra("nome", produto.getNome());
                 intent.putExtra("produto", produto.getCodigo());
+                produto.setListaAvaliacao(listaAvaliacao);
                 intent.putExtra("obj", produto);
                 contexto.startActivity(intent);
             }
@@ -343,7 +344,7 @@ public class HistoricoActivity extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.relativeLayout);;
         //for (Historico h : lista){
         for (int i = 0; i < listaHistorico.size(); i++){
-            Historico h = listaHistorico.get(i);
+            final Historico h = listaHistorico.get(i);
             View v = getLayoutInflater().inflate(R.layout.inflater_historico, null);
 
             TextView nome, data, detalhe;
@@ -365,8 +366,9 @@ public class HistoricoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(HistoricoActivity.this, Mapa_Activity.class);
-                    intent.putExtra("longitude", "");
-                    intent.putExtra("latitude", "");
+                    intent.putExtra("cordenadas", h.getCordenadas());
+                    intent.putExtra("nome", h.getNome());
+                    intent.putExtra("data", h.getData());
                     startActivity(intent);
                 }
             });
