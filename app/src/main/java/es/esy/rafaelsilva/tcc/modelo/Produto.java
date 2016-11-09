@@ -1,6 +1,7 @@
 package es.esy.rafaelsilva.tcc.modelo;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -135,7 +136,7 @@ public class Produto implements Serializable {
 		}
 	}
 
-	public void setImgFundo(CircleImageView img, Context contexto){
+	public void setImgFundo(ImageView img, Context contexto){
 		if (imgheader != null) {
 			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgheader);
 			Picasso.with(contexto)

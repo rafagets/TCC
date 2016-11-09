@@ -7,37 +7,38 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
-import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
-import es.esy.rafaelsilva.tcc.modelo.Historico;
+import es.esy.rafaelsilva.tcc.modelo.Tipo;
 
 /**
  * Criado por Rafael em 08/11/2016, enjoy it.
  */
-public class CtrlHistorico {
+public class CtrlTipo {
     private Context contexto;
 
-    public CtrlHistorico(Context contexto) {
+    public CtrlTipo(Context contexto) {
         this.contexto = contexto;
     }
 
-    public void listar(String parametro, final CallbackListar callback){
+    public void trazer(int codigo, final CallbackTrazer callback){
 
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "historico");
-        params.put("ordenacao", parametro);
+        params.put("tabela", "tipo");
+        params.put("condicao", "codigo");
+        params.put("valores", String.valueOf(codigo));
 
-        GetData<Historico> getData = new GetData<>("lista", params);
-        getData.executar(Historico.class, new VolleyCallback() {
+        GetData<Tipo> getData = new GetData<>("objeto", params);
+        getData.executar(Tipo.class, new VolleyCallback() {
             @Override
             public void sucesso(Object resposta) {
-
+                callback.resultadoTrazer(resposta);
             }
 
             @Override
             public void sucessoLista(List<Object> resposta) {
-                callback.resultadoListar(resposta);
+
             }
 
             @Override
