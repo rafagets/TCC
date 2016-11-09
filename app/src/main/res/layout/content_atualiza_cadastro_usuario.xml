@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="es.esy.rafaelsilva.tcc.activity.AtualizaCadastroUsuarioActivity"
+    tools:showIn="@layout/activity_atualiza_cadastro_usuario"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtNome"
+                android:hint="Nome"
+                android:inputType="textPersonName"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtSobrenome"
+                android:hint="Sobrenome"
+                android:inputType="textPersonName"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtNome"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRua"
+                android:hint="Rua"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtSobrenome"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtNumero"
+                android:hint="Numero"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtRua" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCep"
+                android:hint="CEP"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtNumero" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDataNasc"
+                android:hint="Nascimento"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtCep" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtProfissao"
+                android:hint="Profissão"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:padding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtDataNasc" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:hint="Alimentação"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/txtProfissao"/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:spinnerMode="dialog"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_below="@+id/textView"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="60dp"
+                android:padding="20dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnAtualizarCad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ATUALIZAR"
+        android:layout_gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:background="@color/colorAccent"
+        android:textColor="@color/background_material_light"
+        android:layout_alignParentBottom="true" />
+
+
+<!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center">-->
+
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="100dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--app:civ_border_width="2dp"-->
+            <!--app:civ_border_color="@color/colorAccent"-->
+            <!--android:id="@+id/imgUser"-->
+            <!--android:src="@drawable/ic_account_circle_black_24dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="10dp"/>-->
+
+    <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="16dp">-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtNome"-->
+            <!--android:hint="Nome"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtEmail"-->
+            <!--android:hint="E-mail"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtSenha"-->
+            <!--android:hint="Senha"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:inputType="textPassword" />-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtConfirmSenha"-->
+            <!--android:hint="Confirmação da Senha"-->
+            <!--android:inputType="textPassword"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/txtProfissao"-->
+            <!--android:hint="Profissão"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="16dp"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/textView"-->
+            <!--android:hint="Alimentação"-->
+            <!--android:gravity="left"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_marginBottom="16dp" />-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Carne"-->
+                <!--android:checked="false"-->
+                <!--android:id="@+id/chkCarnivoro"-->
+                <!--android:layout_weight="1"/>-->
+
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Vegano"-->
+                <!--android:id="@+id/chkVegano"-->
+                <!--android:checked="false"-->
+                <!--android:layout_weight="1"/>-->
+
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Vegetariano"-->
+                <!--android:id="@+id/chkVegetariano"-->
+                <!--android:checked="false"-->
+                <!--android:layout_weight="1"/>-->
+            <!--/-->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+
+</RelativeLayout>

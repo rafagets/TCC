@@ -140,7 +140,37 @@ public class CtrlUsuario {
 
 
     }
+    public void salvarAtualizacao(String valores, String campos, final CallbackSalvar callbackSalvar){
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "U");
+        params.put("tabela", "usuario");
+        params.put("condicao", campos);
+        params.put("valores", valores);
 
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new VolleyCallback() {
+            @Override
+            public void sucesso(Object resposta) {
+                Resposta resp = (Resposta) resposta;
+                if (resp.isFlag())
+                    callbackSalvar.resultadoSalvar(resp);
+                else
+                    callbackSalvar.falha();
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+            }
+        });
+
+
+    }
     public void excluir(int codigo){
 
     }

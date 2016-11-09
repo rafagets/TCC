@@ -1,6 +1,7 @@
 package es.esy.rafaelsilva.tcc.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -53,6 +55,7 @@ public class PerfilActivity extends AppCompatActivity {
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
+    private Button btnEditarDados;
 
     public Usuario getUsuarioRequisitado(){
         return usuario;
@@ -111,6 +114,8 @@ public class PerfilActivity extends AppCompatActivity {
         totalAvaliacoes = (TextView) findViewById(R.id.lbTotalAvaliacoes);
         imgUsuario = (CircleImageView) findViewById(R.id.imgUsuario);
         desfazerAmizade = (ImageView) findViewById(R.id.imgDesfazerAmizade);
+        btnEditarDados = (Button) findViewById(R.id.btnEditarDados);
+        btnEditarDados.setOnClickListener(editarDados());
 
         if (getIntent().getIntExtra("usuario", 0) == 0) {
             getUsuario(DadosUsuario.codigo);
@@ -166,6 +171,15 @@ public class PerfilActivity extends AppCompatActivity {
 
     }
 
+    private View.OnClickListener editarDados() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PerfilActivity.this, AtualizaCadastroUsuarioActivity.class);
+                startActivity(intent);
+            }
+        };
+    }
 
 
     // seta os dados principais do usuario alvo
@@ -397,7 +411,7 @@ public class PerfilActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "ATIVIDADE";
+                    return "ATIVIDADES";
                 case 1:
                     return "AMIGOS";
                 case 2:
