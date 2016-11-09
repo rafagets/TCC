@@ -6,7 +6,8 @@ public class Historico {
 	/**
 	 * codigo : 1
 	 * data : 2016-09-05 12:33:20
-	 * cordenadas : -21.798179, -49.945812
+	 * latitude : -21.798179
+	 * logitude: -49.945812
 	 * nome : Colheita
 	 * produto : 2
 	 * tipo : 1
@@ -14,7 +15,8 @@ public class Historico {
 
 	private int codigo;
 	private String data;
-	private String cordenadas;
+	private double latitude;
+	private double longitude;
 	private String nome;
 	private int lote;
 	private int tipo;
@@ -36,12 +38,28 @@ public class Historico {
 		this.data = data;
 	}
 
-	public String getCordenadas() {
-		return cordenadas;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setCordenadas(String cordenadas) {
-		this.cordenadas = cordenadas;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	public int getLote() {
+		return lote;
+	}
+
+	public void setLote(int lote) {
+		this.lote = lote;
 	}
 
 	public String getNome() {

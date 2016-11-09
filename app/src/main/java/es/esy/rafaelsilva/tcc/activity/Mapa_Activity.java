@@ -7,14 +7,11 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -26,28 +23,43 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.modelo.Historico;
 
 public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-
+    private static final String TAG = "Mapa_Activity";
     private GoogleMap mMap;
     String numero = "";
-    long latitude = -34;
-    long longitude = 151;
+    double [] latitude;//= {-21.671406};
+    double [] longitude;// = {-49.726823};
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location l;
     private LocationManager gps;
     private boolean isOn;
+    List<Historico> hist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa_);
-       verificarGps();
+//        if(getIntent().getStringExtra("local") != null){
+//           // buscaCoordenadas(getIntent().getStringExtra("lote"));
+//        }
+//        verificarGps();
+        //******************************************************
+        Gson gson = new Gson();
+        String json = getIntent().getStringExtra("historico");
+        Type type = new TypeToken<List<Historico>>(){}.getType();
+
+        hist = gson.fromJson(json, type);
+        //*******************************************************
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,10 +70,6 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
 //        }
 
     }
-
-
-
-
     private void verificarGps() {
         gps = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
         isOn = gps.isProviderEnabled( LocationManager.GPS_PROVIDER);
@@ -73,8 +81,6 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -99,26 +105,28 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng local = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(local).title("Meu Local"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(local));
+        try {
+            //if(getIntent().getStringExtra("local") != null){
+                for(Historico h :hist){
+                //String[] coord = getIntent().getStringExtra("local").split(",");// = buscaCoordenadas(getIntent().getStringExtra("lote"));
+                //String[] coord = {"-21.7975502","-49.9270204"}; coordenadas de getulina
+                LatLng local = new LatLng(h.getLatitude(), h.getLongitude());
+                mMap = googleMap;
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.addMarker(new MarkerOptions().position(local).title(h.getNome()));
+                System.out.println(local);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(local));
+                mMap.setMyLocationEnabled(true);
+            }
+        }catch(SecurityException ex){
+            Log.e(TAG, "Error", ex);
+        }
+
     }
-
     @Override
     public void onConnected(Bundle bundle) {
         Log.i("LOG", "onConnected(" + bundle + ")");
@@ -152,19 +160,14 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public void onConnectionSuspended(int i) {
         Log.i("LOG", "onConnectionSuspended(" + i +")");
-
     }
-
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
-
     @Override
     public void onLocationChanged(Location location) {
-        latitude = (long) location.getLatitude();
-        longitude = (long) location.getLongitude();
+        latitude[0] = location.getLatitude();
+        longitude[0] = location.getLongitude();
     }
     private void startLocationUpdate() {
         initLocationRequest();
