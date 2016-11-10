@@ -21,18 +21,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.Pesquisa;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
-import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
@@ -156,7 +153,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
                     "profissao='" + txtProfissao.getText().toString() + "'," +
                     "alimentacao='" + alimentacao.getSelectedItem().toString() + "'";
 
-            new CtrlUsuario(AtualizaCadastroUsuarioActivity.this).salvarAtualizacao(values, campos, new CallbackSalvar() {
+            new CtrlUsuario(AtualizaCadastroUsuarioActivity.this).atualizar(values, campos, new CallbackSalvar() {
 
                 @Override
                 public void resultadoSalvar(Object obj) {

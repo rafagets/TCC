@@ -9,7 +9,7 @@ import java.util.Map;
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 
 /**
@@ -32,7 +32,7 @@ public class CtrlProduto {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Produto> getData = new GetData<>("objeto", params);
-        getData.executar(Produto.class, new VolleyCallback() {
+        getData.executar(Produto.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -59,7 +59,7 @@ public class CtrlProduto {
         params.put("ordenacao", parametro);
 
         GetData<Produto> getData = new GetData<>("lista", params);
-        getData.executar(Produto.class, new VolleyCallback() {
+        getData.executar(Produto.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 

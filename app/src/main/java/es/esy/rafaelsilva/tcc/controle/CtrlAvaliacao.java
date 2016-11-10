@@ -9,7 +9,7 @@ import java.util.Map;
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
@@ -33,7 +33,7 @@ public class CtrlAvaliacao {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Avaliacao> getData = new GetData<>("objeto", params);
-        getData.executar(Avaliacao.class, new VolleyCallback() {
+        getData.executar(Avaliacao.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -60,7 +60,7 @@ public class CtrlAvaliacao {
         params.put("ordenacao", parametro);
 
         GetData<Avaliacao> getData = new GetData<>("lista", params);
-        getData.executar(Avaliacao.class, new VolleyCallback() {
+        getData.executar(Avaliacao.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -95,7 +95,7 @@ public class CtrlAvaliacao {
         params.put("ordenacao", "WHERE "+ parametro);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);

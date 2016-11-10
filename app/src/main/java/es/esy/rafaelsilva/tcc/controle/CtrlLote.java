@@ -8,7 +8,7 @@ import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
 
 /**
@@ -29,7 +29,7 @@ public class CtrlLote {
         params.put("valores", lote);
 
         GetData<Lote> getData = new GetData<>("objeto", params);
-        getData.executar(Lote.class, new VolleyCallback() {
+        getData.executar(Lote.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callbackTrazer.resultadoTrazer(resposta);

@@ -11,7 +11,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Comentario;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
@@ -36,7 +36,7 @@ public class CtrlComentario {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Comentario> getData = new GetData<>("objeto", params);
-        getData.executar(Comentario.class, new VolleyCallback() {
+        getData.executar(Comentario.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -63,7 +63,7 @@ public class CtrlComentario {
         params.put("ordenacao", parametro);
 
         GetData<Comentario> getData = new GetData<>("lista", params);
-        getData.executar(Comentario.class, new VolleyCallback() {
+        getData.executar(Comentario.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -91,7 +91,7 @@ public class CtrlComentario {
         params.put("valores", "'"+comentario+"',"+ DadosUsuario.codigo +","+ String.valueOf(pai));
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callbackSalvar.resultadoSalvar(resposta);

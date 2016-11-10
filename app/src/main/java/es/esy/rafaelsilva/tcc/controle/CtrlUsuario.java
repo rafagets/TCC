@@ -11,7 +11,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
@@ -35,7 +35,7 @@ public class CtrlUsuario {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Usuario> getData = new GetData<>("objeto", params);
-        getData.executar(Usuario.class, new VolleyCallback() {
+        getData.executar(Usuario.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -63,7 +63,7 @@ public class CtrlUsuario {
         params.put("valores", "'" +senha+ "' AND email = '" +email+ "'");
 
         GetData<Usuario> getData = new GetData<>("objeto", params);
-        getData.executar(Usuario.class, new VolleyCallback() {
+        getData.executar(Usuario.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -90,7 +90,7 @@ public class CtrlUsuario {
         params.put("ordenacao", parametro);
 
         GetData<Usuario> getData = new GetData<>("lista", params);
-        getData.executar(Usuario.class, new VolleyCallback() {
+        getData.executar(Usuario.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -117,7 +117,7 @@ public class CtrlUsuario {
         params.put("valores", valores);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 Resposta resp = (Resposta) resposta;
@@ -140,7 +140,8 @@ public class CtrlUsuario {
 
 
     }
-    public void salvarAtualizacao(String valores, String campos, final CallbackSalvar callbackSalvar){
+
+    public void atualizar(String valores, String campos, final CallbackSalvar callbackSalvar){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "U");
         params.put("tabela", "usuario");
@@ -148,7 +149,7 @@ public class CtrlUsuario {
         params.put("valores", valores);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 Resposta resp = (Resposta) resposta;
@@ -171,6 +172,7 @@ public class CtrlUsuario {
 
 
     }
+
     public void excluir(int codigo){
 
     }

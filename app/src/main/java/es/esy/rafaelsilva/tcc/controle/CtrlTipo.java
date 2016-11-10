@@ -8,7 +8,7 @@ import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
 
 /**
@@ -30,7 +30,7 @@ public class CtrlTipo {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Tipo> getData = new GetData<>("objeto", params);
-        getData.executar(Tipo.class, new VolleyCallback() {
+        getData.executar(Tipo.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);

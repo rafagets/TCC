@@ -12,7 +12,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Compra;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -41,7 +41,7 @@ public class CtrlCompra {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Compra> getData = new GetData<>("objeto", params);
-        getData.executar(Compra.class, new VolleyCallback() {
+        getData.executar(Compra.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -67,7 +67,7 @@ public class CtrlCompra {
         params.put("ordenacao", parametro);
 
         GetData<Compra> getData = new GetData<>("lista", params);
-        getData.executar(Compra.class, new VolleyCallback() {
+        getData.executar(Compra.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -102,7 +102,7 @@ public class CtrlCompra {
         params.put("valores", DadosUsuario.codigo+","+carater+","+4);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 salvarDois();
@@ -145,7 +145,7 @@ public class CtrlCompra {
         params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 Resposta rsp = (Resposta) resposta;

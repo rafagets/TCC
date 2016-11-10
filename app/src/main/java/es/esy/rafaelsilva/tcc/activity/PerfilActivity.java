@@ -115,7 +115,7 @@ public class PerfilActivity extends AppCompatActivity {
         imgUsuario = (CircleImageView) findViewById(R.id.imgUsuario);
         desfazerAmizade = (ImageView) findViewById(R.id.imgDesfazerAmizade);
         btnEditarDados = (Button) findViewById(R.id.btnEditarDados);
-        btnEditarDados.setOnClickListener(editarDados());
+        //btnEditarDados.setOnClickListener(editarDados());
 
         if (getIntent().getIntExtra("usuario", 0) == 0) {
             getUsuario(DadosUsuario.codigo);

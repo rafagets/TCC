@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.util.App;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -35,7 +35,7 @@ public class GetData<T>{
         this.intencao = intencao;
     }
 
-    public void executar(final Class<T> clazz, final VolleyCallback callback){
+    public void executar(final Class<T> clazz, final CallBackDAO callback){
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,

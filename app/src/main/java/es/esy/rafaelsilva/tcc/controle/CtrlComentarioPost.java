@@ -10,7 +10,7 @@ import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 
 /**
  * Created by Rafael on 21/10/2016.
@@ -33,7 +33,7 @@ public class CtrlComentarioPost {
         params.put("valores", String.valueOf(codigo));
 
         GetData<ComentarioPost> getData = new GetData<>("objeto", params);
-        getData.executar(ComentarioPost.class, new VolleyCallback() {
+        getData.executar(ComentarioPost.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -60,7 +60,7 @@ public class CtrlComentarioPost {
         params.put("ordenacao", parametro);
 
         GetData<ComentarioPost> getData = new GetData<>("lista", params);
-        getData.executar(ComentarioPost.class, new VolleyCallback() {
+        getData.executar(ComentarioPost.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 

@@ -8,7 +8,7 @@ import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 
 /**
@@ -29,7 +29,7 @@ public class CtrlHistorico {
         params.put("ordenacao", parametro);
 
         GetData<Historico> getData = new GetData<>("lista", params);
-        getData.executar(Historico.class, new VolleyCallback() {
+        getData.executar(Historico.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
