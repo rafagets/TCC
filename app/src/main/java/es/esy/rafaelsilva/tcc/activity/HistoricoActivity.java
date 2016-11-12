@@ -94,22 +94,7 @@ public class HistoricoActivity extends AppCompatActivity {
         final String l = String.valueOf(getIntent().getStringExtra("lote"));
         Log.e("+++++++++++++++", l);
 
-        new CtrlLote(this).trazer(l, new CallbackTrazer() {
-            @Override
-            public void resultadoTrazer(Object obj) {
-                lote = (Lote) obj;
-                getProd();
-                getAvaliacoes();
-                getHistorico();
-            }
-
-            @Override
-            public void falha() {
-                bar.setVisibility(View.GONE);
-                Toast.makeText(contexto, "Falha ao carregarrrr", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
+        trazerLote(l);
 
         ImageView btSaude = (ImageView) findViewById(R.id.btSaude);
         btSaude.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +113,25 @@ public class HistoricoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 comprar();
+            }
+        });
+    }
+
+    private void trazerLote(String l) {
+        new CtrlLote(this).trazer(Integer.parseInt(l), new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                lote = (Lote) obj;
+                getProd();
+                getAvaliacoes();
+                getHistorico();
+            }
+
+            @Override
+            public void falha() {
+                bar.setVisibility(View.GONE);
+                Toast.makeText(contexto, "Falha ao carregarrrr", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }

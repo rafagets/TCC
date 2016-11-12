@@ -7,15 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 
 /**
  * Created by Rafael on 21/10/2016.
  */
-public class CtrlComentarioPost {
+public class CtrlComentarioPost implements Retorno {
 
     private Context contexto;
 
@@ -24,6 +27,8 @@ public class CtrlComentarioPost {
     }
 
 
+
+    @Override
     public void trazer(int codigo, final CallbackTrazer callback){
 
         Map<String, String> params = new HashMap<>();
@@ -52,6 +57,7 @@ public class CtrlComentarioPost {
 
     }
 
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -79,12 +85,20 @@ public class CtrlComentarioPost {
 
     }
 
-    public void salvar(ComentarioPost obj){
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
 
     }
 
-    public void excluir(int codigo){
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
 
     }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+
+    }
+
 
 }

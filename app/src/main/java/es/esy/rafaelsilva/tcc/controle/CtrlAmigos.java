@@ -13,6 +13,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -21,7 +22,7 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 /**
  * Created by Rafael on 23/10/2016.
  */
-public class CtrlAmigos {
+public class CtrlAmigos implements Retorno {
     private Context contexto;
     private int codigoAmizade; // guarda o codigo do amigo
     private int papa; // guarda o codigo do post em que a amizade é vinculada.
@@ -34,6 +35,48 @@ public class CtrlAmigos {
     }
 
 
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
+
+    }
+
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+
+    }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "D");
+        params.put("tabela", "amigos");
+        params.put("condicao", "codigo");
+        params.put("valores", String.valueOf(codigo));
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new CallBackDAO() {
+            @Override
+            public void sucesso(Object resposta) {
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag())
+                    excluirDois();
+                else
+                    callbackExcluir.resultadoExcluir(false);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackExcluir.falha();
+            }
+        });
+    }
+
+    @Override
     public void trazer(int codigo, final CallbackTrazer callback){
 
         Map<String, String> params = new HashMap<>();
@@ -62,6 +105,7 @@ public class CtrlAmigos {
 
     }
 
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -89,17 +133,19 @@ public class CtrlAmigos {
 
     }
 
+
+
     public void AddAmigo(int codigoAmizade, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
         this.codigoAmizade = codigoAmizade;
         postarUm();
     }
 
-    public void excluir(int codigoAmizade, int pai, CallbackExcluir callbackExcluir){
+    public void excluirAmizade(int codigoAmizade, int pai, CallbackExcluir callbackExcluir){
         this.codigoAmizade = codigoAmizade;
         this.callbackExcluir = callbackExcluir;
         this.papa = pai;
-        this.excluirUm();
+        this.excluir(codigoAmizade, callbackExcluir);
     }
 
     public void contar (String parametro, final CallbackTrazer callback){
@@ -213,36 +259,6 @@ public class CtrlAmigos {
 
     /* Inicio da logica de exclusao de uma amizade */
     /* Exclui a amizade e logo em seguida exclui o post em que é vinculado no passo dois*/
-    private void excluirUm(){
-        Map<String, String> params = new HashMap<>();
-        params.put("acao", "D");
-        params.put("tabela", "amigos");
-        params.put("condicao", "codigo");
-        params.put("valores", String.valueOf(codigoAmizade));
-
-        GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new CallBackDAO() {
-            @Override
-            public void sucesso(Object resposta) {
-                Resposta rsp = (Resposta) resposta;
-                if (rsp.isFlag())
-                    excluirDois();
-                else
-                    callbackExcluir.resultadoExcluir(false);
-            }
-
-            @Override
-            public void sucessoLista(List<Object> resposta) {
-
-            }
-
-            @Override
-            public void erro(String resposta) {
-                callbackExcluir.falha();
-            }
-        });
-    }
-
     private void excluirDois(){
         new CtrlPost(contexto).excluir(papa, new CallbackExcluir() {
             @Override

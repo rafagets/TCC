@@ -259,7 +259,7 @@ public class ViewComentario {
 
                     if (!flag2[0]) {
                         addOne.setImageResource(R.drawable.ic_added);
-                        new CtrlCurtidaComentario(contexto).curtir(c.getCodigo(), new CallbackSalvar() {
+                        new CtrlCurtidaComentario(contexto).curtir(c.getCodigo(), c.getPai(), new CallbackSalvar() {
                             @Override
                             public void resultadoSalvar(Object obj) {
                                 Resposta rsp = (Resposta) obj;

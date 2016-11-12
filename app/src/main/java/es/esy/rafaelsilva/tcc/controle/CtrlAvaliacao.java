@@ -7,16 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
  * Created by Rafael on 23/10/2016.
  */
-public class CtrlAvaliacao {
+public class CtrlAvaliacao implements Retorno {
     private Context contexto;
 
     public CtrlAvaliacao(Context contexto) {
@@ -24,6 +27,22 @@ public class CtrlAvaliacao {
     }
 
 
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
+
+    }
+
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+
+    }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+
+    }
+
+    @Override
     public void trazer(int codigo, final CallbackTrazer callback){
 
         Map<String, String> params = new HashMap<>();
@@ -52,6 +71,7 @@ public class CtrlAvaliacao {
 
     }
 
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -79,13 +99,7 @@ public class CtrlAvaliacao {
 
     }
 
-    public void salvar(Avaliacao avaliacao){
 
-    }
-
-    public void excluir(int codigo){
-
-    }
 
     public void contar (String parametro, final CallbackTrazer callback){
         Map<String, String> params = new HashMap<>();

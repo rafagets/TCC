@@ -7,20 +7,31 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 
 /**
  * Criado por Rafael em 08/11/2016, enjoy it.
  */
-public class CtrlHistorico {
+public class CtrlHistorico implements Retorno {
     private Context contexto;
 
     public CtrlHistorico(Context contexto) {
         this.contexto = contexto;
     }
 
+
+    @Override
+    public void trazer(int codigo, CallbackTrazer callback) {
+
+    }
+
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -47,4 +58,20 @@ public class CtrlHistorico {
         });
 
     }
+
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
+
+    }
+
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+
+    }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+
+    }
+
 }

@@ -13,6 +13,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Compra;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -21,7 +22,7 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 /**
  * Criado por Rafael em 07/11/2016, enjoy it.
  */
-public class CtrlCompra {
+public class CtrlCompra implements Retorno {
     private Context contexto;
     private CallbackSalvar callbackSalvar;
     private int notificacao;
@@ -33,6 +34,23 @@ public class CtrlCompra {
         this.contexto = contexto;
     }
 
+
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
+
+    }
+
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+
+    }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+
+    }
+
+    @Override
     public void trazer(int codigo, final CallbackTrazer callback){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
@@ -59,6 +77,7 @@ public class CtrlCompra {
         });
     }
 
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -85,6 +104,8 @@ public class CtrlCompra {
         });
 
     }
+
+
 
     public void salvar(int notificacao, int carater, int produto, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
