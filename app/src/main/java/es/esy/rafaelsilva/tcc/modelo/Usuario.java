@@ -39,7 +39,8 @@ public class Usuario {
 
 	private String imagem;
 
-	private Bitmap imgBitmap;
+	private String imgBitmap;
+	private int tipoImg;
 
 	private String profissao;
 
@@ -131,6 +132,22 @@ public class Usuario {
 
 	public void setImagem(String imagem) {
 		this.imagem = imagem;
+	}
+
+	public String getImgBitmap() {
+		return imgBitmap;
+	}
+
+	public void setImgBitmap(String imgBitmap) {
+		this.imgBitmap = imgBitmap;
+	}
+
+	public int getTipoImg() {
+		return tipoImg;
+	}
+
+	public void setTipoImg(int tipoImg) {
+		this.tipoImg = tipoImg;
 	}
 
 	public String getProfissao() {
