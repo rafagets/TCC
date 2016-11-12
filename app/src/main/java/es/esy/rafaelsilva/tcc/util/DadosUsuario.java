@@ -19,10 +19,10 @@ public class DadosUsuario {
     }
 
     public static void setUsuarioCorrente(Usuario usuarioCorrente) {
-        DadosUsuario.usuario = usuarioCorrente;
+        DadosUsuario.usuario= usuarioCorrente;
         DadosUsuario.codigo = usuarioCorrente.getCodigo();
-        DadosUsuario.nome = usuarioCorrente.getNome();
-        DadosUsuario.email = usuarioCorrente.getEmail();
-        DadosUsuario.senha = usuarioCorrente.getSenha();
+        DadosUsuario.nome   = usuarioCorrente.getNome();
+        DadosUsuario.email  = usuarioCorrente.getEmail();
+        DadosUsuario.senha  = usuarioCorrente.getSenha();
     }
 }

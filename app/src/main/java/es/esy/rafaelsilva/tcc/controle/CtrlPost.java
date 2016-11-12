@@ -164,6 +164,7 @@ public class CtrlPost {
         });
     }
 
+
     private void postarDois(final String comentarioFeito){
         this.trazer("usuario = " + String.valueOf(DadosUsuario.codigo) +" ORDER BY codigo DESC LIMIT 1", new CallbackTrazer() {
             @Override

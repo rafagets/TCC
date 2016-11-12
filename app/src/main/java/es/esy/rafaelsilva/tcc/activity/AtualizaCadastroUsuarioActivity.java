@@ -86,6 +86,7 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         alimentacao.setAdapter(adapter);
         //carrega as informações do usuario
+
         new CtrlUsuario(this).trazer(DadosUsuario.getUsuario().getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
