@@ -1,11 +1,23 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -15,23 +27,47 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.plus.model.people.Person;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+import net.gotev.uploadservice.ftp.FTPUploadRequest;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.Pesquisa;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Resposta;
+import es.esy.rafaelsilva.tcc.util.UploadDeImagens;
+import es.esy.rafaelsilva.tcc.util.Util;
+import  static android.Manifest.permission.CAMERA;
+
+import static  android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ListView listView;
@@ -39,6 +75,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private Pesquisa adapter;
     private View fragmentCabecalho;
     private View fragmentCorpo;
+    private RelativeLayout layoutHome;
+    TextView txtUsuarioNome;
+    TextView txtUsuarioEmail;
+    private CircleImageView imgUsuario;
+    ProgressDialog dialog;
+    Bitmap img;
+    UsuarioDao dao;
+    private final int MY_PERMISSIONS = 100;
+    private final int FOTO_CAMERA = 200;
+    private final int FOTO_SD = 300;
+    private final String APP_DIRECTORIO = "myPictureApp/";
+    private final String MEDIA_DIRECTORY = APP_DIRECTORIO + "media";
+    private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_" + DadosUsuario.getUsuario().getNome()+".jpg";
+
+    public CircleImageView getImgUsuario() {
+        return imgUsuario;
+    }
+
+    public void setImgUsuario(CircleImageView imgUsuario) {
+        this.imgUsuario = imgUsuario;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +103,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        layoutHome = (RelativeLayout) findViewById(R.id.layoutHome);
         if (DadosUsuario.getUsuario() != null){
-            setTitle("Olá "+ DadosUsuario.getUsuario().getNome() + "!");
+            setTitle("Olá " + DadosUsuario.getUsuario().getNome() + "!");
         }
 
 
@@ -78,16 +136,218 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //Colocando o nome e email do usuario atual no menu lateral
         View view = navigationView.getHeaderView(0);
-        TextView txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
-        TextView txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
+
+        txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
+        txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
+        imgUsuario = (CircleImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
+
+
+        imgUsuario.setOnClickListener(foto());
+
+
         if (DadosUsuario.getUsuario() != null) {
             txtUsuarioNome.setText(DadosUsuario.getUsuario().getNome());
             txtUsuarioEmail.setText(DadosUsuario.getUsuario().getEmail());
+           if(carregarImgUsuario() > 1){
+               imgUsuario.setImageResource(R.drawable.ic_account_circle_black_24dp);
+           }
         }
         navigationView.setNavigationItemSelectedListener(this);
 
         fragmentCabecalho = findViewById(R.id.cabecalho_post);
         fragmentCorpo =  findViewById(R.id.corpo_home);
+
+    }
+
+    private View.OnClickListener salvarFotoBDLocal() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(img != null) {
+                dialog = new ProgressDialog(HomeActivity.this);
+                dialog.setMessage("Salvando, aguarde...");
+                dialog.show();
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                imageView.setImageBitmap(photo);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                    dao = new UsuarioDao(HomeActivity.this);
+                   // long result = dao.updateImg(DadosUsuario.getUsuario().getCodigo(), byteArray);
+
+                    //chamar a tela de login passando o usuario/email que acabou de cadastrar
+                    //if (result > 0) {
+                      //  dialog.dismiss();
+                      //  Toast.makeText(HomeActivity.this, "Imagem salva no bd Local \uD83D\uDE09", Toast.LENGTH_LONG).show();
+//                if (byteArray != null) {
+//
+//                    String campos = "codigo="+ DadosUsuario.getUsuario().getCodigo();
+//                    String values = "";
+//
+//                    new CtrlUsuario(HomeActivity.this).salvarAtualizacao(values, campos, new CallbackSalvar() {
+//
+//                        @Override
+//                        public void resultadoSalvar(Object obj) {
+//                            dialog.dismiss();
+//                            Resposta resposta = (Resposta) obj;
+//                            if (resposta.isFlag()) {
+//                                Toast.makeText(HomeActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_LONG).show();
+//                            } else {
+//                                Toast.makeText(HomeActivity.this, "Falha ao atualizar usuario", Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void falha() {
+//                            dialog.dismiss();
+//                            Toast.makeText(HomeActivity.this, "Falha ao cadastrar usuario", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+////            }else{
+////                dialog.dismiss();
+////                Toast.makeText(AtualizaCadastroUsuarioActivity.this, "Senhas diferentes. Verifique.", Toast.LENGTH_LONG).show();
+////            }
+//
+//                } else {
+//                    dialog.dismiss();
+//                    Toast.makeText(HomeActivity.this, "Preencha todos os campos.", Toast.LENGTH_LONG).show();
+//                }
+
+                    //}else{
+                    //    dialog.dismiss();
+                     //   Toast.makeText(HomeActivity.this, "Erro ao tentar salvar imagem\nTente novamente!", Toast.LENGTH_LONG).show();
+                   // }
+
+
+                }else{
+                    Toast.makeText(HomeActivity.this, "img vazio", Toast.LENGTH_LONG).show();
+
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener foto() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               showOptions();
+            }
+        };
+
+    }
+    public void showOptions(){
+        final CharSequence[] opcoes = {"ESCOLHER FOTO", "NOVA FOTO", "CANCELAR"};
+        final AlertDialog.Builder  builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("Opções");
+        builder.setItems(opcoes, new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int op) {
+                if(opcoes[op] == "NOVA FOTO"){
+                    abrirCamera();
+                }else if(opcoes[op] == "ESCOLHER FOTO"){
+                    selectFoto();
+                }else if (opcoes[op] == "CANCELAR"){
+                    dialogInterface.dismiss();
+                }
+            }
+
+        });
+        builder.show();
+    }
+    private void selectFoto() {
+        Intent galeriaIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galeriaIntent.setType("image/*");
+        startActivityForResult(galeriaIntent.createChooser(galeriaIntent, "SELECIONA APP DE IMAGEM"), FOTO_SD);
+    }
+
+    private void abrirCamera() {
+        File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
+        boolean dirCreated = file.exists();
+        if (!dirCreated) {
+            file.mkdirs();
+        }
+        if(dirCreated) {
+            String path = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
+                    File.separator + NOME_IMAGEM;
+
+            File newFile = new File(path);
+
+            Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            camIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            startActivityForResult(camIntent, FOTO_CAMERA);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int result, Intent data){
+
+        switch (requestCode){
+            case FOTO_CAMERA:
+                if (result == RESULT_OK){
+                    String dir = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
+                            File.separator + NOME_IMAGEM;
+                    System.out.println("NOME IMG: " + dir);
+                    decodeBitMap(dir);
+                    dao = new UsuarioDao(this);
+                    if(dao.updateImg(DadosUsuario.getUsuario().getCodigo(), dir, 0) > 0){
+                        Toast.makeText(this, "SALVO NO SQLITE", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(this, "NAO SALVO NO SQLITE", Toast.LENGTH_LONG).show();
+                    }
+
+                    upload(dir);
+                }
+                break;
+            case FOTO_SD:
+                if (result == RESULT_OK){
+                    Uri path = data.getData();
+                    if(dao.updateImg(DadosUsuario.getUsuario().getCodigo(), String.valueOf(path), 1) > 0 ){
+                        Toast.makeText(this, "SALVO NO SQLITE", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(this, "NAO SALVO NO SQLITE", Toast.LENGTH_LONG).show();
+                    }
+                    imgUsuario.setImageURI(path);
+                    System.out.println("PATH: " + path);
+
+                    upload(getPastaUrl(path));
+                }
+                break;
+        }
+    }
+
+    public String getPastaUrl(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
+    private int decodeBitMap(String dir) {
+        int x = 0;
+        Bitmap bitMap;
+        bitMap = BitmapFactory.decodeFile(dir);
+        imgUsuario.setImageBitmap(bitMap);
+        return x;
+    }
+    private int decodeURI(String uri){
+        int x = 1;
+        Uri path = Uri.parse(uri);
+        imgUsuario.setImageURI(path);
+        return x;
 
     }
 
@@ -118,8 +378,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
-
-
         return true;
     }
 
@@ -141,7 +399,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     for (Object obj : lista) {
                         listaUsuarios.add((Usuario) obj);
                     }
-
 
                     if (listaUsuarios != null){
                         adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
@@ -168,8 +425,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         return super.onOptionsItemSelected(item);
     }
-
-
     /*Aqui é onde a grande magica da pesquisa acontece!*/
     private void monitorarPesquisa(MenuItem item){
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(item);
@@ -256,5 +511,48 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public int carregarImgUsuario(){
+        int ret = 2;
+        dao = new UsuarioDao(this);
+        String dire = dao.loadImg();
+        System.out.println("DIRETÓRIO: " + dire);
+        if(DadosUsuario.getUsuario().getTipoImg() == 0){
+            ret = decodeBitMap(dire);
 
+        }else if (DadosUsuario.getUsuario().getTipoImg() == 1){
+            ret = decodeURI(dire);
+
+        }
+        return ret;
+
+    }
+    private boolean verificarPermissoes(){// incompleto
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            return true;
+        }
+        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED )){
+            return true;
+        }
+
+        if(shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))){
+            Snackbar.make(layoutHome, "Necessita de permissão no sistema para esta operação",
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.M)
+                @Override
+                public void onClick(View view) {
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                }
+            }).show();
+        }else{
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+        }
+        return false;
+    }
+
+    private void upload(String path){
+
+        new UploadDeImagens(this).enviar(path, NOME_IMAGEM, "perfil");
+
+    }
 }
