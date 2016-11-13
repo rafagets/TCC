@@ -132,45 +132,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search){
-            listarUsuarios(item);
+            listView = (ListView) findViewById(R.id.listView);
+            new CtrlUsuario(this).listar("", new CallbackListar() {
+                @Override
+                public void resultadoListar(List<Object> lista) {
+                    listaUsuarios = new ArrayList<>();
+
+                    for (Object obj : lista) {
+                        listaUsuarios.add((Usuario) obj);
+                    }
+
+
+                    if (listaUsuarios != null){
+                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+                        listView.setAdapter(adapter);
+                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+                        listView.setAdapter(adapter);
+
+                        listView.setVisibility(View.VISIBLE);
+                        fragmentCabecalho.setVisibility(View.GONE);
+                        fragmentCorpo.setVisibility(View.GONE);
+
+                        monitorarPesquisa(item);
+
+                    }
+
+                }
+
+                @Override
+                public void falha() {
+
+                }
+            });
+
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void listarUsuarios(final MenuItem item) {
-        listView = (ListView) findViewById(R.id.listView);
-
-        new CtrlUsuario(this).listar("", new CallbackListar() {
-            @Override
-            public void resultadoListar(List<Object> lista) {
-                listaUsuarios = new ArrayList<>();
-
-                for (Object obj : lista) {
-                    listaUsuarios.add((Usuario) obj);
-                }
-
-
-                if (listaUsuarios != null){
-                    adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
-                    listView.setAdapter(adapter);
-                    //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
-                    listView.setAdapter(adapter);
-
-                    listView.setVisibility(View.VISIBLE);
-                    fragmentCabecalho.setVisibility(View.GONE);
-                    fragmentCorpo.setVisibility(View.GONE);
-
-                    monitorarPesquisa(item);
-
-                }
-
-            }
-
-            @Override
-            public void falha() {
-
-            }
-        });
     }
 
 

@@ -32,8 +32,11 @@ public class UsuarioDao {
         valores.put("profissao", usuario.getProfissao());
         valores.put("alimentacao", usuario.getAlimentacao());
 
-        if (usuario.getImagem() != null) {
-            valores.put("imagem", usuario.getImagem());
+        if (usuario.getImgBitmap() != null) {
+            valores.put("imagem", usuario.getImgBitmap());
+        }
+        if(usuario.getTipoImg() != 0 && usuario.getTipoImg() != 1) {
+            valores.put("tipo_imagem", usuario.getTipoImg());
         }
         db = helper.getWritableDatabase();
         long rowid = db.insert(DbHelper.TABLE_NAME, null, valores);
@@ -48,7 +51,7 @@ public class UsuarioDao {
         db = helper.getReadableDatabase();
 
         Cursor cursor = db.query(DbHelper.TABLE_NAME,
-                new String[] {"codigo, nome, email, senha, profissao, alimentacao"}, null, null, null, null, null);
+                new String[] {"codigo, nome, email, senha, profissao, alimentacao", "imagem", "tipo_imagem"}, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
@@ -59,6 +62,10 @@ public class UsuarioDao {
             usuario.setSenha(String.valueOf(cursor.getString(3)));
             usuario.setProfissao(String.valueOf(cursor.getString(4)));
             usuario.setAlimentacao(String.valueOf(cursor.getString(5)));
+            if (cursor.getString(6) != null){
+                System.out.println("IMAGEM STRING: " + String.valueOf(cursor.getString(6)));
+                usuario.setImgBitmap(String.valueOf(cursor.getString(6)));
+            }
 
 
             lista.add(usuario);
@@ -68,6 +75,41 @@ public class UsuarioDao {
         helper.close();
 
         return lista;
+    }
+    public String loadImg(){
+        String dir = "";
+        db = helper.getReadableDatabase();
+
+        Cursor cursor = db.query(DbHelper.TABLE_NAME,
+                new String[] {"codigo, nome, email, senha, profissao, alimentacao", "imagem", "tipo_imagem"}, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            if (cursor.getString(6) != null){
+                System.out.println("IMAGEM STRING: " + String.valueOf(cursor.getString(6)));
+                dir = String.valueOf(cursor.getString(6));
+                DadosUsuario.getUsuario().setTipoImg(cursor.getInt(7));
+                System.out.println("tipeIMG:" + cursor.getInt(7));
+            }
+
+        cursor.moveToNext();
+        }
+        cursor.close();
+        helper.close();
+        return dir;
+    }
+    public int updateImg(long codigo, String dir, int op){
+        ContentValues valores = new ContentValues();
+
+        valores.put("imagem", dir);
+        valores.put("tipo_imagem", op);
+
+        db = helper.getWritableDatabase();
+        int rows = db.update(DbHelper.TABLE_NAME, valores, "codigo = " + codigo, null);
+        helper.close();
+
+        return rows;
+
     }
 
     public int excluir(int codigo) {

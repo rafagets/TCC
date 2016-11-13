@@ -113,12 +113,15 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         try {
-            MarkerOptions options = new MarkerOptions();
+           MarkerOptions options;
+
 
             if (hist != null) {
                 for (Historico h : hist) {
+                    options = new MarkerOptions();
                     String[] cordenadas = h.getCordenadas().split(", ");
                     LatLng local = new LatLng(Double.parseDouble(cordenadas[0]), Double.parseDouble(cordenadas[1]));
                     options.position(local);
@@ -128,6 +131,7 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
                     googleMap.addMarker(options);
                 }
             }else{
+                options = new MarkerOptions();
                 String[] cordenadas = this.cordenadas.split(", ");
                 LatLng local = new LatLng(Double.parseDouble(cordenadas[0]), Double.parseDouble(cordenadas[1]));
                 options.position(local);
