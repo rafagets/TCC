@@ -22,8 +22,7 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.QrcodeActivity" />
         <activity
             android:name=".activity.HistoricoActivity"
@@ -33,12 +32,12 @@
         <activity
             android:name=".activity.Login_Activity"
             android:windowSoftInputMode="adjustResize" />
-
         <activity android:name=".activity.Welcome_Activity" />
         <activity android:name=".activity.ComentariosPostActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,9 +59,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PerfilActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_perfil"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -77,11 +76,16 @@
 
         <activity
             android:name=".activity.Mapa_Activity"
-            android:label="@string/title_activity_mapa_"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:label="@string/title_activity_mapa_" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".activity.ComentariosAvaliacaoActivity"></activity>
     </application>
 
 </manifest>

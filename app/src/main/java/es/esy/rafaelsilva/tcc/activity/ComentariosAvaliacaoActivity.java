@@ -1,8 +1,8 @@
 package es.esy.rafaelsilva.tcc.activity;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,32 +17,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.adapters.ComentarioAvaliacaoAdapter;
 import es.esy.rafaelsilva.tcc.adapters.ComentariosPostAdapter;
+import es.esy.rafaelsilva.tcc.controle.CtrlComentarioAvaliacao;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentarioPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
+import es.esy.rafaelsilva.tcc.modelo.ComentarioAvaliacao;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
-import es.esy.rafaelsilva.tcc.util.Resposta;
 
-public class ComentariosPostActivity extends AppCompatActivity {
+public class ComentariosAvaliacaoActivity extends AppCompatActivity {
 
     private ProgressBar bar;
     private Context contexto = this;
-    private List<ComentarioPost> listaComentarios;
+    private List<ComentarioAvaliacao> listaComentarios;
     private EditText edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comentarios_post);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // acrecentar tambem overite no fim
-
+        setContentView(R.layout.activity_comentarios_avaliacao);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Comentários");
+
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.VISIBLE);
 
@@ -63,13 +64,12 @@ public class ComentariosPostActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     private void comentar(final int codigoPost, int pai) {
-        String campos = "comentario,usuario,coment";
+        String campos = "comentario, usuario, avaliacao";
         String values = "\""+edit.getText().toString() + "\"," + DadosUsuario.codigo + "," +codigoPost;
-        new CtrlComentarioPost(ComentariosPostActivity.this).comentar(values, campos, pai, new CallbackSalvar() {
+        new CtrlComentarioAvaliacao(this).comentar(values, campos, pai, new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 edit.setText("");
@@ -78,18 +78,19 @@ public class ComentariosPostActivity extends AppCompatActivity {
 
             @Override
             public void falha() {
-                Toast.makeText(ComentariosPostActivity.this, "Erro ao comentar\nTente novamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(ComentariosAvaliacaoActivity.this, "Erro ao comentar\nTente novamente", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     private void loadComentarios(int codigoPost) {
-        new CtrlComentarioPost(this).listar("WHERE coment = " + codigoPost + " ORDER BY data ASC", new CallbackListar() {
+        new CtrlComentarioAvaliacao(this).listar("WHERE avaliacao = " + codigoPost + " ORDER BY data ASC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 listaComentarios = new ArrayList<>();
                 for (Object obj : lista)
-                    listaComentarios.add((ComentarioPost) obj);
+                    listaComentarios.add((ComentarioAvaliacao) obj);
 
                 getUsuario(0);
             }
@@ -106,7 +107,7 @@ public class ComentariosPostActivity extends AppCompatActivity {
             new CtrlUsuario(this).trazer(listaComentarios.get(posicao).getUsuario(), new CallbackTrazer() {
                 @Override
                 public void resultadoTrazer(Object obj) {
-                    listaComentarios.get(posicao).setUsoarioObj((Usuario) obj);
+                    listaComentarios.get(posicao).setUsuarioObj((Usuario) obj);
                     getUsuario(posicao + 1);
                 }
 
@@ -121,7 +122,7 @@ public class ComentariosPostActivity extends AppCompatActivity {
     }
 
     private void montar() {
-        ComentariosPostAdapter adapter = new ComentariosPostAdapter(listaComentarios, contexto);
+        ComentarioAvaliacaoAdapter adapter = new ComentarioAvaliacaoAdapter(listaComentarios, contexto);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -142,5 +143,4 @@ public class ComentariosPostActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }
