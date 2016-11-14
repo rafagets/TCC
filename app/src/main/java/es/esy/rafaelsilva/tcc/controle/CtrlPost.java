@@ -12,30 +12,31 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
- * Created by Rafael on 23/10/2016.
+ * Criado por Rafael em 23/10/2016, enjoy it.
  */
-public class CtrlPost {
+public class CtrlPost implements Retorno {
     private Context contexto;
 
     public CtrlPost(Context contexto) {
         this.contexto = contexto;
     }
 
-    public void trazer(String condicao, final CallbackTrazer callback){
 
+    public void trazer(String condicao, final CallbackTrazer callback){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
         params.put("tabela", "post");
         params.put("ordenacao", "WHERE "+ condicao);
 
         GetData<Post> getData = new GetData<>("objeto", params);
-        getData.executar(Post.class, new VolleyCallback() {
+        getData.executar(Post.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -54,6 +55,34 @@ public class CtrlPost {
 
     }
 
+    @Override
+    public void trazer(int codigo, final CallbackTrazer callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "R");
+        params.put("tabela", "post");
+        params.put("condicao", "codigo");
+        params.put("valores", String.valueOf(codigo));
+
+        GetData<Post> getData = new GetData<>("objeto", params);
+        getData.executar(Post.class, new CallBackDAO() {
+            @Override
+            public void sucesso(Object resposta) {
+                callback.resultadoTrazer(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callback.falha();
+            }
+        });
+    }
+
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -62,7 +91,7 @@ public class CtrlPost {
         params.put("ordenacao", parametro);
 
         GetData<Post> getData = new GetData<>("lista", params);
-        getData.executar(Post.class, new VolleyCallback() {
+        getData.executar(Post.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -81,6 +110,7 @@ public class CtrlPost {
 
     }
 
+    @Override
     public void salvar(String condicao, String valores, final CallbackSalvar callbackSalvar){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "C");
@@ -89,7 +119,7 @@ public class CtrlPost {
         params.put("valores", valores);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callbackSalvar.resultadoSalvar(resposta);
@@ -107,6 +137,34 @@ public class CtrlPost {
         });
     }
 
+    @Override
+    public void atualizar(String valores, String campos, final CallbackSalvar callbackSalvar) {
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "U");
+        params.put("tabela", "post");
+        params.put("condicao", campos);
+        params.put("valores", valores);
+
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new CallBackDAO() {
+            @Override
+            public void sucesso(Object resposta) {
+                callbackSalvar.resultadoSalvar(resposta);
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+            }
+        });
+    }
+
+    @Override
     public void excluir(int codigo, final CallbackExcluir callbackExcluir){
 
         Map<String, String> params = new HashMap<>();
@@ -116,7 +174,7 @@ public class CtrlPost {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 Resposta rsp = (Resposta) resposta;
@@ -137,7 +195,9 @@ public class CtrlPost {
             }
         });
     }
-    
+
+
+
     public void postar(String condicao, String valores, final String comentarioFeito, final CallbackSalvar callbackSalvar){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "C");
@@ -146,7 +206,7 @@ public class CtrlPost {
         params.put("valores", valores);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 postarDois(comentarioFeito);

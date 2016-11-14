@@ -364,15 +364,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search){
-            listView = (ListView) findViewById(R.id.listView);
-            new CtrlUsuario(this).listar("", new CallbackListar() {
-                @Override
-                public void resultadoListar(List<Object> lista) {
-                    listaUsuarios = new ArrayList<>();
+            listarUsuarios(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-                    for (Object obj : lista) {
-                        listaUsuarios.add((Usuario) obj);
-                    }
+    private void listarUsuarios(final MenuItem item) {
+        listView = (ListView) findViewById(R.id.listView);
+
 
                     if (listaUsuarios != null){
                         adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
@@ -380,24 +379,39 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
                         listView.setAdapter(adapter);
 
-                        listView.setVisibility(View.VISIBLE);
-                        fragmentCabecalho.setVisibility(View.GONE);
-                        fragmentCorpo.setVisibility(View.GONE);
+        new CtrlUsuario(this).listar("", new CallbackListar() {
+            @Override
+            public void resultadoListar(List<Object> lista) {
+                listaUsuarios = new ArrayList<>();
 
-                        monitorarPesquisa(item);
+                for (Object obj : lista) {
+                    listaUsuarios.add((Usuario) obj);
+                }
 
-                    }
+
+
+                if (listaUsuarios != null){
+                    adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+                    listView.setAdapter(adapter);
+                    //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+                    listView.setAdapter(adapter);
+
+                    listView.setVisibility(View.VISIBLE);
+                    fragmentCabecalho.setVisibility(View.GONE);
+                    fragmentCorpo.setVisibility(View.GONE);
+
+                    monitorarPesquisa(item);
 
                 }
 
-                @Override
-                public void falha() {
+            }
 
-                }
-            });
+            @Override
+            public void falha() {
 
-        }
-        return super.onOptionsItemSelected(item);
+            }
+        });
+    }
     }
     /*Aqui é onde a grande magica da pesquisa acontece!*/
     private void monitorarPesquisa(MenuItem item){
@@ -524,7 +538,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
     public void updateFoto(Bitmap bmp){
-        new CtrlUsuario(this).salvarAtualizacao(NOME_IMAGEM, "imagem", new CallbackSalvar() {
+        new CtrlUsuario(this).atualizar(NOME_IMAGEM, "imagem", new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
 

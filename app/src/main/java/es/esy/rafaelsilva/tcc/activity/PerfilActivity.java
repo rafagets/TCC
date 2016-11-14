@@ -115,7 +115,7 @@ public class PerfilActivity extends AppCompatActivity {
         imgUsuario = (CircleImageView) findViewById(R.id.imgUsuario);
         desfazerAmizade = (ImageView) findViewById(R.id.imgDesfazerAmizade);
         btnEditarDados = (Button) findViewById(R.id.btnEditarDados);
-        btnEditarDados.setOnClickListener(editarDados());
+        //btnEditarDados.setOnClickListener(editarDados());
 
         if (getIntent().getIntExtra("usuario", 0) == 0) {
             getUsuario(DadosUsuario.codigo);
@@ -138,23 +138,7 @@ public class PerfilActivity extends AppCompatActivity {
               mensagem.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                   @Override
                   public void onClick(DialogInterface dialogInterface, int i) {
-                      new CtrlAmigos(PerfilActivity.this).AddAmigo(usuario.getCodigo(), new CallbackSalvar() {
-                          @Override
-                          public void resultadoSalvar(Object obj) {
-                              Resposta resp = (Resposta) obj;
-                              if (resp.isFlag()) {
-                                  fab.setVisibility(View.GONE);
-                                  totalAmigos.setText(String.valueOf(Integer.parseInt(totalAmigos.getText().toString()) + 1));
-                                  Toast.makeText(PerfilActivity.this, "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
-                                  trazerMeusAmigos();
-                              }
-                          }
-
-                          @Override
-                          public void falha() {
-                              Toast.makeText(PerfilActivity.this, "Não foi possível, tente mais tarde.", Toast.LENGTH_LONG).show();
-                          }
-                      });
+                      criarAmizade();
                   }
               });
 
@@ -169,6 +153,26 @@ public class PerfilActivity extends AppCompatActivity {
           }
         });
 
+    }
+
+    private void criarAmizade() {
+        new CtrlAmigos(PerfilActivity.this).AddAmigo(usuario.getCodigo(), new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Resposta resp = (Resposta) obj;
+                if (resp.isFlag()) {
+                    fab.setVisibility(View.GONE);
+                    totalAmigos.setText(String.valueOf(Integer.parseInt(totalAmigos.getText().toString()) + 1));
+                    Toast.makeText(PerfilActivity.this, "\uD83D\uDC4D", Toast.LENGTH_LONG).show();
+                    trazerMeusAmigos();
+                }
+            }
+
+            @Override
+            public void falha() {
+                Toast.makeText(PerfilActivity.this, "Não foi possível, tente mais tarde.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private View.OnClickListener editarDados() {
@@ -318,7 +322,7 @@ public class PerfilActivity extends AppCompatActivity {
                 mensagem.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        new CtrlAmigos(PerfilActivity.this).excluir(codigo, pai, new CallbackExcluir() {
+                        new CtrlAmigos(PerfilActivity.this).excluirAmizade(codigo, pai, new CallbackExcluir() {
                             @Override
                             public void resultadoExcluir(boolean flag) {
                                 if (flag) {

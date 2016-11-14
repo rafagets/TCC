@@ -94,7 +94,31 @@ public class HistoricoActivity extends AppCompatActivity {
         final String l = String.valueOf(getIntent().getStringExtra("lote"));
         Log.e("+++++++++++++++", l);
 
-        new CtrlLote(this).trazer(l, new CallbackTrazer() {
+        trazerLote(l);
+
+        ImageView btSaude = (ImageView) findViewById(R.id.btSaude);
+        btSaude.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HistoricoActivity.this, DetalhesProdutoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
+        btLocalizacao.setOnClickListener(verMapa());
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comprar();
+            }
+        });
+    }
+
+    private void trazerLote(String l) {
+        new CtrlLote(this).trazer(Integer.parseInt(l), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 lote = (Lote) obj;
@@ -108,26 +132,6 @@ public class HistoricoActivity extends AppCompatActivity {
                 bar.setVisibility(View.GONE);
                 Toast.makeText(contexto, "Falha ao carregarrrr", Toast.LENGTH_LONG).show();
                 finish();
-            }
-        });
-
-        ImageView btSaude = (ImageView) findViewById(R.id.btSaude);
-        btSaude.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HistoricoActivity.this, DetalesProdutoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageView btLocalizacao = (ImageView) findViewById(R.id.btLocalizacao) ;
-        btLocalizacao.setOnClickListener(verMapa());
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                comprar();
             }
         });
     }

@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.activity.MainActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
@@ -68,6 +69,7 @@ public class CabecalhoPost extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         LinearLayout comentar = (LinearLayout) getActivity().findViewById(R.id.lyComentar);
+
         imgUsuarioPrincipal = (CircleImageView) getActivity().findViewById(R.id.imgUsuarioPrincipal);
 
         getUsuario();
@@ -173,6 +175,7 @@ public class CabecalhoPost extends Fragment {
                     startActivity(intent);
                     getActivity().finish();
                 }else {
+
                     usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
                 }
             }

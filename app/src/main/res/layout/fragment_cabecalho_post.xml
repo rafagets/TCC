@@ -8,8 +8,8 @@
     android:background="@android:color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/imgUsuarioPrincipal"
         android:src="@drawable/ic_account_circle_black_24dp"
         android:layout_marginLeft="6dp"

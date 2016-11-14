@@ -91,6 +91,8 @@ public class UsuarioDao {
                 DadosUsuario.getUsuario().setTipoImg(cursor.getInt(7));
                 System.out.println("tipeIMG:" + cursor.getInt(7));
             }
+            DadosUsuario.getUsuario().setTipoImg(cursor.getInt(7));
+            System.out.println("tipeIMG:" + cursor.getInt(7));
 
         cursor.moveToNext();
         }

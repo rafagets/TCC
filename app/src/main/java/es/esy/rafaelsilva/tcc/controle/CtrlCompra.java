@@ -12,7 +12,8 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.interfaces.VolleyCallback;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Compra;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
@@ -21,7 +22,7 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 /**
  * Criado por Rafael em 07/11/2016, enjoy it.
  */
-public class CtrlCompra {
+public class CtrlCompra implements Retorno {
     private Context contexto;
     private CallbackSalvar callbackSalvar;
     private int notificacao;
@@ -33,6 +34,23 @@ public class CtrlCompra {
         this.contexto = contexto;
     }
 
+
+    @Override
+    public void salvar(String valores, String campos, CallbackSalvar callback) {
+
+    }
+
+    @Override
+    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+
+    }
+
+    @Override
+    public void excluir(int codigo, CallbackExcluir callback) {
+
+    }
+
+    @Override
     public void trazer(int codigo, final CallbackTrazer callback){
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
@@ -41,7 +59,7 @@ public class CtrlCompra {
         params.put("valores", String.valueOf(codigo));
 
         GetData<Compra> getData = new GetData<>("objeto", params);
-        getData.executar(Compra.class, new VolleyCallback() {
+        getData.executar(Compra.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 callback.resultadoTrazer(resposta);
@@ -59,6 +77,7 @@ public class CtrlCompra {
         });
     }
 
+    @Override
     public void listar(String parametro, final CallbackListar callback){
 
         Map<String, String> params = new HashMap<>();
@@ -67,7 +86,7 @@ public class CtrlCompra {
         params.put("ordenacao", parametro);
 
         GetData<Compra> getData = new GetData<>("lista", params);
-        getData.executar(Compra.class, new VolleyCallback() {
+        getData.executar(Compra.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -86,6 +105,8 @@ public class CtrlCompra {
 
     }
 
+
+
     public void salvar(int notificacao, int carater, int produto, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
         this.carater = carater;
@@ -102,7 +123,7 @@ public class CtrlCompra {
         params.put("valores", DadosUsuario.codigo+","+carater+","+4);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 salvarDois();
@@ -145,7 +166,7 @@ public class CtrlCompra {
         params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new VolleyCallback() {
+        getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
                 Resposta rsp = (Resposta) resposta;

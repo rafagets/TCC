@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
@@ -20,6 +22,7 @@ public class ReputacaoActivity extends AppCompatActivity {
     private SwipeRefreshLayout recarregar;
     public Bitmap icon;
     public Produto produto;
+    ImageView btLocal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,8 @@ public class ReputacaoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getIntent().getStringExtra("nome"));
-
+        btLocal = (ImageView) findViewById(R.id.btLocalizacao);
+        btLocal.setOnClickListener(verMapa());
         Bundle extras = getIntent().getExtras();
         if (extras != null)
             produto = (Produto) getIntent().getSerializableExtra("obj");
@@ -60,6 +64,18 @@ public class ReputacaoActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private View.OnClickListener verMapa() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(ReputacaoActivity.this, Mapa_Activity.class);
+////                intent.putExtra()
+//                startActivity(intent);
+            }
+
+        };
     }
 
     public  void loadAvaliacoes(){
