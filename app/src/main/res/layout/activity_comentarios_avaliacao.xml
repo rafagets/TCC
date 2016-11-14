@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ComentariosPostActivity"
-    android:background="@color/button_material_light">
-
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".activity.ComentariosAvaliacaoActivity">
 
     <ProgressBar
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/progressBar"
-    android:visibility="invisible"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="16dp"
-    style="@android:style/Widget.Holo.Light.ProgressBar" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        style="@android:style/Widget.Holo.Light.ProgressBar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

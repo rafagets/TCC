@@ -28,7 +28,10 @@ public class ComentarioSP {
         this.key = key;
     }
 
-    public void salvar(List<CurtidaComentario> cc, Comentario comentario, List<ComentarioPost> cp, Post post, Usuario usuario){
+    public void salvar(List<CurtidaComentario> cc,
+                       Comentario comentario,
+                       List<ComentarioPost> cp,
+                       Post post, Usuario usuario){
 
         SharedPreferences  save = contexto.getSharedPreferences(key, Context.MODE_PRIVATE);
         SharedPreferences.Editor saveEdit = save.edit();

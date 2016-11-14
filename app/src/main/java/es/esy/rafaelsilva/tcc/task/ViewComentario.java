@@ -305,6 +305,7 @@ public class ViewComentario {
 
                     Intent intent = new Intent(contexto, ComentariosPostActivity.class);
                     intent.putExtra("post", c.getCodigo());
+                    intent.putExtra("pai", c.getPai());
                     contexto.startActivity(intent);
 
                 }

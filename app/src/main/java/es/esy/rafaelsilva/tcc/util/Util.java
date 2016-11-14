@@ -6,7 +6,13 @@ import android.net.NetworkInfo;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 
 /**
  * Created by Rafael on 12/09/2016.
@@ -113,4 +119,5 @@ public class Util {
     public static void setList(List<Double> list) {
         Util.list = list;
     }
+
 }

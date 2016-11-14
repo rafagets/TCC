@@ -7,68 +7,41 @@ import java.util.List;
 import java.util.Map;
 
 import es.esy.rafaelsilva.tcc.DAO.GetData;
+import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.Retorno;
-import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
-import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.modelo.ComentarioAvaliacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 
 /**
- * Created by Rafael on 21/10/2016.
+ * Criado por Rafael em 12/11/2016, enjoy it.
  */
-public class CtrlComentarioPost implements Retorno {
-
+public class CtrlComentarioAvaliacao implements Retorno {
     private Context contexto;
     private int pai;
 
-    public CtrlComentarioPost(Context contexto) {
+    public CtrlComentarioAvaliacao(Context contexto) {
         this.contexto = contexto;
     }
 
 
-
     @Override
-    public void trazer(int codigo, final CallbackTrazer callback){
-
-        Map<String, String> params = new HashMap<>();
-        params.put("acao", "R");
-        params.put("tabela", "comentariopost");
-        params.put("condicao", "comentario");
-        params.put("valores", String.valueOf(codigo));
-
-        GetData<ComentarioPost> getData = new GetData<>("objeto", params);
-        getData.executar(ComentarioPost.class, new CallBackDAO() {
-            @Override
-            public void sucesso(Object resposta) {
-                callback.resultadoTrazer(resposta);
-            }
-
-            @Override
-            public void sucessoLista(List<Object> resposta) {
-
-            }
-
-            @Override
-            public void erro(String resposta) {
-                callback.falha();
-            }
-        });
+    public void trazer(int codigo, CallbackTrazer callback) {
 
     }
 
     @Override
-    public void listar(String parametro, final CallbackListar callback){
-
+    public void listar(String parametro, final CallbackListar callback) {
         Map<String, String> params = new HashMap<>();
         params.put("acao", "R");
-        params.put("tabela", "comentariopost");
+        params.put("tabela", "comentarioavaliacao");
         params.put("ordenacao", parametro);
 
-        GetData<ComentarioPost> getData = new GetData<>("lista", params);
-        getData.executar(ComentarioPost.class, new CallBackDAO() {
+        GetData<ComentarioAvaliacao> getData = new GetData<>("lista", params);
+        getData.executar(ComentarioAvaliacao.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
 
@@ -84,14 +57,13 @@ public class CtrlComentarioPost implements Retorno {
                 callback.falha();
             }
         });
-
     }
 
     @Override
     public void salvar(String valores, String campos, final CallbackSalvar callback) {
         Map<String, String> params = new HashMap<>();
         params.put("acao", "C");
-        params.put("tabela", "comentariopost");
+        params.put("tabela", "comentarioavaliacao");
         params.put("condicao", campos);
         params.put("valores", valores);
 
@@ -150,5 +122,4 @@ public class CtrlComentarioPost implements Retorno {
             }
         });
     }
-
 }

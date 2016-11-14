@@ -372,13 +372,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void listarUsuarios(final MenuItem item) {
         listView = (ListView) findViewById(R.id.listView);
 
-
-                    if (listaUsuarios != null){
-                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
-                        listView.setAdapter(adapter);
-                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
-                        listView.setAdapter(adapter);
-
+<<<<<<<<< Temporary merge branch 1
         new CtrlUsuario(this).listar("", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
@@ -388,7 +382,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     listaUsuarios.add((Usuario) obj);
                 }
 
-
+=========
+                    if (listaUsuarios != null){
+                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+                        listView.setAdapter(adapter);
+                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+                        listView.setAdapter(adapter);
+>>>>>>>>> Temporary merge branch 2
 
                 if (listaUsuarios != null){
                     adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
@@ -411,7 +411,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-    }
     }
     /*Aqui é onde a grande magica da pesquisa acontece!*/
     private void monitorarPesquisa(MenuItem item){
@@ -538,7 +537,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
     public void updateFoto(Bitmap bmp){
-        new CtrlUsuario(this).atualizar(NOME_IMAGEM, "imagem", new CallbackSalvar() {
+        new CtrlUsuario(this).salvarAtualizacao(NOME_IMAGEM, "imagem", new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
 
