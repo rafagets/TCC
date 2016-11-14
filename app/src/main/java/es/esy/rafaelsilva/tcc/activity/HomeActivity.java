@@ -13,10 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -37,7 +39,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.api.Api;
+import com.google.android.gms.location.places.NearbyAlertFilter;
 import com.google.android.gms.plus.model.people.Person;
 
 import java.io.ByteArrayOutputStream;
@@ -55,10 +59,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
-import es.esy.rafaelsilva.tcc.util.Resposta;
-import es.esy.rafaelsilva.tcc.util.Util;
 import  static android.Manifest.permission.CAMERA;
-
 import static  android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -74,6 +75,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ProgressDialog dialog;
     Bitmap img;
     UsuarioDao dao;
+    String path;
     private final int MY_PERMISSIONS = 100;
     private final int FOTO_CAMERA = 200;
     private final int FOTO_SD = 300;
@@ -260,10 +262,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         boolean dirCreated = file.exists();
         if (!dirCreated) {
-            file.mkdirs();
+            dirCreated = file.mkdirs();
         }
         if(dirCreated) {
-            String path = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
+            path = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
                     File.separator + NOME_IMAGEM;
 
             File newFile = new File(path);
@@ -272,6 +274,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             camIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
             startActivityForResult(camIntent, FOTO_CAMERA);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("file_path", path);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        path = savedInstanceState.getString("file_path");
     }
 
     @Override
@@ -372,7 +386,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void listarUsuarios(final MenuItem item) {
         listView = (ListView) findViewById(R.id.listView);
 
-<<<<<<<<< Temporary merge branch 1
+
+                    if (listaUsuarios != null){
+                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+                        listView.setAdapter(adapter);
+                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+                        listView.setAdapter(adapter);
+
         new CtrlUsuario(this).listar("", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
@@ -382,13 +402,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     listaUsuarios.add((Usuario) obj);
                 }
 
-=========
-                    if (listaUsuarios != null){
-                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
-                        listView.setAdapter(adapter);
-                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
-                        listView.setAdapter(adapter);
->>>>>>>>> Temporary merge branch 2
+
 
                 if (listaUsuarios != null){
                     adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
@@ -411,6 +425,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
     }
     /*Aqui é onde a grande magica da pesquisa acontece!*/
     private void monitorarPesquisa(MenuItem item){
@@ -536,8 +551,46 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         return false;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSIONS){
+            if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                                             grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(HomeActivity.this,"Permissões aceitas!", Toast.LENGTH_LONG).show();
+            }else{
+                explicação();
+            }
+        }
+    }
+
+    private void explicação() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("Solicitação de Permissão");
+        builder.setMessage("Para utilizar algumas funções este app necessita de permissão.");
+        builder.setPositiveButton("Permitir", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogI, int wich){
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+
+            }
+        });
+        builder.setNegativeButton("Negar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogI, int wich){
+                dialogI.dismiss();
+//                finish();
+            }
+        });
+    }
+
     public void updateFoto(Bitmap bmp){
-        new CtrlUsuario(this).salvarAtualizacao(NOME_IMAGEM, "imagem", new CallbackSalvar() {
+        new CtrlUsuario(this).atualizar(NOME_IMAGEM, "imagem", new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
 
