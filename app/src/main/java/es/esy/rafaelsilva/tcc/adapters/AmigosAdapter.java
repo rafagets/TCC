@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,6 +113,8 @@ public class AmigosAdapter extends BaseAdapter {
 
         final TextView nome = (TextView) v.findViewById(R.id.lbNome);
         final CircleImageView imgAmigo = (CircleImageView) v.findViewById(R.id.imgUsuario) ;
+        ImageView ic_status = (ImageView) v.findViewById(R.id.imgAddAmigo);
+        LinearLayout layout = (LinearLayout) v.findViewById(R.id.linear_notificacao);
 
         /* Verifica se o nome é maior que o espaço designado
         * se sim, adapta o nome para caber no campo*/
@@ -123,8 +126,43 @@ public class AmigosAdapter extends BaseAdapter {
         /* Seta a imagem do perfil do usuario */
         amigos.get(i).getAmigoAceObj().setImagemPerfil(imgAmigo, contexto);
 
-        monitorarCliqueImgUsuario(imgAmigo, i);
+        /*
+        * Verifica se o usuario tem uma solicitação de amizade pendente
+        * Caso a solicitação for para o usuario logado, aparece a opção para aceitar*/
+        if (amigos.get(i).getAmigoAce() == DadosUsuario.codigo){
+            if (amigos.get(i).getStatusAmizade() == 1){
+                layout.setVisibility(View.VISIBLE);
+                this.monitorarCliqueAceitarAmizade(layout, amigos.get(i).getCodigo(), amigos.get(i).getPai());
+            }
+        }
 
+        if (amigos.get(i).getAmigoAdd() == DadosUsuario.codigo){
+            if (amigos.get(i).getStatusAmizade() == 1){
+                layout.setVisibility(View.VISIBLE);
+                ic_status.setImageResource(android.R.drawable.ic_dialog_info);
+            }
+        }
+
+        monitorarCliqueImgUsuario(imgAmigo, i);
+    }
+
+    private void monitorarCliqueAceitarAmizade(final LinearLayout layout, final int codigoAmizade, final int post) {
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new CtrlAmigos(contexto).aceitarAmizade(codigoAmizade, post, new CallbackSalvar() {
+                    @Override
+                    public void resultadoSalvar(Object obj) {
+                        layout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void falha() {
+                        Toast.makeText(contexto, "Falha ao aceitar amizade\nTente novamente mais tarde", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
     }
 
     /*Monitora o clique em cima da foto do perfil do usuario*/

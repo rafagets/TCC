@@ -1,5 +1,6 @@
 package es.esy.rafaelsilva.tcc.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,6 +21,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -46,11 +49,14 @@ import com.google.android.gms.plus.model.people.Person;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.esy.rafaelsilva.tcc.BuildConfig;
 import es.esy.rafaelsilva.tcc.DAO.UsuarioDao;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.adapters.Pesquisa;
@@ -59,6 +65,8 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.UploadDeImagens;
+
 import  static android.Manifest.permission.CAMERA;
 import static  android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
@@ -81,7 +89,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private final int FOTO_SD = 300;
     private final String APP_DIRECTORIO = "myPictureApp/";
     private final String MEDIA_DIRECTORY = APP_DIRECTORIO + "media";
-    private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_" + DadosUsuario.getUsuario().getNome()+".jpg";
+    //private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_" + DadosUsuario.getUsuario().getNome()+".jpg";
+    private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_.jpg";
 
     public CircleImageView getImgUsuario() {
         return imgUsuario;
@@ -233,24 +242,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
     public void showOptions(){
-        final CharSequence[] opcoes = {"ESCOLHER FOTO", "NOVA FOTO", "CANCELAR"};
-        final AlertDialog.Builder  builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setTitle("Opções");
-        builder.setItems(opcoes, new DialogInterface.OnClickListener(){
+        if (this.verificaPermissao()) {
+            final CharSequence[] opcoes = {"ESCOLHER FOTO", "NOVA FOTO", "CANCELAR"};
+            final AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+            builder.setTitle("Opções");
+            builder.setItems(opcoes, new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialogInterface, int op) {
-                if(opcoes[op] == "NOVA FOTO"){
-                    abrirCamera();
-                }else if(opcoes[op] == "ESCOLHER FOTO"){
-                    selectFoto();
-                }else if (opcoes[op] == "CANCELAR"){
-                    dialogInterface.dismiss();
+                @Override
+                public void onClick(DialogInterface dialogInterface, int op) {
+                    if (opcoes[op] == "NOVA FOTO") {
+                        abrirCamera();
+                    } else if (opcoes[op] == "ESCOLHER FOTO") {
+                        selectFoto();
+                    } else if (opcoes[op] == "CANCELAR") {
+                        dialogInterface.dismiss();
+                    }
                 }
-            }
 
-        });
-        builder.show();
+            });
+            builder.show();
+        }else{
+            Toast.makeText(this,"Permissão negada", Toast.LENGTH_LONG).show();
+        }
     }
     private void selectFoto() {
         Intent galeriaIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -265,15 +278,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             dirCreated = file.mkdirs();
         }
         if(dirCreated) {
-            path = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
-                    File.separator + NOME_IMAGEM;
-
-            File newFile = new File(path);
-
+            Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", criarImagem());
             Intent camIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            camIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            camIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(camIntent, FOTO_CAMERA);
         }
+    }
+
+    private File criarImagem(){
+        path = Environment.getExternalStorageDirectory() + File.separator + MEDIA_DIRECTORY +
+                File.separator + NOME_IMAGEM;
+
+        return new File(path);
     }
 
     @Override
@@ -304,7 +320,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }else{
                         Toast.makeText(this, "NAO SALVO NO SQLITE", Toast.LENGTH_LONG).show();
                     }
-                    //salvarFotoBDLocal();
+                    upload(dir);
                 }
                 break;
             case FOTO_SD:
@@ -317,10 +333,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                     imgUsuario.setImageURI(path);
                     System.out.println("PATH: " + path);
-                   //salvarFotoBDLocal();
+
+                    upload(getPastaUrl(path));
                 }
                 break;
         }
+    }
+
+    public String getPastaUrl(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
     }
 
     private int decodeBitMap(String dir) {
@@ -331,6 +365,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //updateFoto(bitMap);
         return x;
     }
+
     private int decodeURI(String uri){
         int x = 1;
         Uri path = Uri.parse(uri);
@@ -427,6 +462,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     }
+
     /*Aqui é onde a grande magica da pesquisa acontece!*/
     private void monitorarPesquisa(MenuItem item){
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(item);
@@ -513,6 +549,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     public int carregarImgUsuario(){
         int ret = 2;
         dao = new UsuarioDao(this);
@@ -528,6 +565,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return ret;
 
     }
+
+
     private boolean verificarPermissoes(){// incompleto
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             return true;
@@ -553,17 +592,32 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_PERMISSIONS){
-            if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                                             grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(HomeActivity.this,"Permissões aceitas!", Toast.LENGTH_LONG).show();
-            }else{
-                explicação();
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)  {
+                    // Usuário aceitou a permissão!
+                    showOptions();
+                } else {
+                    // Usuário negou a permissão.
+                    // Não podemos utilizar esta funcionalidade.
+                    Toast.makeText(this,"Permissão negada", Toast.LENGTH_LONG).show();
+                }
+                return;
             }
         }
     }
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == MY_PERMISSIONS){
+//            if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+//                                             grantResults[1] == PackageManager.PERMISSION_GRANTED){
+//                Toast.makeText(HomeActivity.this,"Permissões aceitas!", Toast.LENGTH_LONG).show();
+//            }else{
+//                explicação();
+//            }
+//        }
+//    }
 
     private void explicação() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
@@ -589,17 +643,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void updateFoto(Bitmap bmp){
-        new CtrlUsuario(this).atualizar(NOME_IMAGEM, "imagem", new CallbackSalvar() {
-            @Override
-            public void resultadoSalvar(Object obj) {
+    private void upload(String path){
 
+        new UploadDeImagens(this).enviar(path, NOME_IMAGEM, "perfil");
+
+    }
+
+
+    private boolean verificaPermissao(){
+        // Se não possui permissão
+        if (ContextCompat.checkSelfPermission(this,WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Verifica se já mostramos o alerta e o usuário negou na 1ª vez.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Caso o usuário tenha negado a permissão anteriormente, e não tenha marcado o check "nunca mais mostre este alerta"
+                // Podemos mostrar um alerta explicando para o usuário porque a permissão é importante.
+                return false;
+            } else {
+                // Solicita a permissão
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},0);
             }
+        } else {
+            return true;
+        }
 
-            @Override
-            public void falha() {
-
-            }
-        });
+        return true;
     }
 }

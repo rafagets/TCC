@@ -36,13 +36,67 @@ public class CtrlAmigos implements Retorno {
 
 
     @Override
-    public void salvar(String valores, String campos, CallbackSalvar callback) {
+    public void salvar(String valores, String campos, final CallbackSalvar callback) {
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "C");
+        params.put("tabela", "amigos");
+        params.put("condicao", campos);
+        params.put("valores", valores);
 
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new CallBackDAO() {
+            @Override
+            public void sucesso(Object resposta) {
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag()) {
+                    callback.resultadoSalvar(resposta);
+                }else{
+                    callback.falha();
+                }
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+
+            }
+        });
     }
 
     @Override
-    public void atualizar(String valores, String campos, CallbackSalvar callbackSalvar) {
+    public void atualizar(String valores, String campos, final CallbackSalvar callbackSalvar) {
+        Map<String, String> params = new HashMap<>();
+        params.put("acao", "U");
+        params.put("tabela", "amigos");
+        params.put("condicao", campos);
+        params.put("valores", valores);
 
+        GetData<Resposta> getData = new GetData<>("objeto", params);
+        getData.executar(Resposta.class, new CallBackDAO() {
+            @Override
+            public void sucesso(Object resposta) {
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag())
+                    callbackSalvar.resultadoSalvar(resposta);
+                else
+                    callbackSalvar.falha();
+            }
+
+            @Override
+            public void sucessoLista(List<Object> resposta) {
+
+            }
+
+            @Override
+            public void erro(String resposta) {
+                callbackSalvar.falha();
+            }
+        });
     }
 
     @Override
@@ -134,11 +188,17 @@ public class CtrlAmigos implements Retorno {
     }
 
 
-
     public void AddAmigo(int codigoAmizade, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
         this.codigoAmizade = codigoAmizade;
         postarUm();
+    }
+
+    public void aceitarAmizade(int codigoAmizade, int papa, final CallbackSalvar callback){
+        this.callbackSalvar = callback;
+        this.codigoAmizade = codigoAmizade;
+        this.papa = papa;
+        this.aceitar();
     }
 
     public void excluirAmizade(int codigoAmizade, int pai, CallbackExcluir callbackExcluir){
@@ -174,10 +234,51 @@ public class CtrlAmigos implements Retorno {
         });
     }
 
+
+
+    /* Inicio da logica de aceitacao de uma nova amizade*/
+    /* Faz um post */
+    private void aceitar() {
+        String valores = "statusAmizade = 0";
+        String campos = "codigo = "+codigoAmizade;
+        this.atualizar(valores, campos, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                aceitarDois();
+            }
+
+            @Override
+            public void falha() {
+                callbackSalvar.falha();
+            }
+        });
+
+    }
+
+    // atualiza o post para status visivel
+    private void aceitarDois() {
+        String valores = "status = 1";
+        String campos = "codigo = "+papa;
+
+        new CtrlPost(contexto).atualizar(valores, campos, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                callbackSalvar.resultadoSalvar(obj);
+            }
+
+            @Override
+            public void falha() {
+                callbackSalvar.falha();
+            }
+        });
+    }
+
+
+
     /* Inicio da logica de adição de uma nova amizade*/
     /* Faz um post */
     private void postarUm(){
-        new CtrlPost(contexto).salvar("usuario, tipo", String.valueOf(DadosUsuario.codigo) +","+ 2, new CallbackSalvar() {
+        new CtrlPost(contexto).salvar("usuario, tipo, status", String.valueOf(DadosUsuario.codigo) +","+ 2 +","+ 0, new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 Resposta rsp = (Resposta) obj;
@@ -212,27 +313,17 @@ public class CtrlAmigos implements Retorno {
 
     /* Salva a amizade */
     private void postarTres(final int pai){
-        Map<String, String> params = new HashMap<>();
-        params.put("acao", "C");
-        params.put("tabela", "amigos");
-        params.put("condicao", "amigoAdd, amigoAce, pai");
-        params.put("valores", String.valueOf(DadosUsuario.codigo +","+ codigoAmizade +","+ pai));
+        String valores = DadosUsuario.codigo +","+ codigoAmizade +","+ pai;
+        String campos = "amigoAdd, amigoAce, pai";
 
-        GetData<Resposta> getData = new GetData<>("objeto", params);
-        getData.executar(Resposta.class, new CallBackDAO() {
+        this.salvar(valores, campos, new CallbackSalvar() {
             @Override
-            public void sucesso(Object resposta) {
-                callbackSalvar.resultadoSalvar(resposta);
+            public void resultadoSalvar(Object obj) {
+                callbackSalvar.resultadoSalvar(obj);
             }
 
             @Override
-            public void sucessoLista(List<Object> resposta) {
-
-            }
-
-            @Override
-            public void erro(String resposta) {
-                callbackSalvar.falha();
+            public void falha() {
                 postarQuatro(pai);
             }
         });

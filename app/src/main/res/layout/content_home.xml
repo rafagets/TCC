@@ -26,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         tools:layout="@layout/fragment_cabecalho_post"
-        android:layout_below="@+id/listView"/>
+        android:layout_below="@+id/listView"
+        />
 
     <fragment
         android:id="@+id/corpo_home"

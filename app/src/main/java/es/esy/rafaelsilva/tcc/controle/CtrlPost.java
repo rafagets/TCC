@@ -149,7 +149,11 @@ public class CtrlPost implements Retorno {
         getData.executar(Resposta.class, new CallBackDAO() {
             @Override
             public void sucesso(Object resposta) {
-                callbackSalvar.resultadoSalvar(resposta);
+                Resposta rsp = (Resposta) resposta;
+                if (rsp.isFlag())
+                    callbackSalvar.resultadoSalvar(resposta);
+                else
+                    callbackSalvar.falha();
             }
 
             @Override

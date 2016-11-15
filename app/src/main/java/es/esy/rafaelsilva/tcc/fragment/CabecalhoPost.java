@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.activity.MainActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
+import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
@@ -57,6 +59,8 @@ public class CabecalhoPost extends Fragment {
 
     private EditText comentario;
     private CircleImageView imgUsuarioPrincipal;
+    private LinearLayout layout;
+    private TextView notificacao;
     private Usuario usuario;
 
     @Override
@@ -71,6 +75,8 @@ public class CabecalhoPost extends Fragment {
         LinearLayout comentar = (LinearLayout) getActivity().findViewById(R.id.lyComentar);
 
         imgUsuarioPrincipal = (CircleImageView) getActivity().findViewById(R.id.imgUsuarioPrincipal);
+        layout = (LinearLayout) getActivity().findViewById(R.id.linear_notificacao);
+        notificacao = (TextView) getActivity().findViewById(R.id.notificacao);
 
         getUsuario();
 
@@ -93,6 +99,12 @@ public class CabecalhoPost extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getNotificacoes();
     }
 
     private void postarComent() {
@@ -175,8 +187,26 @@ public class CabecalhoPost extends Fragment {
                     startActivity(intent);
                     getActivity().finish();
                 }else {
-
                     usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
+                    getNotificacoes();
+                }
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
+    }
+
+    public void getNotificacoes(){
+        new CtrlAmigos(getActivity()).contar("amigoAdd = " + DadosUsuario.codigo + " AND statusAmizade = 1", new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                Resposta rsp = (Resposta) obj;
+                if (rsp.getValor() > 0){
+                    notificacao.setText(String.valueOf(rsp.getValor()));
+                    layout.setVisibility(View.VISIBLE);
                 }
             }
 

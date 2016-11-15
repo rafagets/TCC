@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,18 @@ public class PerfilAmigos extends Fragment {
     }
 
     private void buscar(final View rootView){
-        new CtrlAmigos(getActivity()).listar("WHERE amigoAdd = " + usuario, new CallbackListar() {
+        /*
+        * verifica se o usuario da pesquisa é o mesmo que esta logado
+        * se ja estiver logado, buscas todos os amigos, inclusive as solicitaçoes.
+        */
+        String condicao = "";
+        if (usuario != DadosUsuario.codigo){
+            condicao = "WHERE amigoAdd = " +usuario+ " OR amigoAce = " +usuario+ " AND statusAmizade = 0 ORDER BY statusAmizade DESC";
+        }else{
+            condicao = "WHERE amigoAdd = " +usuario+ " OR amigoAce = " +usuario;
+        }
+
+        new CtrlAmigos(getActivity()).listar(condicao, new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 amigos = new ArrayList<>();
@@ -87,9 +99,13 @@ public class PerfilAmigos extends Fragment {
             public void falha() {
                 LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
                 layout.removeAllViewsInLayout();
-                ImageView falha = new ImageView(getActivity());
+                TextView semAmigos = new TextView(getActivity());
+                semAmigos.setText("Nenhum amigo encontrado");
+
+                /*ImageView falha = new ImageView(getActivity());
                 falha.setImageResource(R.drawable.back_falha_carregar);
-                layout.addView(falha);
+                layout.addView(falha);*/
+                layout.addView(semAmigos);
                 layout.setVisibility(View.VISIBLE);
             }
         });
