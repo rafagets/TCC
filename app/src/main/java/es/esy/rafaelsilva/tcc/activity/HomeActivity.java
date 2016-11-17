@@ -80,6 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     TextView txtUsuarioNome;
     TextView txtUsuarioEmail;
     private CircleImageView imgUsuario;
+    private CircleImageView imgUsuarioPrincipal;
     ProgressDialog dialog;
     Bitmap img;
     UsuarioDao dao;
@@ -143,6 +144,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         txtUsuarioNome = (TextView) view.findViewById(R.id.txtUsuarioNome);
         txtUsuarioEmail = (TextView) view.findViewById(R.id.txtUsuarioEmail);
         imgUsuario = (CircleImageView) view.findViewById(R.id.imageViewUsuarioCorrente);
+        imgUsuarioPrincipal = (CircleImageView) findViewById(R.id.imgUsuarioPrincipal);
 
 
         imgUsuario.setOnClickListener(foto());
@@ -320,6 +322,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }else{
                         Toast.makeText(this, "NAO SALVO NO SQLITE", Toast.LENGTH_LONG).show();
                     }
+
+                    File imgFile = new  File(dir);
+                    if(imgFile.exists()){
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        imgUsuarioPrincipal.setImageBitmap(myBitmap);
+                    }
+
                     upload(dir);
                 }
                 break;
@@ -332,6 +341,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         Toast.makeText(this, "NAO SALVO NO SQLITE", Toast.LENGTH_LONG).show();
                     }
                     imgUsuario.setImageURI(path);
+                    imgUsuarioPrincipal.setImageURI(path);
                     System.out.println("PATH: " + path);
 
                     upload(getPastaUrl(path));
@@ -643,12 +653,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void upload(String path){
+    private void upload(final String path){
+        new CtrlUsuario(this).fotoPerfil(path, NOME_IMAGEM, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                Toast.makeText(HomeActivity.this, "Enviando imagem...", Toast.LENGTH_LONG).show();
+            }
 
-        new UploadDeImagens(this).enviar(path, NOME_IMAGEM, "perfil");
-
+            @Override
+            public void falha() {
+                Toast.makeText(HomeActivity.this, "Falha ao enviar", Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
 
     private boolean verificaPermissao(){
         // Se não possui permissão

@@ -32,6 +32,8 @@ public class UploadDeImagens {
         String caminho ="";
         if (tipo.equals("perfil"))
             caminho = "img/tumb/";
+        if (tipo.equals("post"))
+            caminho = "img/posts/";
 
         redimencionar(new File(path));
 

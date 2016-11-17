@@ -172,6 +172,7 @@ public class ViewComentario {
             final boolean[] flag2 = {false};
             int curtido = 0;
 
+            if (u.getImagem() != null)
             u.setImagemPerfil(imgUsuario, contexto);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {

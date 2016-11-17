@@ -58,7 +58,17 @@
             android:text="Diga uma novidade..."
             android:id="@+id/lbNovidade"
             android:layout_marginLeft="6dp"
-            android:clickable="false" />
+            android:clickable="false"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/postFoto"
+            android:src="@android:drawable/ic_menu_camera"
+            android:tint="@color/wallet_bright_foreground_holo_light"
+            android:layout_marginLeft="6dp"/>
     </LinearLayout>
+
 
 </LinearLayout>

@@ -11,6 +11,7 @@ public class DadosUsuario {
     public static String nome = "Sabrina";
     public static String email ;
     public static String senha;
+    public static String imagem;
 
     public static Usuario usuario;
 
@@ -24,5 +25,6 @@ public class DadosUsuario {
         DadosUsuario.nome   = usuarioCorrente.getNome();
         DadosUsuario.email  = usuarioCorrente.getEmail();
         DadosUsuario.senha  = usuarioCorrente.getSenha();
+        DadosUsuario.imagem   = usuarioCorrente.getImagem();
     }
 }

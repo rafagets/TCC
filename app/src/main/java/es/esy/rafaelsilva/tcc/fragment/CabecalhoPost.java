@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.activity.MainActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
+import es.esy.rafaelsilva.tcc.activity.PostarFotoActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
@@ -77,6 +79,15 @@ public class CabecalhoPost extends Fragment {
         imgUsuarioPrincipal = (CircleImageView) getActivity().findViewById(R.id.imgUsuarioPrincipal);
         layout = (LinearLayout) getActivity().findViewById(R.id.linear_notificacao);
         notificacao = (TextView) getActivity().findViewById(R.id.notificacao);
+
+        ImageView postFoto = (ImageView) getActivity().findViewById(R.id.postFoto);
+        postFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), PostarFotoActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
 
         getUsuario();
 
@@ -181,6 +192,7 @@ public class CabecalhoPost extends Fragment {
             @Override
             public void resultadoTrazer(Object obj) {
                 usuario = (Usuario) obj;
+                DadosUsuario.usuario = usuario;
                 if (usuario == null){
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("error", true);
