@@ -183,7 +183,7 @@ public class ViewAvaliacao {
             final TextView nome, data, produto, avaliacao, qtdAddOne, numComent;
             CircleImageView imgUsuario, imgProduto;
             RatingBar estrela;
-            final ImageView addOne, coment;
+            final ImageView addOne, coment, imgShare;
 
             imgUsuario = (CircleImageView) v.findViewById(R.id.imgUsuario);
             nome = (TextView) v.findViewById(R.id.lbNome);
@@ -193,6 +193,7 @@ public class ViewAvaliacao {
             coment = (ImageView) v.findViewById(R.id.imgComentarios);
             qtdAddOne = (TextView) v.findViewById(R.id.lbAddOne);
             numComent = (TextView) v.findViewById(R.id.lbComentarios);
+            imgShare = (ImageView) v.findViewById(R.id.imgShare);
 
             final boolean[] flag2 = {false};
             int curtido = 0;
@@ -336,6 +337,17 @@ public class ViewAvaliacao {
                     intent.putExtra("pai", av.getPai());
                     contexto.startActivity(intent);
 
+                }
+            });
+
+            imgShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "www.tcc.com.br/post_id/14591");
+                    sendIntent.setType("text/plain");
+                    contexto.startActivity(sendIntent);
                 }
             });
 

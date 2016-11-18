@@ -164,76 +164,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private View.OnClickListener salvarFotoBDLocal() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(img != null) {
-                dialog = new ProgressDialog(HomeActivity.this);
-                dialog.setMessage("Salvando, aguarde...");
-                dialog.show();
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                imageView.setImageBitmap(photo);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                img.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                    dao = new UsuarioDao(HomeActivity.this);
-                   // long result = dao.updateImg(DadosUsuario.getUsuario().getCodigo(), byteArray);
-
-                    //chamar a tela de login passando o usuario/email que acabou de cadastrar
-                    //if (result > 0) {
-                      //  dialog.dismiss();
-                      //  Toast.makeText(HomeActivity.this, "Imagem salva no bd Local \uD83D\uDE09", Toast.LENGTH_LONG).show();
-//                if (byteArray != null) {
-//
-//                    String campos = "codigo="+ DadosUsuario.getUsuario().getCodigo();
-//                    String values = "";
-//
-//                    new CtrlUsuario(HomeActivity.this).salvarAtualizacao(values, campos, new CallbackSalvar() {
-//
-//                        @Override
-//                        public void resultadoSalvar(Object obj) {
-//                            dialog.dismiss();
-//                            Resposta resposta = (Resposta) obj;
-//                            if (resposta.isFlag()) {
-//                                Toast.makeText(HomeActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_LONG).show();
-//                            } else {
-//                                Toast.makeText(HomeActivity.this, "Falha ao atualizar usuario", Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void falha() {
-//                            dialog.dismiss();
-//                            Toast.makeText(HomeActivity.this, "Falha ao cadastrar usuario", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-////            }else{
-////                dialog.dismiss();
-////                Toast.makeText(AtualizaCadastroUsuarioActivity.this, "Senhas diferentes. Verifique.", Toast.LENGTH_LONG).show();
-////            }
-//
-//                } else {
-//                    dialog.dismiss();
-//                    Toast.makeText(HomeActivity.this, "Preencha todos os campos.", Toast.LENGTH_LONG).show();
-//                }
-
-                    //}else{
-                    //    dialog.dismiss();
-                     //   Toast.makeText(HomeActivity.this, "Erro ao tentar salvar imagem\nTente novamente!", Toast.LENGTH_LONG).show();
-                   // }
-
-
-                }else{
-                    Toast.makeText(HomeActivity.this, "img vazio", Toast.LENGTH_LONG).show();
-
-                }
-            }
-        };
-    }
-
     private View.OnClickListener foto() {
         return new View.OnClickListener() {
             @Override
@@ -381,7 +311,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Uri path = Uri.parse(uri);
         imgUsuario.setImageURI(path);
         return x;
-
     }
 
     @Override
@@ -431,23 +360,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void listarUsuarios(final MenuItem item) {
         listView = (ListView) findViewById(R.id.listView);
 
-
-                    if (listaUsuarios != null){
-                        adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
-                        listView.setAdapter(adapter);
-                        //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
-                        listView.setAdapter(adapter);
+        if (listaUsuarios != null) {
+            adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
+            listView.setAdapter(adapter);
+            //arrayAdapter = new UsuarioAdapter(HomeActivity.this, android.R.layout.simple_list_item_1, listaUsuarios);
+            listView.setAdapter(adapter);
+        }
 
         new CtrlUsuario(this).listar("", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 listaUsuarios = new ArrayList<>();
-
                 for (Object obj : lista) {
                     listaUsuarios.add((Usuario) obj);
                 }
-
-
 
                 if (listaUsuarios != null){
                     adapter = new Pesquisa(HomeActivity.this, listaUsuarios);
@@ -460,17 +386,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     fragmentCorpo.setVisibility(View.GONE);
 
                     monitorarPesquisa(item);
-
                 }
-
             }
-
             @Override
             public void falha() {
 
             }
         });
-    }
     }
 
     /*Aqui é onde a grande magica da pesquisa acontece!*/

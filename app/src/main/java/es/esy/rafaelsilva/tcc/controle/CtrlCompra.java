@@ -165,7 +165,7 @@ public class CtrlCompra implements Retorno {
         params.put("acao", "C");
         params.put("tabela", "compra");
         params.put("condicao", "notificacao, carater, usuario, produto, pai, comentario");
-        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai+"'"+post+"'");
+        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai+",'"+post+"'");
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new CallBackDAO() {
