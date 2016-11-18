@@ -21,8 +21,8 @@
             android:layout_alignParentRight="true"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/imgUsuario"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -45,10 +45,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/status"
-            android:layout_marginLeft="-15dp"
-            android:layout_marginTop="-10dp"
+            android:layout_marginTop="-8dp"
             android:layout_below="@+id/txtNomeUsuario"
-            android:layout_toRightOf="@+id/imgUsuario"/>
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_marginLeft="-6.5dp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:singleLine="false"
             android:hint="Digite a história dessa foto."
             android:layout_marginTop="10dp"
-            android:layout_below="@id/imgPost"/>
+            android:layout_below="@id/imgPost" />
     </RelativeLayout>
 
 </ScrollView>

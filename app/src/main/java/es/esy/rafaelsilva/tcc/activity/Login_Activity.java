@@ -101,6 +101,7 @@ public class Login_Activity extends AppCompatActivity {
                 }catch (Exception e){
                     Toast.makeText(Login_Activity.this, "Email ou Senha Incorretos.\n Verifique os dados e tente novamente!", Toast.LENGTH_LONG).show();
                     // limpa o campo senha
+                    e.printStackTrace();
                     txtSenha.setText("");
                 }
             }

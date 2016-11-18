@@ -57,17 +57,17 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Diga uma novidade..."
             android:id="@+id/lbNovidade"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="10dp"
             android:clickable="false"
-            android:layout_weight="1" />
+            android:layout_weight="4" />
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:id="@+id/postFoto"
-            android:src="@android:drawable/ic_menu_camera"
-            android:tint="@color/wallet_bright_foreground_holo_light"
-            android:layout_marginLeft="6dp"/>
+            android:src="@drawable/ic_camera"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp" />
     </LinearLayout>
 
 

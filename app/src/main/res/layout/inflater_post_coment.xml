@@ -1,73 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imgUsuarioLogado"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dp"
+        android:src="@drawable/ic_account_circle_black_24dp"
+        app:civ_border_width="0dp"
+        app:civ_border_color="@color/colorAccent"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNomeUsuario"
+        android:layout_toRightOf="@+id/imgUsuarioLogado"
+        android:layout_alignTop="@+id/imgUsuarioLogado"
+        android:text="Usuário"
+        android:textSize="16sp"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:layout_marginTop="-8dp"
+        android:layout_below="@+id/txtNomeUsuario"
+        android:layout_toRightOf="@+id/imgUsuarioLogado"
+        android:layout_marginLeft="-6.5dp" />
+
+
+    <EditText
+        android:id="@+id/txtPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:gravity="top|left"
+        android:inputType="textMultiLine"
+        android:lines="20"
+        android:minLines="5"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:hint="Digite a novidade."
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/imgUsuarioLogado"/>
 
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/imgUsuarioLogado"
-                android:src="@drawable/ic_account_circle_black_24dp"
-                app:civ_border_width="0dp"
-                app:civ_border_color="@color/colorAccent"
-                android:layout_marginEnd="10dp"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sabrina"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/lbNome" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/status"
-                    android:layout_marginLeft="-15dp"
-                    android:layout_marginTop="-10dp" />
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-                    <!--android:text="Público"-->
-                    <!--android:id="@+id/Status" />-->
-            </LinearLayout>
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/txtPost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:lines="20"
-            android:minLines="5"
-            android:scrollHorizontally="false"
-            android:scrollbars="vertical"
-            android:singleLine="false"
-            android:hint="Digite a novidade."
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -128,9 +128,12 @@ public class CabecalhoPost extends Fragment {
         comentario = (EditText) view.findViewById(R.id.txtPost);
         CircleImageView imgUsuarioLogado = (CircleImageView) view.findViewById(R.id.imgUsuarioLogado);
         Spinner spinner = (Spinner) view.findViewById(R.id.status);
+        TextView name = (TextView) view.findViewById(R.id.txtNomeUsuario) ;
+
+        name.setText(DadosUsuario.nome);
 
         String[] status = new String[] {"Público","Amigos","Privado"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, status);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.estilo_spinner, status);
         spinner.setAdapter(adapter);
 
         if (usuario != null)

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.CompraSP;
 import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.ListaPostsSP;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
@@ -26,6 +27,7 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.task.ViewAmizade;
 import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
 import es.esy.rafaelsilva.tcc.task.ViewComentario;
+import es.esy.rafaelsilva.tcc.task.ViewCompra;
 import es.esy.rafaelsilva.tcc.task.ViewPostFoto;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
@@ -214,6 +216,21 @@ public class CorpoHome extends Fragment {
                     }
                 });
             }
+            else if (posts.get(posicao).getTipo() == 4){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_compra, null);
+                new ViewCompra(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
             else if (posts.get(posicao).getTipo() == 5){
                 View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_foto, null);
                 new ViewPostFoto(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
@@ -234,6 +251,26 @@ public class CorpoHome extends Fragment {
             }
         }else{
             recarregar.setRefreshing(false);
+        }
+    }
+
+    private void excluirDados(){
+        ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
+        List<Post> psp = sp.lerPosts();
+
+        for (Post p : psp){
+            if (p.getTipo() == 1) {
+
+            }else if (p.getTipo() == 2){
+
+            }else if (p.getTipo() == 3){
+
+            }else if (p.getTipo() == 4){
+                CompraSP s = new CompraSP(getActivity(), "TCC_COMPRA_"+p.getCodigo());
+            }else if (p.getTipo() == 5){
+
+            }
+
         }
     }
 

@@ -3,6 +3,7 @@ package es.esy.rafaelsilva.tcc.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -45,16 +47,20 @@ import es.esy.rafaelsilva.tcc.controle.CtrlHistorico;
 import es.esy.rafaelsilva.tcc.controle.CtrlLote;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlProduto;
+import es.esy.rafaelsilva.tcc.controle.CtrlProdutor;
 import es.esy.rafaelsilva.tcc.controle.CtrlTipo;
+import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
+import es.esy.rafaelsilva.tcc.modelo.Mercado;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Produtor;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
+import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.task.HistoricoTask;
 import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
 import es.esy.rafaelsilva.tcc.util.Config;
@@ -71,6 +77,8 @@ public class HistoricoActivity extends AppCompatActivity {
     private Lote lote;
     public Produto produto;
     private List<Avaliacao> listaAvaliacao;
+    private Usuario usuario;
+    private Produtor produtor;
 
     public Produto getProduto() {
         return produto;
@@ -95,6 +103,7 @@ public class HistoricoActivity extends AppCompatActivity {
         Log.e("+++++++++++++++", l);
 
         trazerLote(l);
+        getUsuario();
 
         ImageView btSaude = (ImageView) findViewById(R.id.btSaude);
         btSaude.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +145,34 @@ public class HistoricoActivity extends AppCompatActivity {
         });
     }
 
+    private void getUsuario(){
+        new CtrlUsuario(this).trazer(DadosUsuario.codigo, new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                usuario = (Usuario) obj;
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
+    }
+
+    private void getProdutor(){
+        new CtrlProdutor(this).trazer(produto.getProdutor(), new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                produtor = (Produtor) obj;
+            }
+
+            @Override
+            public void falha() {
+
+            }
+        });
+    }
+
     private View.OnClickListener verMapa() {
         return new View.OnClickListener() {
             @Override
@@ -161,17 +198,20 @@ public class HistoricoActivity extends AppCompatActivity {
         TextView nomeProduto = (TextView) view.findViewById(R.id.txtNomeProduto);
         TextView nomeProdutor = (TextView) view.findViewById(R.id.txtNomeProdutor);
         TextView dataValidade = (TextView) view.findViewById(R.id.txtDataValidade);
+        final EditText post = (EditText) view.findViewById(R.id.txtPost);
         Spinner spinner = (Spinner) view.findViewById(R.id.status);
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
         String[] status = new String[] {"Público","Amigos","Privado"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, status);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.estilo_spinner, status);
         spinner.setAdapter(adapter);
 
-        nomeUsuario.setText(DadosUsuario.nome);
+        nomeUsuario.setText(usuario.getNome());
+        usuario.setImagemPerfil(imgUsuario, this);
+        produto.setImgIcone(imgProduto, this);
         nomeProduto.setText(produto.getNome());
-        //nomeProdutor.setText(produto.getProdutorObj().getNome());
-        dataValidade.setText(Util.formatDataDDmesYYYY(lote.getDatavencimento()));
+        nomeProdutor.setText(produtor.getNome());
+        dataValidade.setText("Validade: "+Util.formatDataDDmesYYYY(lote.getDatavencimento()));
 
         int check = 0;
         if (checkBox.isChecked())
@@ -191,7 +231,7 @@ public class HistoricoActivity extends AppCompatActivity {
         mensagem.setPositiveButton("Publicar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialoge, int which) {
                 Toast.makeText(HistoricoActivity.this, "Ok.", Toast.LENGTH_LONG).show();
-                estocar(finalCarater, finalCheck);
+                estocar(finalCarater, finalCheck, post.getText().toString());
             }
         });
 
@@ -207,8 +247,8 @@ public class HistoricoActivity extends AppCompatActivity {
         mensagem.show();
     }
 
-    private void estocar(int carater,int notificacao) {
-        new CtrlCompra(this).salvar(notificacao, carater, lote.getProduto(), new CallbackSalvar() {
+    private void estocar(int carater,int notificacao, String post) {
+        new CtrlCompra(this).salvar(notificacao, carater, lote.getProduto(), post, new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 Resposta rsp = (Resposta) obj;
@@ -234,6 +274,7 @@ public class HistoricoActivity extends AppCompatActivity {
             public void resultadoTrazer(Object obj) {
                 produto = (Produto) obj;
                 setTitle(produto.getNome());
+                getProdutor();
             }
 
             @Override

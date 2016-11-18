@@ -22,6 +22,15 @@ public class Compra {
 	private int usuario;
 	private int produto;
 	private int pai;
+	private String comentario;
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
 
 	public int getCodigo() {
 		return codigo;

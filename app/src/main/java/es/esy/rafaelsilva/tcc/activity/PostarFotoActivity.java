@@ -70,7 +70,7 @@ public class PostarFotoActivity extends AppCompatActivity {
 
 
         String[] status = new String[] {"Público","Amigos","Privado"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, status);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.estilo_spinner, status);
         privacidade.setAdapter(adapter);
 
         imgPost.setOnClickListener(new View.OnClickListener() {

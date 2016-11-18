@@ -29,6 +29,7 @@ public class CtrlCompra implements Retorno {
     private int carater;
     private int produto;
     private int pai;
+    private String post;
 
     public CtrlCompra(Context contexto) {
         this.contexto = contexto;
@@ -107,11 +108,12 @@ public class CtrlCompra implements Retorno {
 
 
 
-    public void salvar(int notificacao, int carater, int produto, final CallbackSalvar callbackSalvar){
+    public void salvar(int notificacao, int carater, int produto, String post, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
         this.carater = carater;
         this.notificacao = notificacao;
         this.produto = produto;
+        this.post = post;
         this.salvarUm();
     }
 
@@ -162,8 +164,8 @@ public class CtrlCompra implements Retorno {
         Map<String, String> params = new HashMap<>();
         params.put("acao", "C");
         params.put("tabela", "compra");
-        params.put("condicao", "notificacao, carater, usuario, produto, pai");
-        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai);
+        params.put("condicao", "notificacao, carater, usuario, produto, pai, comentario");
+        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai+"'"+post+"'");
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new CallBackDAO() {
