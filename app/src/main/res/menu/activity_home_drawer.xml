@@ -5,41 +5,20 @@
         <item
             android:id="@+id/nav_edit_user"
             android:icon="@drawable/ic_account_circle_black_24dp"
-            android:title="Editar Meus Dados" />
+            android:title="Meus dados" />
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-
+            android:id="@+id/nav_pesq_prod"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Pesquisar Produtos" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit"
             android:title="Logout" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_menu_info_details"
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+            android:title="Sobre" />
+    </group>
 
 </menu>

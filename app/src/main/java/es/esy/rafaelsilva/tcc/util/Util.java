@@ -22,18 +22,21 @@ public class Util {
     public static List<Double> list;
 
     public static String formatDateToDB(String data){
-        data = data.toString().replace("/","");
-        data = (data.toString().substring(4) +
-                data.toString().substring(2,4) +
-                data.toString().substring(0,2));//   99999999
+        if(!data.equals("") || data != null) {
+            data = data.toString().replace("/", "");
+            data = (data.toString().substring(4) +
+                    data.toString().substring(2, 4) +
+                    data.toString().substring(0, 2));//   99999999
+        }
         return data;
     }
     public static String formatDateOfDB(String data){
-        data = data.toString().replace("-","/");
-        data = (data.toString().substring(8) + "/"+
-                data.toString().substring(5,7) + "/"+
-                data.toString().substring(0,4));//   9999-99-99
-                                                //   0123456789
+        if(!data.equals("") || data != null) {
+            data = data.toString().replace("-", "/");
+            data = (data.toString().substring(8) + "/" +
+                    data.toString().substring(5, 7) + "/" +
+                    data.toString().substring(0, 4));//   9999-99-99
+        }                    //   0123456789
         return data;
     }
 

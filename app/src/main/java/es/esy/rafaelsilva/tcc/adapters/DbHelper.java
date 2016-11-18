@@ -26,7 +26,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 " profissao STRING NOT NULL," +
                 " alimentacao STRING NOT NULL," +
                 " imagem BLOB," +
-                " TIPO_IMAGEM INTEGER)");
+                " TIPO_IMAGEM INTEGER DEFAULT 2 )");
     }
 //force push
     @Override
