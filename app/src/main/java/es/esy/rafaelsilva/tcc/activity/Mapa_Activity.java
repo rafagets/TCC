@@ -135,7 +135,12 @@ public class Mapa_Activity extends FragmentActivity implements OnMapReadyCallbac
                 String[] cordenadas = this.cordenadas.split(", ");
                 LatLng local = new LatLng(Double.parseDouble(cordenadas[0]), Double.parseDouble(cordenadas[1]));
                 options.position(local);
-                options.title(Util.formatDataDDmesYYYY(getIntent().getStringExtra("data"))).visible(true);
+                try {
+                    options.title(Util.formatDataDDmesYYYY(getIntent().getStringExtra("data"))).visible(true);
+                }catch (Exception e){
+                    options.title(getIntent().getStringExtra("data")).visible(true);
+                }
+
                 options.snippet(getIntent().getStringExtra("nome")).visible(true);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(local));
                 googleMap.addMarker(options);

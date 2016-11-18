@@ -10,12 +10,13 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@android:drawable/ic_menu_info_details"
+        android:tint="@color/abc_input_method_navigation_guard"
         android:id="@+id/info"
         android:layout_alignParentRight="true"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/imgUsuario"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -38,14 +39,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/status"
-        android:layout_marginLeft="-15dp"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="-8dp"
         android:layout_below="@+id/txtNomeUsuario"
-        android:layout_toRightOf="@+id/imgUsuario"/>
+        android:layout_toRightOf="@+id/imgUsuario"
+        android:layout_marginLeft="-6.5dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:id="@+id/imgProduto"
         android:layout_marginRight="6dp"
         android:layout_marginLeft="16dp"
@@ -71,7 +72,8 @@
         android:text="Produtor"
         android:layout_below="@+id/txtNomeProduto"
         android:layout_toRightOf="@+id/imgProduto"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:layout_marginTop="2dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,17 +83,35 @@
         android:textStyle="italic"
         android:layout_below="@+id/txtNomeProdutor"
         android:layout_toRightOf="@+id/imgProduto"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        android:layout_marginTop="3dp" />
+
+    <EditText
+        android:id="@+id/txtPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|left"
+        android:inputType="textMultiLine"
+        android:lines="20"
+        android:minLines="2"
+        android:scrollHorizontally="false"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:hint="Gostaria de dizer algo?"
+        android:layout_below="@id/txtDataValidade"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginTop="10dp"/>
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/checkbox"
-        android:text="Quero ser notificado sobre a válidade."
-        android:checked="true"
-        android:layout_below="@id/txtDataValidade"
+        android:text="Vou levar pra casa e quero ser notificado sobre a data de vencimento desse produto."
+        android:checked="false"
+        android:layout_below="@id/txtPost"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="-5dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="-3dp"/>
 
 </RelativeLayout>

@@ -14,7 +14,9 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
+import es.esy.rafaelsilva.tcc.util.UploadDeImagens;
 
 /**
  * Criado por Rafael em 21/10/2016, enjoy it.
@@ -22,6 +24,8 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 public class CtrlUsuario implements Retorno {
 
     private Context contexto;
+    private String path, nome;
+    private CallbackSalvar call;
 
     public CtrlUsuario(Context contexto) {
         this.contexto = contexto;
@@ -183,6 +187,36 @@ public class CtrlUsuario implements Retorno {
             }
         });
 
+    }
+
+    public void fotoPerfil(String path, String nome, final CallbackSalvar call){
+        this.call = call;
+        this.path = path;
+        this.nome = nome;
+
+        if (DadosUsuario.usuario.getImagem().equals(nome) && DadosUsuario.usuario.getImagem() != null){
+            new UploadDeImagens(contexto).enviar(path, nome, "perfil");
+            call.resultadoSalvar(new Object());
+        }else {
+            String condicao = "codigo = " + DadosUsuario.codigo;
+            String valores = "imagem = " + nome;
+            this.atualizar(condicao, valores, new CallbackSalvar() {
+                @Override
+                public void resultadoSalvar(Object obj) {
+                    uploadImagem();
+                }
+
+                @Override
+                public void falha() {
+                    call.falha();
+                }
+            });
+        }
+    }
+
+    private void uploadImagem() {
+        new UploadDeImagens(contexto).enviar(path, nome, "perfil");
+        call.resultadoSalvar(new Object());
     }
 
 }

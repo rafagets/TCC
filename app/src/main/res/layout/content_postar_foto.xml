@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.PostarFotoActivity"
+    tools:showIn="@layout/activity_postar_foto">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            android:id="@+id/info"
+            android:layout_alignParentRight="true"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imgUsuario"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNomeUsuario"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignTop="@+id/imgUsuario"
+            android:text="Usuário"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:layout_marginTop="-8dp"
+            android:layout_below="@+id/txtNomeUsuario"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_marginLeft="-6.5dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:id="@+id/imgPost"
+            android:src="@drawable/ic_img_post"
+            android:layout_below="@+id/imgUsuario"
+            android:layout_marginTop="32dp"/>
+
+        <EditText
+            android:id="@+id/txtPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:lines="20"
+            android:minLines="1"
+            android:scrollHorizontally="false"
+            android:scrollbars="vertical"
+            android:singleLine="false"
+            android:hint="Digite a história dessa foto."
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/imgPost" />
+    </RelativeLayout>
+
+</ScrollView>

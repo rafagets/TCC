@@ -1,5 +1,7 @@
 package es.esy.rafaelsilva.tcc.interfaces;
 
+import android.content.Context;
+
 /**
  * Criado por Rafael em 12/11/2016, enjoy it.
  */

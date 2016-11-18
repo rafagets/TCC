@@ -62,7 +62,7 @@ public class CtrlAmigos implements Retorno {
 
             @Override
             public void erro(String resposta) {
-                callbackSalvar.falha();
+                callback.falha();
 
             }
         });

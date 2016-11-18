@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgUsuario"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_alignParentStart="true"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbNome"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:text="Sabrina"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="6dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbData"
+            android:layout_toRightOf="@+id/lbNome"
+            android:textSize="14sp"
+            android:text=" à 1 minuto á trás"
+            android:layout_marginTop="6dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:id="@+id/imgPost"
+            android:layout_below="@id/imgUsuario"
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbPost"
+            android:layout_below="@id/imgPost"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:text="Hoje fui no mercado avenida e estava tudo em promoção! Aproveitem..."
+            android:textSize="18sp"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:id="@+id/linha"
+            android:src="@drawable/linha"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/lbPost"
+            android:layout_alignParentStart="true"
+            android:tint="@color/background_floating_material_dark"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginRight="-10dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgAddOne"
+            android:src="@drawable/ic_add_one"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/linha"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="6dp"
+            android:layout_alignParentEnd="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbAddOne"
+            android:layout_toRightOf="@+id/imgAddOne"
+            android:text="14k"
+            android:textSize="14sp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgComentarios"
+            android:src="@drawable/ic_coment_no"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbComentarios"
+            android:text="14k"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/imgComentarios"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="3dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/imgShare"
+            android:src="@drawable/ic_shareded"
+            android:layout_alignTop="@+id/imgAddOne"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="6dp"/>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/button_material_light"></LinearLayout>
+</LinearLayout>

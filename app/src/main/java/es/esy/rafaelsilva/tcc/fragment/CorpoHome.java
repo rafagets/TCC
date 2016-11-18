@@ -15,15 +15,21 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.CompraSP;
 import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.ListaPostsSP;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
+import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.task.ViewAmizade;
 import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
 import es.esy.rafaelsilva.tcc.task.ViewComentario;
+import es.esy.rafaelsilva.tcc.task.ViewCompra;
+import es.esy.rafaelsilva.tcc.task.ViewPostFoto;
+import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 /**
  * Created by Rafael on 25/08/2016.
@@ -34,6 +40,7 @@ public class CorpoHome extends Fragment {
     private LinearLayout layout;
     private List<Post> posts;
     private boolean flag = false;
+    private List<Amigos> listaAmigos;
 
     @Nullable
     @Override
@@ -49,22 +56,64 @@ public class CorpoHome extends Fragment {
         recarregar = (SwipeRefreshLayout) getActivity().findViewById(R.id.recarregar);
         recarregar.setRefreshing(true);
 
-        carregarComentarios();
+        //carregarComentarios();
+        carregarAmigos();
 
         recarregar.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 layout.removeAllViews();
-                carregarComentarios();
+                //carregarComentarios();
+                carregarAmigos();
             }
         });
 
     }
 
+    private void carregarAmigos() {
+        int u = DadosUsuario.codigo;
+        new CtrlAmigos(getActivity()).listar("WHERE amigoAce = "+u+" OR amigoAdd = "+u+" AND statusAmizade = 0",
+                new CallbackListar() {
+                    @Override
+                    public void resultadoListar(List<Object> lista) {
+
+                        if (lista != null) {
+                            listaAmigos = new ArrayList<>();
+                            for (Object l : lista)
+                                listaAmigos.add((Amigos) l);
+                        }
+
+                        carregarComentarios();
+                    }
+
+                    @Override
+                    public void falha() {
+                        Toast.makeText(getActivity(), "Que pena, você ainda não tem amigos\nFaça novas amizades!", Toast.LENGTH_LONG).show();
+                        recarregar.setRefreshing(false);
+                        ImageView falha = new ImageView(getActivity());
+                        //falha.setImageResource(R.drawable.back_falha_carregar);
+                        falha.setImageResource(R.drawable.ic_exclude_amigo);
+                        layout.addView(falha);
+                    }
+                });
+    }
+
+    public String concatenarAmigos(List<Amigos> listaAmigos){
+        String concat = "";
+        for (Amigos a : listaAmigos) {
+            concat += a.getAmigoAce() + "," + a.getAmigoAdd() + ",";
+        }
+        concat = concat.substring(0, concat.lastIndexOf(","));
+
+        return concat;
+    }
+
 
     public void carregarComentarios() {
 
-        new CtrlPost(getActivity()).listar("ORDER BY data DESC", new CallbackListar() {
+        String sql = "WHERE usuario in(" + concatenarAmigos(listaAmigos) + ") AND status = 1 ORDER BY data DESC";
+
+        new CtrlPost(getActivity()).listar(sql, new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 posts = new ArrayList<>();
@@ -76,12 +125,12 @@ public class CorpoHome extends Fragment {
                     ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
                     List<Post> postsSP = sp.lerPosts();
 
-                    if (postsSP == null){
+                    if (postsSP == null) {
                         sp.salvar(posts);
-                    }else {
+                    } else {
                         if (posts.equals(postsSP)) {
                             flag = true;
-                        }else{
+                        } else {
                             sp.salvar(posts);
                         }
                     }
@@ -100,7 +149,7 @@ public class CorpoHome extends Fragment {
 
                     posts = new ListaPostsSP(getActivity(), "TCC_POST").lerPosts();
                     montarView(0);
-                }catch (Exception e){
+                } catch (Exception e) {
                     ImageView falha = new ImageView(getActivity());
                     falha.setImageResource(R.drawable.back_falha_carregar);
                     layout.addView(falha);
@@ -167,11 +216,61 @@ public class CorpoHome extends Fragment {
                     }
                 });
             }
+            else if (posts.get(posicao).getTipo() == 4){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_compra, null);
+                new ViewCompra(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else if (posts.get(posicao).getTipo() == 5){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_foto, null);
+                new ViewPostFoto(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
             else {
                 montarView(posicao + 1);
             }
         }else{
             recarregar.setRefreshing(false);
+        }
+    }
+
+    private void excluirDados(){
+        ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
+        List<Post> psp = sp.lerPosts();
+
+        for (Post p : psp){
+            if (p.getTipo() == 1) {
+
+            }else if (p.getTipo() == 2){
+
+            }else if (p.getTipo() == 3){
+
+            }else if (p.getTipo() == 4){
+                CompraSP s = new CompraSP(getActivity(), "TCC_COMPRA_"+p.getCodigo());
+            }else if (p.getTipo() == 5){
+
+            }
+
         }
     }
 
