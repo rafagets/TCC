@@ -61,7 +61,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A maçã ajuda a controlar certas doenças como diabetes, melhora a digestão, contribuindo para um melhor aproveitamento dos nutrientes e é indicada para quem deseja emagrecer, porque é rica em fibras e tem poucas calorias. A maça da Fazenda Santa Rita é produzida com um grande controle de qualidade. Nossa maçã é livre de agrotóxicos."
+        android:text="Aqui aparecerá as informações nutricionais dese produto, caso ele tenha alguma salva."
         android:id="@+id/lbDescricao"
         android:layout_below="@+id/textView3"
         android:layout_alignStart="@+id/textView3"

@@ -25,6 +25,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import es.esy.rafaelsilva.tcc.R;
@@ -90,16 +91,22 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
         new CtrlUsuario(this).trazer(DadosUsuario.getUsuario().getCodigo(), new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
-                    Usuario usuario;
-                    usuario = (Usuario) obj;
-                    txtNome.setText(usuario.getNome());
-                    txtSobrenome.setText(usuario.getSobrenome());
-                    txtRua.setText(usuario.getRua());
-                    txtNumero.setText(String.valueOf(usuario.getNumero()));
-                    txtCep.setText(String.valueOf(usuario.getCep()));
-                    txtDataNasc.setText(Util.formatDateOfDB(String.valueOf(usuario.getDataNasc())));
-                    txtProfissao.setText(usuario.getProfissao());
-                    codigo = usuario.getCodigo();
+                Usuario usuario;
+                usuario = (Usuario) obj;
+                txtNome.setText(usuario.getNome());
+                txtSobrenome.setText(usuario.getSobrenome());
+                txtRua.setText(usuario.getRua());
+                txtNumero.setText(String.valueOf(usuario.getNumero()));
+                txtCep.setText(String.valueOf(usuario.getCep()));
+                try {
+                    if (!usuario.getDataNasc().equals("") || usuario.getDataNasc() != null) {
+                        txtDataNasc.setText(Util.formatDateOfDB(String.valueOf(usuario.getDataNasc())));
+                    }
+                }catch (Exception e){
+
+                }
+                txtProfissao.setText(usuario.getProfissao());
+                codigo = usuario.getCodigo();
             }
 
             @Override
@@ -135,22 +142,20 @@ public class AtualizaCadastroUsuarioActivity extends AppCompatActivity {
                 !txtCep.getText().toString().equals("") || !txtDataNasc.getText().toString().equals("") ||
                 !txtProfissao.getText().toString().equals("")) {
 
-            //if (txtConfirmSenha.getText().toString().equals(txtSenha.getText().toString())){
 
             String campos = "codigo="+ codigo;
-//                    "sobrenome, " +
-//                    "rua, " +
-//                    "numero, " +
-//                    "cep, " +
-//                    "dataNasc, " +
-//                    "alimentacao";
-
+            String dataNasc = "";
+            if(!txtDataNasc.getText().toString().equals("")){
+                Util.formatDateToDB(txtDataNasc.getText().toString());
+            }else {
+                dataNasc = String.valueOf(new Date());
+            }
             String values = "nome='" + txtNome.getText().toString() + "'," +
                     "sobrenome='" + txtSobrenome.getText().toString()+"'," +
                     "rua='" + txtRua.getText().toString() + "',"+
                     "numero='" + txtNumero.getText().toString() + "'," +
                     "cep='" + txtCep.getText().toString() + "'," +
-                    "datanasc='" +  Util.formatDateToDB(txtDataNasc.getText().toString()) + "'," +
+                    "datanasc='" +  dataNasc + "'," +
                     "profissao='" + txtProfissao.getText().toString() + "'," +
                     "alimentacao='" + alimentacao.getSelectedItem().toString() + "'";
 

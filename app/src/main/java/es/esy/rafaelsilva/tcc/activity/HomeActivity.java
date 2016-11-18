@@ -516,28 +516,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-            Intent intent = new Intent(HomeActivity.this, Welcome_Activity.class);
+        if (id == R.id.nav_pesq_prod) {
+            Intent intent = new Intent(HomeActivity.this, ListarProdutoActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }else if (id == R.id.nav_edit_user){
-    Intent intent = new Intent(HomeActivity.this, AtualizaCadastroUsuarioActivity.class);
+        }else if (id == R.id.nav_edit_user) {
+            Intent intent = new Intent(HomeActivity.this, AtualizaCadastroUsuarioActivity.class);
             startActivity(intent);
 
-            //aqui abre a tela de cadastro de usuario
-//            Intent intent = new Intent(HomeActivity.this, CadastroUsuarioActivity.class);
-//            startActivity(intent);
         }else if(id == R.id.nav_logout){
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("error", true);
@@ -557,17 +543,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         System.out.println("DIRETÓRIO: " + dire);
         if(DadosUsuario.getUsuario().getTipoImg() == 0){
             ret = decodeBitMap(dire);
-
         }else if (DadosUsuario.getUsuario().getTipoImg() == 1){
             ret = decodeURI(dire);
-
         }
         return ret;
-
     }
 
 
-    private boolean verificarPermissoes(){// incompleto
+    private boolean verificarPermissoes(){
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
             return true;
         }
