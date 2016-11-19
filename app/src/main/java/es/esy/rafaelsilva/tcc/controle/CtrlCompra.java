@@ -15,9 +15,13 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.interfaces.CallBackDAO;
 import es.esy.rafaelsilva.tcc.interfaces.Retorno;
 import es.esy.rafaelsilva.tcc.modelo.Compra;
+import es.esy.rafaelsilva.tcc.modelo.Lote;
 import es.esy.rafaelsilva.tcc.modelo.Post;
+import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Notificacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
+import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
  * Criado por Rafael em 07/11/2016, enjoy it.
@@ -25,11 +29,15 @@ import es.esy.rafaelsilva.tcc.util.Resposta;
 public class CtrlCompra implements Retorno {
     private Context contexto;
     private CallbackSalvar callbackSalvar;
+
     private int notificacao;
     private int carater;
-    private int produto;
     private int pai;
     private String post;
+
+    private Produto produto;
+    private Lote lote;
+    private Compra compra;
 
     public CtrlCompra(Context contexto) {
         this.contexto = contexto;
@@ -108,11 +116,12 @@ public class CtrlCompra implements Retorno {
 
 
 
-    public void salvar(int notificacao, int carater, int produto, String post, final CallbackSalvar callbackSalvar){
+    public void salvar(int carater, int notificacao, Produto produto, Lote lote, String post, final CallbackSalvar callbackSalvar){
         this.callbackSalvar = callbackSalvar;
         this.carater = carater;
         this.notificacao = notificacao;
         this.produto = produto;
+        this.lote = lote;
         this.post = post;
         this.salvarUm();
     }
@@ -165,7 +174,7 @@ public class CtrlCompra implements Retorno {
         params.put("acao", "C");
         params.put("tabela", "compra");
         params.put("condicao", "notificacao, carater, usuario, produto, pai, comentario");
-        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto+","+pai+",'"+post+"'");
+        params.put("valores", notificacao+","+carater+","+DadosUsuario.codigo+","+produto.getCodigo()+","+pai+",'"+post+"'");
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new CallBackDAO() {
@@ -173,7 +182,7 @@ public class CtrlCompra implements Retorno {
             public void sucesso(Object resposta) {
                 Resposta rsp = (Resposta) resposta;
                 if (rsp.isFlag()) {
-                    callbackSalvar.resultadoSalvar(resposta);
+                    getCompra();
                 }else {
                     salvarErro();
                 }
@@ -210,4 +219,30 @@ public class CtrlCompra implements Retorno {
             }
         });
     }
+
+    private void getCompra(){
+        this.trazer(pai, new CallbackTrazer() {
+            @Override
+            public void resultadoTrazer(Object obj) {
+                compra = (Compra) obj;
+
+                if (notificacao == 1)
+                    agendarNotificacao();
+            }
+
+            @Override
+            public void falha() {
+                callbackSalvar.falha();
+            }
+        });
+    }
+
+    private void agendarNotificacao(){
+        int ID_NOTIFICACAO = pai;
+        String titulo = "Faltam 5 dias para vencer a validade!";
+        String corpo = produto.getNome()+ " vence em " + Util.formatDataDDmesYYYY(lote.getDatavencimento());
+        String subcorpo = " Clique e saiba mais ";
+        new Notificacao(contexto, ID_NOTIFICACAO).enviar(compra.getCodigo(), titulo, corpo, subcorpo);
+    }
+
 }

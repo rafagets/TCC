@@ -33,6 +33,7 @@ import es.esy.rafaelsilva.tcc.modelo.CurtidaAvaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
@@ -183,7 +184,7 @@ public class ViewAvaliacao {
             final TextView nome, data, produto, avaliacao, qtdAddOne, numComent;
             CircleImageView imgUsuario, imgProduto;
             RatingBar estrela;
-            final ImageView addOne, coment, imgShare;
+            final ImageView addOne, coment;
 
             imgUsuario = (CircleImageView) v.findViewById(R.id.imgUsuario);
             nome = (TextView) v.findViewById(R.id.lbNome);
@@ -193,7 +194,6 @@ public class ViewAvaliacao {
             coment = (ImageView) v.findViewById(R.id.imgComentarios);
             qtdAddOne = (TextView) v.findViewById(R.id.lbAddOne);
             numComent = (TextView) v.findViewById(R.id.lbComentarios);
-            imgShare = (ImageView) v.findViewById(R.id.imgShare);
 
             final boolean[] flag2 = {false};
             int curtido = 0;
@@ -215,7 +215,7 @@ public class ViewAvaliacao {
             String dataForm = sdf.format(date);
 
             if (temp[0].equals(dataForm))
-                data.setText("avaliou às " + Util.formatHoraHHMM(post.getData()));
+                data.setText("avaliou " + Util.formatHoraHHMM(post.getData()));
             else
                 data.setText("avaliou em " + Util.formatDataDDmesYYYY(post.getData()));
 
@@ -290,6 +290,7 @@ public class ViewAvaliacao {
                 public void onClick(View view) {
 
                     if (!flag2[0]) {
+
                         addOne.setImageResource(R.drawable.ic_added);
                         new CtrlCurtidaAvaliacao(contexto).curtir(av.getCodigo(), av.getPai(), new CallbackSalvar() {
                             @Override
@@ -340,16 +341,7 @@ public class ViewAvaliacao {
                 }
             });
 
-            imgShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "www.tcc.com.br/post_id/14591");
-                    sendIntent.setType("text/plain");
-                    contexto.startActivity(sendIntent);
-                }
-            });
+            new CompartilharExternamente(contexto, v, "Comentario feito App TCC");
 
             callback.view(v);
             Log.i("*** OK","View de AVALIAÇÃO do Post ["+this.post.getCodigo()+"] adicionada.");

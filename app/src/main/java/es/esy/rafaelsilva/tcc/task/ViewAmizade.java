@@ -19,6 +19,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.Util;
 
@@ -152,9 +153,9 @@ public class ViewAmizade {
             String dataForm = sdf.format(date);
 
             if (temp[0].equals(dataForm))
-                data.setText("fez uma amizade às " + Util.formatHoraHHMM(post.getData()));
+                data.setText("às " + Util.formatHoraHHMM(post.getData()));
             else
-                data.setText("fez uma amizade em " + Util.formatDataDDmesYYYY(post.getData()));
+                data.setText("em " + Util.formatDataDDmesYYYY(post.getData()));
 
 
 
@@ -172,6 +173,8 @@ public class ViewAmizade {
             estiloAmigo.setText(amigo.getAlimentacao());
 
             monitorarCliqueImgAmigo(imgAmigo);
+
+            new CompartilharExternamente(contexto, v, "Comentario feito App TCC");
 
             callback.view(v);
             Log.i("*** OK","View de AMIZADE do Post ["+this.post.getCodigo()+"] adicionada.");

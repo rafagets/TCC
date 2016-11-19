@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.AvaliacaoActivity"
+    tools:showIn="@layout/activity_avaliacao">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.Holo.ProgressBar"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imgUsuario"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNomeUsuario"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_alignTop="@+id/imgUsuario"
+            android:text="Usuário"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:layout_marginTop="-8dp"
+            android:layout_below="@+id/txtNomeUsuario"
+            android:layout_toRightOf="@+id/imgUsuario"
+            android:layout_marginLeft="-6.5dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/imgProduto"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_account_circle_black_24dp"
+            app:civ_border_width="0dp"
+            app:civ_border_color="@color/colorAccent"
+            android:layout_below="@+id/imgUsuario"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lbProduto"
+            android:text="Maça Gala"
+            android:layout_alignTop="@+id/imgProduto"
+            android:layout_alignStart="@+id/estrelas" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/estrelas"
+            android:layout_below="@+id/lbProduto"
+            android:layout_toRightOf="@+id/imgProduto"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="0.5"
+            android:scaleX="1.1"
+            android:scaleY="1.1"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="6dp" />
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/lbAvaliacao"-->
+        <!--android:layout_below="@+id/imgProduto"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:text="Otima maçã! recomendo a todos..."-->
+        <!--android:layout_margin="3dp"-->
+        <!--android:textSize="18sp" />-->
+
+        <EditText
+            android:id="@+id/txtPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|left"
+            android:inputType="textMultiLine"
+            android:lines="20"
+            android:minLines="2"
+            android:scrollHorizontally="false"
+            android:scrollbars="vertical"
+            android:singleLine="false"
+            android:hint="Compartilhe sua opnião..."
+            android:layout_below="@id/imgProduto"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginTop="10dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

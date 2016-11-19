@@ -30,6 +30,7 @@ import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.CurtidaComentario;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
@@ -311,6 +312,8 @@ public class ViewComentario {
 
                 }
             });
+
+            new CompartilharExternamente(contexto, view, "Comentario feito App TCC");
 
             callback.view(view);
             Log.i("*** OK","View de COMENTÁRIO do Post ["+this.post.getCodigo()+"] adicionada.");

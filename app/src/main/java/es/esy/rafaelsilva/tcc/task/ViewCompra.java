@@ -27,6 +27,7 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Produtor;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
@@ -174,7 +175,7 @@ public class ViewCompra {
             imgUsuario = (CircleImageView) view.findViewById(R.id.imgUsuario);
             nome = (TextView) view.findViewById(R.id.lbNome);
             data = (TextView) view.findViewById(R.id.lbData);
-            comentario = (TextView) view.findViewById(R.id.lbData);
+            comentario = (TextView) view.findViewById(R.id.lbComentario);
             nomeProduto = (TextView) view.findViewById(R.id.txtNomeProduto);
             nomeMercado = (TextView) view.findViewById(R.id.txtMercado);
             nomeProdutor = (TextView) view.findViewById(R.id.txtNomeProdutor);
@@ -220,7 +221,7 @@ public class ViewCompra {
                 temp = temp[1].split(":");
 
                 String txt;
-                if (compra.getStatus() == 0)
+                if (compra.getNotificacao() == 0)
                     txt = "compartilhou um produto às ";
                 else {
                     txt = "levou pra casa às ";
@@ -228,7 +229,7 @@ public class ViewCompra {
                 data.setText(txt + temp[0] + ":" + temp[1]);
             }else{
                 String txt;
-                if (compra.getStatus() == 0)
+                if (compra.getNotificacao() == 0)
                     txt = "compartilhou um produto em ";
                 else {
                     txt = "levou pra casa em ";
@@ -237,7 +238,7 @@ public class ViewCompra {
                 data.setText(txt + Util.formatDataDDmesYYYY(compra.getData()));
             }
 
-
+            new CompartilharExternamente(contexto, view, "Comentario feito App TCC");
 
             callback.view(view);
             Log.i("*** OK","View de COMPRA do Post ["+this.post.getCodigo()+"] adicionada.");

@@ -80,8 +80,9 @@
         <activity
             android:name=".activity.Mapa_Activity"
             android:label="@string/title_activity_mapa_" />
-        <activity android:name=".activity.ListarProdutoActivity"
-            android:label="Lista de Produtos"/>
+        <activity
+            android:name=".activity.ListarProdutoActivity"
+            android:label="Lista de Produtos" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -105,6 +106,10 @@
         <activity
             android:name=".activity.PostarFotoActivity"
             android:label="@string/title_activity_postar_foto"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.AvaliacaoActivity"
+            android:label="@string/title_activity_avaliacao"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

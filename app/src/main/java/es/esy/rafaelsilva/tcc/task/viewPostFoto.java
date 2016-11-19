@@ -20,6 +20,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.GaleriaImgUsuario;
 import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
@@ -141,7 +142,7 @@ public class ViewPostFoto {
                 data.setText("postou uma foto em " + Util.formatDataDDmesYYYY(galeria.getData()));
             }
 
-
+            new CompartilharExternamente(contexto, view, "Comentario feito App TCC");
 
             callback.view(view);
             Log.i("*** OK","View de FOTO do Post ["+this.post.getCodigo()+"] adicionada.");

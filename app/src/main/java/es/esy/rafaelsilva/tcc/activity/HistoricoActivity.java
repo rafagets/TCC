@@ -63,8 +63,10 @@ import es.esy.rafaelsilva.tcc.modelo.Tipo;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.task.HistoricoTask;
 import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
+import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
+import es.esy.rafaelsilva.tcc.util.Notificacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
 
@@ -188,8 +190,6 @@ public class HistoricoActivity extends AppCompatActivity {
 
     private void comprar() {
         AlertDialog.Builder mensagem = new AlertDialog.Builder(this);
-
-        // defino a view que contem os dados para abertura da mesa
         View view = getLayoutInflater().inflate(R.layout.inflater_dialog_compra, null);
 
         CircleImageView imgUsuario = (CircleImageView) view.findViewById(R.id.imgUsuario);
@@ -217,16 +217,9 @@ public class HistoricoActivity extends AppCompatActivity {
         if (checkBox.isChecked())
             check=1;
 
-        int carater = 0;
-        switch (spinner.getSelectedItem().toString()){
-            case "Público": carater = 1;
-            case "Amigos": carater = 2;
-            case "Privado": carater = 0;
-        }
-
         mensagem.setView(view);
 
-        final int finalCarater = carater;
+        final int finalCarater = spinner.getSelectedItemPosition() + 1;
         final int finalCheck = check;
         mensagem.setPositiveButton("Publicar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialoge, int which) {
@@ -248,7 +241,7 @@ public class HistoricoActivity extends AppCompatActivity {
     }
 
     private void estocar(int carater,int notificacao, String post) {
-        new CtrlCompra(this).salvar(notificacao, carater, lote.getProduto(), post, new CallbackSalvar() {
+        new CtrlCompra(this).salvar(notificacao, carater, produto, lote, post, new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 Resposta rsp = (Resposta) obj;
@@ -275,6 +268,19 @@ public class HistoricoActivity extends AppCompatActivity {
                 produto = (Produto) obj;
                 setTitle(produto.getNome());
                 getProdutor();
+
+                ImageView imgShare = (ImageView) findViewById(R.id.imgShare);
+
+                imgShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, produto.getNome());
+                        sendIntent.setType("text/plain");
+                        contexto.startActivity(sendIntent);
+                    }
+                });
             }
 
             @Override
