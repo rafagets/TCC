@@ -117,12 +117,13 @@ public class ViewPostFoto {
             data = (TextView) view.findViewById(R.id.lbData);
             imgPost = (ImageView) view.findViewById(R.id.imgPost);
 
-            // Aplica a opção para dar zoom;
-            // Tem que add no gradle para funcionar
-            new PhotoViewAttacher(imgPost);
-
             u.setImagemPerfil(imgUsuario, contexto);
             galeria.setFoto(imgPost, contexto);
+
+            // Aplica a opção para dar zoom;
+            // Tem que add no gradle para funcionar
+            //new PhotoViewAttacher(imgPost);
+            monitorarCliqueImagemIcone(imgPost);
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,5 +161,29 @@ public class ViewPostFoto {
             e.printStackTrace();
         }
 
+    }
+
+    private void monitorarCliqueImagemIcone(final ImageView imgPost){
+
+        imgPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(contexto, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                View v;
+                try {
+                    v = ((HomeActivity) contexto).getLayoutInflater().inflate(R.layout.inflater_dialog_image_full, null);
+                }catch (Exception e){
+                    v = ((PerfilActivity) contexto).getLayoutInflater().inflate(R.layout.inflater_dialog_image_full, null);
+                }
+                ImageView imgUsuarioFull = (ImageView) v.findViewById(R.id.imgUsuarioFull);
+                // Aplica a opção para dar zoom;
+                // Tem que add no gradle para funcionar
+                new PhotoViewAttacher(imgUsuarioFull);
+                galeria.setFoto(imgUsuarioFull, contexto);
+                mensagem.setView(v);
+                mensagem.show();
+            }
+        });
+        
     }
 }

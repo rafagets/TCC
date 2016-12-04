@@ -22,6 +22,8 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.views.ViewAmizade;
 import es.esy.rafaelsilva.tcc.views.ViewAvaliacao;
 import es.esy.rafaelsilva.tcc.views.ViewComentario;
+import es.esy.rafaelsilva.tcc.views.ViewCompra;
+import es.esy.rafaelsilva.tcc.views.ViewPostFoto;
 
 public class PerfilAtividade extends Fragment {
 
@@ -136,6 +138,36 @@ public class PerfilAtividade extends Fragment {
             else if (posts.get(posicao).getTipo() == 3){
                 View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_avaliacao, null);
                 new ViewAvaliacao(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else if (posts.get(posicao).getTipo() == 4){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_compra, null);
+                new ViewCompra(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
+                    @Override
+                    public void view(View view) {
+                        if (view != null) {
+                            layout.addView(view);
+                            montarView(posicao + 1);
+                        }else{
+                            Log.e("*** ERRO","Erro inserir post["+posicao+"]-> codigo ["+posts.get(posicao).getCodigo()+"]");
+                            montarView(posicao + 1);
+                        }
+                    }
+                });
+            }
+            else if (posts.get(posicao).getTipo() == 5){
+                View view = getActivity().getLayoutInflater().inflate(R.layout.inflater_post_foto, null);
+                new ViewPostFoto(getActivity(), view, posts.get(posicao)).getView(new CallbackView() {
                     @Override
                     public void view(View view) {
                         if (view != null) {
