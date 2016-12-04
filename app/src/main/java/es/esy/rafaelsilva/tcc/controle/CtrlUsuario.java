@@ -194,24 +194,39 @@ public class CtrlUsuario implements Retorno {
         this.path = path;
         this.nome = nome;
 
-        if (DadosUsuario.usuario.getImagem().equals(nome) && DadosUsuario.usuario.getImagem() != null){
-            new UploadDeImagens(contexto).enviar(path, nome, "perfil");
-            call.resultadoSalvar(new Object());
-        }else {
-            String condicao = "codigo = " + DadosUsuario.codigo;
-            String valores = "imagem = " + nome;
-            this.atualizar(condicao, valores, new CallbackSalvar() {
-                @Override
-                public void resultadoSalvar(Object obj) {
-                    uploadImagem();
-                }
+        String condicao = "codigo = " + DadosUsuario.codigo;
+        String valores = "imagem = '" +nome+ "'";
+        this.atualizar(valores, condicao, new CallbackSalvar() {
+            @Override
+            public void resultadoSalvar(Object obj) {
+                uploadImagem();
+            }
 
-                @Override
-                public void falha() {
-                    call.falha();
-                }
-            });
-        }
+            @Override
+            public void falha() {
+                call.falha();
+            }
+        });
+
+
+//        if (DadosUsuario.usuario.getImagem().equals(nome) && DadosUsuario.usuario.getImagem() != null){
+//            new UploadDeImagens(contexto).enviar(path, nome, "perfil");
+//            call.resultadoSalvar(new Object());
+//        }else {
+//            String condicao = "codigo = " + DadosUsuario.codigo;
+//            String valores = "imagem = " + nome;
+//            this.atualizar(condicao, valores, new CallbackSalvar() {
+//                @Override
+//                public void resultadoSalvar(Object obj) {
+//                    uploadImagem();
+//                }
+//
+//                @Override
+//                public void falha() {
+//                    call.falha();
+//                }
+//            });
+//        }
     }
 
     private void uploadImagem() {

@@ -11,9 +11,9 @@ import java.util.List;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Post;
-import es.esy.rafaelsilva.tcc.task.ViewAmizade;
-import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
-import es.esy.rafaelsilva.tcc.task.ViewComentario;
+import es.esy.rafaelsilva.tcc.views.ViewAmizade;
+import es.esy.rafaelsilva.tcc.views.ViewAvaliacao;
+import es.esy.rafaelsilva.tcc.views.ViewComentario;
 
 /**
  * Criado por Rafael em 29/10/2016, enjoy it.

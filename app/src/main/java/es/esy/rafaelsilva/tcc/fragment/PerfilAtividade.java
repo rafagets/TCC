@@ -19,9 +19,9 @@ import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Post;
-import es.esy.rafaelsilva.tcc.task.ViewAmizade;
-import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
-import es.esy.rafaelsilva.tcc.task.ViewComentario;
+import es.esy.rafaelsilva.tcc.views.ViewAmizade;
+import es.esy.rafaelsilva.tcc.views.ViewAvaliacao;
+import es.esy.rafaelsilva.tcc.views.ViewComentario;
 
 public class PerfilAtividade extends Fragment {
 
@@ -71,7 +71,7 @@ public class PerfilAtividade extends Fragment {
 
     public void carregarComentarios() {
         usuario = ((PerfilActivity) getActivity()).getUsuarioCodigo();
-        new CtrlPost(getActivity()).listar("WHERE usuario = "+ usuario +" ORDER BY data DESC", new CallbackListar() {
+        new CtrlPost(getActivity()).listar("WHERE usuario = "+ usuario+ " AND status = 1 ORDER BY data DESC", new CallbackListar() {
             @Override
             public void resultadoListar(List<Object> lista) {
                 posts = new ArrayList<>();
@@ -85,7 +85,7 @@ public class PerfilAtividade extends Fragment {
             @Override
             public void falha() {
                 ImageView falha = new ImageView(getActivity());
-                falha.setImageResource(R.drawable.back_falha_carregar);
+                falha.setImageResource(R.drawable.falha);
                 layout.addView(falha);
 
                 falha.setOnClickListener(new View.OnClickListener() {

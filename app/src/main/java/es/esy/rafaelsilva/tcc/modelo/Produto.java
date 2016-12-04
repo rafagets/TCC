@@ -124,56 +124,26 @@ public class Produto implements Serializable {
 
 	public void setImgIcone(CircleImageView img, Context contexto){
 		if (imgicone != null) {
-			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgicone);
 			Picasso.with(contexto)
 					.load(Config.caminhoImageProdutos + imgicone)
-					.placeholder(R.drawable.ic_usuario)
-					.error(R.drawable.ic_usuario)
+					.placeholder(R.drawable.ic_produto)
+					.error(R.drawable.ic_produto)
 					.into(img);
 		}else{
-			img.setImageResource(R.drawable.ic_usuario);
-			//img.setBackgroundColor(R.color.cardview_light_background);
+			img.setImageResource(R.drawable.ic_produto);
 		}
 	}
 
 	public void setImgFundo(ImageView img, Context contexto){
 		if (imgheader != null) {
-			//new ImageLoaderTask(img).execute(Config.caminhoImageTumb + imgheader);
 			Picasso.with(contexto)
 					.load(Config.caminhoImageProdutos + imgheader)
-					.placeholder(R.drawable.ic_usuario)
-					.error(R.drawable.ic_usuario)
+					.placeholder(R.drawable.ic_produto)
+					.error(R.drawable.ic_produto)
 					.into(img);
 		}else{
-			img.setImageResource(R.drawable.fundo);
-			//img.setBackgroundColor(R.color.cardview_light_background);
+			img.setImageResource(R.drawable.ic_produto);
 		}
-	}
-
-
-	public Produto getProdutoObj(int codigo){
-
-		JSONArray jsonArray;
-		DAO helper = new DAO();
-
-		String[] p = new String[] { "acao", "tabela", "condicao", "valores"  };
-		String[] v = new String[] { "R", "produto", "codigo",  String.valueOf(codigo)};
-
-		try {
-			jsonArray = helper.getJSONArray(Config.urlMaster, p, v);
-			String json = jsonArray.get(0).toString();
-
-			Produto obj;
-			Gson gson = new Gson();
-			obj = gson.fromJson(json, Produto.class);
-			return obj;
-
-		}catch (Exception e){
-
-		}
-
-		return null;
-
 	}
 
 }

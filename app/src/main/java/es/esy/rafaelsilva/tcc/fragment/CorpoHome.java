@@ -24,11 +24,11 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackListar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackView;
 import es.esy.rafaelsilva.tcc.modelo.Amigos;
 import es.esy.rafaelsilva.tcc.modelo.Post;
-import es.esy.rafaelsilva.tcc.task.ViewAmizade;
-import es.esy.rafaelsilva.tcc.task.ViewAvaliacao;
-import es.esy.rafaelsilva.tcc.task.ViewComentario;
-import es.esy.rafaelsilva.tcc.task.ViewCompra;
-import es.esy.rafaelsilva.tcc.task.ViewPostFoto;
+import es.esy.rafaelsilva.tcc.views.ViewAmizade;
+import es.esy.rafaelsilva.tcc.views.ViewAvaliacao;
+import es.esy.rafaelsilva.tcc.views.ViewComentario;
+import es.esy.rafaelsilva.tcc.views.ViewCompra;
+import es.esy.rafaelsilva.tcc.views.ViewPostFoto;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 
 /**
@@ -89,11 +89,13 @@ public class CorpoHome extends Fragment {
                     @Override
                     public void falha() {
                         Toast.makeText(getActivity(), "Que pena, você ainda não tem amigos\nFaça novas amizades!", Toast.LENGTH_LONG).show();
-                        recarregar.setRefreshing(false);
-                        ImageView falha = new ImageView(getActivity());
-                        //falha.setImageResource(R.drawable.back_falha_carregar);
-                        falha.setImageResource(R.drawable.ic_exclude_amigo);
-                        layout.addView(falha);
+//                        recarregar.setRefreshing(false);
+//                        ImageView falha = new ImageView(getActivity());
+//                        //falha.setImageResource(R.drawable.back_falha_carregar);
+//                        falha.setImageResource(R.drawable.ic_exclude_amigo);
+//                        layout.addView(falha);
+
+                        carregarComentarios();
                     }
                 });
     }
@@ -101,9 +103,12 @@ public class CorpoHome extends Fragment {
     public String concatenarAmigos(List<Amigos> listaAmigos){
         String concat = "";
         for (Amigos a : listaAmigos) {
-            concat += a.getAmigoAce() + "," + a.getAmigoAdd() + ",";
+            if (a.getAmigoAdd() == DadosUsuario.codigo)
+                concat += a.getAmigoAce() + ",";
+            else
+                concat += a.getAmigoAdd() + ",";
         }
-        concat = concat.substring(0, concat.lastIndexOf(","));
+        concat += DadosUsuario.codigo;
 
         return concat;
     }
@@ -111,7 +116,11 @@ public class CorpoHome extends Fragment {
 
     public void carregarComentarios() {
 
-        String sql = "WHERE usuario in(" + concatenarAmigos(listaAmigos) + ") AND status = 1 ORDER BY data DESC";
+        String sql;
+        if (listaAmigos != null)
+            sql = "WHERE usuario in(" + concatenarAmigos(listaAmigos) + ") AND status = 1 ORDER BY data DESC";
+        else
+            sql = "WHERE usuario = " +DadosUsuario.codigo+ " AND status = 1 ORDER BY data DESC";
 
         new CtrlPost(getActivity()).listar(sql, new CallbackListar() {
             @Override
@@ -122,7 +131,7 @@ public class CorpoHome extends Fragment {
 
                 if (posts.size() > 0) {
 
-                    ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
+                    ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST_"+DadosUsuario.codigo);
                     List<Post> postsSP = sp.lerPosts();
 
                     if (postsSP == null) {
@@ -147,11 +156,11 @@ public class CorpoHome extends Fragment {
                             "Falha ao conectar com servidor \uD83D\uDE22As funções foram limitadas ",
                             Toast.LENGTH_LONG).show();
 
-                    posts = new ListaPostsSP(getActivity(), "TCC_POST").lerPosts();
+                    posts = new ListaPostsSP(getActivity(), "TCC_POST_"+DadosUsuario.codigo).lerPosts();
                     montarView(0);
                 } catch (Exception e) {
                     ImageView falha = new ImageView(getActivity());
-                    falha.setImageResource(R.drawable.back_falha_carregar);
+                    falha.setImageResource(R.drawable.falha);
                     layout.addView(falha);
 
                     falha.setOnClickListener(new View.OnClickListener() {
@@ -255,7 +264,7 @@ public class CorpoHome extends Fragment {
     }
 
     private void excluirDados(){
-        ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST");
+        ListaPostsSP sp = new ListaPostsSP(getActivity(), "TCC_POST_"+DadosUsuario.codigo);
         List<Post> psp = sp.lerPosts();
 
         for (Post p : psp){

@@ -1,4 +1,4 @@
-package es.esy.rafaelsilva.tcc.task;
+package es.esy.rafaelsilva.tcc.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.CompraSP;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.DetalhesProdutoActivity;
 import es.esy.rafaelsilva.tcc.activity.Mapa_Activity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlCompra;
@@ -189,6 +190,15 @@ public class ViewCompra {
             nomeMercado.setText(mercado.getNome());
             nomeProdutor.setText(produtor.getNome());
             comentario.setText(compra.getComentario());
+
+            imgproduto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(contexto, DetalhesProdutoActivity.class);
+                    intent.putExtra("produto", produto.getCodigo());
+                    contexto.startActivity(intent);
+                }
+            });
 
             imgUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override

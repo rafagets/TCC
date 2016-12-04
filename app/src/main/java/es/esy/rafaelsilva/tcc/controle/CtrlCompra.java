@@ -127,11 +127,15 @@ public class CtrlCompra implements Retorno {
     }
 
     private void salvarUm() {
+        int status = 0;
+        if (notificacao == 0)
+            status = 1;
+
         Map<String, String> params = new HashMap<>();
         params.put("acao", "C");
         params.put("tabela", "post");
         params.put("condicao", "usuario, status, tipo");
-        params.put("valores", DadosUsuario.codigo+","+carater+","+4);
+        params.put("valores", DadosUsuario.codigo+","+status+","+4);
 
         GetData<Resposta> getData = new GetData<>("objeto", params);
         getData.executar(Resposta.class, new CallBackDAO() {

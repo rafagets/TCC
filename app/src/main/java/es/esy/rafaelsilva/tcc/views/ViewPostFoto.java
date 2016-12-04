@@ -1,7 +1,8 @@
-package es.esy.rafaelsilva.tcc.task;
+package es.esy.rafaelsilva.tcc.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import java.text.SimpleDateFormat;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.PostFotoSP;
 import es.esy.rafaelsilva.tcc.R;
+import es.esy.rafaelsilva.tcc.activity.HomeActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlGaleriaImgUsuario;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
@@ -22,6 +24,7 @@ import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
 import es.esy.rafaelsilva.tcc.util.Util;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Criado por Rafael em 15/11/2016, enjoy it.
@@ -113,6 +116,10 @@ public class ViewPostFoto {
             post = (TextView) view.findViewById(R.id.lbPost);
             data = (TextView) view.findViewById(R.id.lbData);
             imgPost = (ImageView) view.findViewById(R.id.imgPost);
+
+            // Aplica a opção para dar zoom;
+            // Tem que add no gradle para funcionar
+            new PhotoViewAttacher(imgPost);
 
             u.setImagemPerfil(imgUsuario, contexto);
             galeria.setFoto(imgPost, contexto);

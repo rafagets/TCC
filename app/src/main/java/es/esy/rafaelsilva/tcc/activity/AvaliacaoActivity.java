@@ -79,7 +79,6 @@ public class AvaliacaoActivity extends AppCompatActivity {
         status.setAdapter(adapter);
 
         getCompra();
-        getUsuario();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
@@ -138,6 +137,7 @@ public class AvaliacaoActivity extends AppCompatActivity {
             @Override
             public void resultadoTrazer(Object obj) {
                 usuario = (Usuario) obj;
+                setarDados();
             }
 
             @Override
@@ -167,7 +167,9 @@ public class AvaliacaoActivity extends AppCompatActivity {
             @Override
             public void resultadoTrazer(Object obj) {
                 produto = (Produto) obj;
-                setarDados();
+
+                getUsuario();
+
             }
 
             @Override

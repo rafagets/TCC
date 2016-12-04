@@ -25,9 +25,7 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.ComentarioPost;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.UtilTask;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
-import es.esy.rafaelsilva.tcc.util.Resposta;
 
 public class ComentariosPostActivity extends AppCompatActivity {
 

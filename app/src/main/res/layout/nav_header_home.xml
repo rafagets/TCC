@@ -5,22 +5,23 @@
     android:background="@drawable/side_nav_bar"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:backgroundTint="@color/colorAccent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewUsuarioCorrente"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/ic_account_circle_black_24dp"
+        android:src="@drawable/ic_usuario"
         android:scaleType="centerCrop"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="22dp" />
 
 </LinearLayout>
     <LinearLayout
@@ -39,13 +40,16 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="Sabrina"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txtUsuarioEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="sabrinamacimiano@gmail.com" />
+                android:text="sabrinamacimiano@gmail.com"
+                android:textSize="12sp"
+                android:textStyle="italic" />
         </LinearLayout>
     </LinearLayout>
 

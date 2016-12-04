@@ -77,28 +77,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private View fragmentCabecalho;
     private View fragmentCorpo;
     private RelativeLayout layoutHome;
-    TextView txtUsuarioNome;
-    TextView txtUsuarioEmail;
+    private TextView txtUsuarioNome;
+    private TextView txtUsuarioEmail;
     private CircleImageView imgUsuario;
     private CircleImageView imgUsuarioPrincipal;
-    ProgressDialog dialog;
-    Bitmap img;
-    UsuarioDao dao;
-    String path;
-    private final int MY_PERMISSIONS = 100;
+    private UsuarioDao dao;
+    private String path;
     private final int FOTO_CAMERA = 200;
     private final int FOTO_SD = 300;
     private final String APP_DIRECTORIO = "myPictureApp/";
     private final String MEDIA_DIRECTORY = APP_DIRECTORIO + "media";
-    //private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_" + DadosUsuario.getUsuario().getNome()+".jpg";
     private final String NOME_IMAGEM = DadosUsuario.getUsuario().getCodigo() + "_.jpg";
 
-    public CircleImageView getImgUsuario() {
+    public CircleImageView getImgUsuarioPrincipal() {
         return imgUsuario;
-    }
-
-    public void setImgUsuario(CircleImageView imgUsuario) {
-        this.imgUsuario = imgUsuario;
     }
 
     @Override
@@ -118,15 +110,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
-                intent.putExtra("lote", String.valueOf(3));
-                startActivity(intent);
-
-//                QRCode qrCode = new QRCode(HomeActivity.this);
-//                qrCode.lerQrcode();
-
-//                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
+//                Intent intent = new Intent(HomeActivity.this, HistoricoActivity.class);
+//                intent.putExtra("lote", String.valueOf(4));
 //                startActivity(intent);
+
+                Intent intent = new Intent(HomeActivity.this, QrcodeActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -154,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             txtUsuarioNome.setText(DadosUsuario.getUsuario().getNome());
             txtUsuarioEmail.setText(DadosUsuario.getUsuario().getEmail());
            if(carregarImgUsuario() > 1){
-               imgUsuario.setImageResource(R.drawable.ic_account_circle_black_24dp);
+               imgUsuario.setImageResource(R.drawable.ic_usuario);
            }
         }
         navigationView.setNavigationItemSelectedListener(this);
@@ -481,31 +470,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return ret;
     }
 
-
-    private boolean verificarPermissoes(){
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            return true;
-        }
-        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
-                (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED )){
-            return true;
-        }
-
-        if(shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || (shouldShowRequestPermissionRationale(CAMERA))){
-            Snackbar.make(layoutHome, "Necessita de permissão no sistema para esta operação",
-                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
-                @TargetApi(Build.VERSION_CODES.M)
-                @Override
-                public void onClick(View view) {
-                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-                }
-            }).show();
-        }else{
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
-        }
-        return false;
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -521,41 +485,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
         }
-    }
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == MY_PERMISSIONS){
-//            if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-//                                             grantResults[1] == PackageManager.PERMISSION_GRANTED){
-//                Toast.makeText(HomeActivity.this,"Permissões aceitas!", Toast.LENGTH_LONG).show();
-//            }else{
-//                explicação();
-//            }
-//        }
-//    }
-
-    private void explicação() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        builder.setTitle("Solicitação de Permissão");
-        builder.setMessage("Para utilizar algumas funções este app necessita de permissão.");
-        builder.setPositiveButton("Permitir", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogI, int wich){
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
-
-            }
-        });
-        builder.setNegativeButton("Negar", new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogI, int wich){
-                dialogI.dismiss();
-//                finish();
-            }
-        });
     }
 
     private void upload(final String path){

@@ -42,6 +42,7 @@ import es.esy.rafaelsilva.tcc.modelo.Usuario;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -55,11 +56,6 @@ public class PerfilActivity extends AppCompatActivity {
     private RelativeLayout relativeLayout;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
-    private Button btnEditarDados;
-
-    public Usuario getUsuarioRequisitado(){
-        return usuario;
-    }
 
     public int getUsuarioCodigo(){
         return usu;
@@ -114,8 +110,6 @@ public class PerfilActivity extends AppCompatActivity {
         totalAvaliacoes = (TextView) findViewById(R.id.lbTotalAvaliacoes);
         imgUsuario = (CircleImageView) findViewById(R.id.imgUsuario);
         desfazerAmizade = (ImageView) findViewById(R.id.imgDesfazerAmizade);
-        btnEditarDados = (Button) findViewById(R.id.btnEditarDados);
-        //btnEditarDados.setOnClickListener(editarDados());
 
         if (getIntent().getIntExtra("usuario", 0) == 0) {
             getUsuario(DadosUsuario.codigo);
@@ -175,16 +169,6 @@ public class PerfilActivity extends AppCompatActivity {
         });
     }
 
-    private View.OnClickListener editarDados() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PerfilActivity.this, AtualizaCadastroUsuarioActivity.class);
-                startActivity(intent);
-            }
-        };
-    }
-
 
     // seta os dados principais do usuario alvo
     private void getUsuario(final int usu) {
@@ -220,7 +204,7 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void setTotalAmigos() {
-        new CtrlAmigos(this).contar("amigoAdd = " + usuario.getCodigo(), new CallbackTrazer() {
+        new CtrlAmigos(this).contar("statusAmizade = 0 AND (amigoAdd = " + usuario.getCodigo()+ " OR amigoAce = " + usuario.getCodigo()+")", new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 Resposta resp = (Resposta) obj;
@@ -275,7 +259,13 @@ public class PerfilActivity extends AppCompatActivity {
 
             @Override
             public void falha() {
-                System.out.println("falha trazer amigos usuario");
+                meusAmigos = new ArrayList<>();
+                if (verificarPerfilEmFoco()){
+                    if (usu != DadosUsuario.codigo)
+                        fab.setVisibility(View.VISIBLE);
+                }else{
+                    desfazerAmizade.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -297,14 +287,15 @@ public class PerfilActivity extends AppCompatActivity {
         imgUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder mensagem = new AlertDialog.Builder(PerfilActivity.this);
-//                View v = getLayoutInflater().inflate(R.layout.inflater_dialog_image_full, null);
-//                ImageView imgUsuarioFull = (ImageView) v.findViewById(R.id.imgUsuarioFull);
-                ImageView imgUsuarioFull = new ImageView(PerfilActivity.this);
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(PerfilActivity.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                View v = getLayoutInflater().inflate(R.layout.inflater_dialog_image_full, null);
+                ImageView imgUsuarioFull = (ImageView) v.findViewById(R.id.imgUsuarioFull);
+                // Aplica a opção para dar zoom;
+                // Tem que add no gradle para funcionar
+                new PhotoViewAttacher(imgUsuarioFull);
                 usuario.setImagemGrande(imgUsuarioFull, PerfilActivity.this);
-                mensagem.setView(imgUsuarioFull);
+                mensagem.setView(v);
                 mensagem.show();
-
             }
         });
     }
@@ -402,7 +393,6 @@ public class PerfilActivity extends AppCompatActivity {
                 case 2: return PerfilSobre.newInstance(position);
             }
             return null;
-            //return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override

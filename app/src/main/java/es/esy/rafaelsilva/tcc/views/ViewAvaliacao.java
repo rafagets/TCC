@@ -1,4 +1,4 @@
-package es.esy.rafaelsilva.tcc.task;
+package es.esy.rafaelsilva.tcc.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.DAO.SharedPreferences.AvaliacaoSP;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.ComentariosAvaliacaoActivity;
+import es.esy.rafaelsilva.tcc.activity.DetalhesProdutoActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
 import es.esy.rafaelsilva.tcc.controle.CtrlComentarioAvaliacao;
@@ -230,6 +231,15 @@ public class ViewAvaliacao {
             produto.setText(prod.getNome());
             avaliacao.setText(av.getComentario());
             estrela.setRating(av.getEstrelas());
+
+            imgProduto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(contexto, DetalhesProdutoActivity.class);
+                    intent.putExtra("produto", prod.getCodigo());
+                    contexto.startActivity(intent);
+                }
+            });
 
 
             if (curtidas != null)

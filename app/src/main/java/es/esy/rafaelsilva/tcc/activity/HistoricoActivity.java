@@ -3,17 +3,14 @@ package es.esy.rafaelsilva.tcc.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -27,25 +24,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.esy.rafaelsilva.tcc.DAO.DAO;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.controle.CtrlAvaliacao;
 import es.esy.rafaelsilva.tcc.controle.CtrlCompra;
 import es.esy.rafaelsilva.tcc.controle.CtrlHistorico;
 import es.esy.rafaelsilva.tcc.controle.CtrlLote;
-import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlProduto;
 import es.esy.rafaelsilva.tcc.controle.CtrlProdutor;
 import es.esy.rafaelsilva.tcc.controle.CtrlTipo;
@@ -56,17 +44,11 @@ import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
 import es.esy.rafaelsilva.tcc.modelo.Avaliacao;
 import es.esy.rafaelsilva.tcc.modelo.Historico;
 import es.esy.rafaelsilva.tcc.modelo.Lote;
-import es.esy.rafaelsilva.tcc.modelo.Mercado;
 import es.esy.rafaelsilva.tcc.modelo.Produto;
 import es.esy.rafaelsilva.tcc.modelo.Produtor;
 import es.esy.rafaelsilva.tcc.modelo.Tipo;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.HistoricoTask;
-import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
-import es.esy.rafaelsilva.tcc.util.CompartilharExternamente;
-import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
-import es.esy.rafaelsilva.tcc.util.Notificacao;
 import es.esy.rafaelsilva.tcc.util.Resposta;
 import es.esy.rafaelsilva.tcc.util.Util;
 
@@ -81,6 +63,9 @@ public class HistoricoActivity extends AppCompatActivity {
     private List<Avaliacao> listaAvaliacao;
     private Usuario usuario;
     private Produtor produtor;
+    private CircleImageView imgIconeProduto;
+    private ImageView imgHeaderProduto;
+    private LinearLayout layoutEstrelas;
 
     public Produto getProduto() {
         return produto;
@@ -98,8 +83,15 @@ public class HistoricoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        layoutEstrelas = (LinearLayout) findViewById(R.id.layoutEstrelas);
+        imgIconeProduto = (CircleImageView) findViewById(R.id.imgIcone);
+        imgHeaderProduto = (ImageView) findViewById(R.id.imgFundo);
+        this.monitorarCliqueImagemHeader();
+        this.monitorarCliqueImagemIcone();
+
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.VISIBLE);
+
 
         final String l = String.valueOf(getIntent().getStringExtra("lote"));
         Log.e("+++++++++++++++", l);
@@ -112,6 +104,7 @@ public class HistoricoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HistoricoActivity.this, DetalhesProdutoActivity.class);
+                intent.putExtra("produto", produto.getCodigo());
                 startActivity(intent);
             }
         });
@@ -124,6 +117,32 @@ public class HistoricoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 comprar();
+            }
+        });
+    }
+
+    private void monitorarCliqueImagemIcone(){
+        imgIconeProduto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(HistoricoActivity.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                CircleImageView imgUsuarioFull = new CircleImageView(HistoricoActivity.this);
+                produto.setImgIcone(imgUsuarioFull, HistoricoActivity.this);
+                mensagem.setView(imgUsuarioFull);
+                mensagem.show();
+            }
+        });
+    }
+
+    private void monitorarCliqueImagemHeader(){
+        imgHeaderProduto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mensagem = new AlertDialog.Builder(HistoricoActivity.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+                ImageView imgUsuarioFull = new ImageView(HistoricoActivity.this);
+                produto.setImgFundo(imgUsuarioFull, HistoricoActivity.this);
+                mensagem.setView(imgUsuarioFull);
+                mensagem.show();
             }
         });
     }
@@ -141,7 +160,7 @@ public class HistoricoActivity extends AppCompatActivity {
             @Override
             public void falha() {
                 bar.setVisibility(View.GONE);
-                Toast.makeText(contexto, "Falha ao carregarrrr", Toast.LENGTH_LONG).show();
+                Toast.makeText(contexto, "Falha ao carregar", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -199,8 +218,8 @@ public class HistoricoActivity extends AppCompatActivity {
         TextView nomeProdutor = (TextView) view.findViewById(R.id.txtNomeProdutor);
         TextView dataValidade = (TextView) view.findViewById(R.id.txtDataValidade);
         final EditText post = (EditText) view.findViewById(R.id.txtPost);
-        Spinner spinner = (Spinner) view.findViewById(R.id.status);
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.status);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
 
         String[] status = new String[] {"Público","Amigos","Privado"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.estilo_spinner, status);
@@ -213,18 +232,18 @@ public class HistoricoActivity extends AppCompatActivity {
         nomeProdutor.setText(produtor.getNome());
         dataValidade.setText("Validade: "+Util.formatDataDDmesYYYY(lote.getDatavencimento()));
 
-        int check = 0;
-        if (checkBox.isChecked())
-            check=1;
-
         mensagem.setView(view);
 
-        final int finalCarater = spinner.getSelectedItemPosition() + 1;
-        final int finalCheck = check;
         mensagem.setPositiveButton("Publicar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialoge, int which) {
                 Toast.makeText(HistoricoActivity.this, "Ok.", Toast.LENGTH_LONG).show();
-                estocar(finalCarater, finalCheck, post.getText().toString());
+
+                int finalCarater = spinner.getSelectedItemPosition() + 1;
+                int check = 0;
+                if (checkBox.isChecked())
+                    check=1;
+
+                estocar(finalCarater, check, post.getText().toString());
             }
         });
 
@@ -241,7 +260,7 @@ public class HistoricoActivity extends AppCompatActivity {
     }
 
     private void estocar(int carater,int notificacao, String post) {
-        new CtrlCompra(this).salvar(notificacao, carater, produto, lote, post, new CallbackSalvar() {
+        new CtrlCompra(this).salvar(carater, notificacao, produto, lote, post, new CallbackSalvar() {
             @Override
             public void resultadoSalvar(Object obj) {
                 Resposta rsp = (Resposta) obj;
@@ -315,8 +334,8 @@ public class HistoricoActivity extends AppCompatActivity {
             @Override
             public void falha() {
                 bar.setVisibility(View.GONE);
-                Toast.makeText(contexto, "Falha ao carregar", Toast.LENGTH_LONG).show();
-                finish();
+                //Toast.makeText(contexto, "Falha ao carregar", Toast.LENGTH_LONG).show();
+                //finish();
             }
         });
     }
@@ -365,27 +384,31 @@ public class HistoricoActivity extends AppCompatActivity {
         final TextView prod, produtor, numAvaliacoes;
         RatingBar estrelas = (RatingBar) findViewById(R.id.estrelas);
 
-        numAvaliacoes = (TextView) findViewById(R.id.lbTotalAvaliacoes);
-        numAvaliacoes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(contexto, ReputacaoActivity.class);
-                icone.buildDrawingCache();
-                intent.putExtra("icone", icone.getDrawingCache());
-                intent.putExtra("estrelas", (float) 2.5);
-                intent.putExtra("nome", produto.getNome());
-                intent.putExtra("produto", produto.getCodigo());
-                produto.setListaAvaliacao(listaAvaliacao);
-                intent.putExtra("obj", produto);
-                contexto.startActivity(intent);
-            }
-        });
+        if (listaAvaliacao != null) {
+            numAvaliacoes = (TextView) findViewById(R.id.lbTotalAvaliacoes);
+            numAvaliacoes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(contexto, ReputacaoActivity.class);
+                    icone.buildDrawingCache();
+                    intent.putExtra("icone", icone.getDrawingCache());
+                    intent.putExtra("estrelas", (float) 2.5);
+                    intent.putExtra("nome", produto.getNome());
+                    intent.putExtra("produto", produto.getCodigo());
+                    produto.setListaAvaliacao(listaAvaliacao);
+                    intent.putExtra("obj", produto);
+                    contexto.startActivity(intent);
+                }
+            });
+
+            monitorarCliqueEstrela(icone);
+        }
 
         prod = (TextView) findViewById(R.id.lbProduto);
         prod.setText(produto.getNome());
 
         produtor = (TextView) findViewById(R.id.lbProdutor);
-        //produtor.setText(pai.getProduto().getProdutorObj().getNome());
+        produtor.setText(this.produtor.getNome());
 
         produto.setImgIcone(icone, this);
         produto.setImgFundo(fundo, this);
@@ -434,6 +457,22 @@ public class HistoricoActivity extends AppCompatActivity {
         view.setVisibility(View.VISIBLE);
     }
 
+    private void monitorarCliqueEstrela(final CircleImageView icone) {
+        layoutEstrelas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(contexto, ReputacaoActivity.class);
+                icone.buildDrawingCache();
+                intent.putExtra("icone", icone.getDrawingCache());
+                intent.putExtra("estrelas", (float) 2.5);
+                intent.putExtra("nome", produto.getNome());
+                intent.putExtra("produto", produto.getCodigo());
+                produto.setListaAvaliacao(listaAvaliacao);
+                intent.putExtra("obj", produto);
+                contexto.startActivity(intent);
+            }
+        });
+    }
 
 
     @Override

@@ -39,9 +39,10 @@ public class AmigosAdapter extends BaseAdapter {
     private List<Amigos> meusAmigos;
     private int usuario;
 
-    public AmigosAdapter(List<Amigos> amigos, Context contexto) {
+    public AmigosAdapter(List<Amigos> amigos, List<Amigos> meusAmigos, Context contexto) {
         this.amigos = amigos;
         this.contexto = contexto;
+        this.meusAmigos = meusAmigos;
     }
 
     @Override
@@ -65,34 +66,42 @@ public class AmigosAdapter extends BaseAdapter {
 
         usuario = ((PerfilActivity) contexto).getUsuarioCodigo();
 
-        trazerMeusAmigos(v, i);
+        //trazerMeusAmigos(v, i);
+        trazerAmigo(v, i);
 
         return v;
     }
 
     /* Tras a lista de amizades do usuario logado no sistema
     *  para comparar se a amizade do amigo contem na sua lista de amizades*/
-    private void trazerMeusAmigos(final View v, final int i){
-        new CtrlAmigos(contexto).listar("WHERE amigoAdd = " + DadosUsuario.codigo, new CallbackListar() {
-            @Override
-            public void resultadoListar(List<Object> lista) {
-                meusAmigos = new ArrayList<>();
-                for (Object obj : lista)
-                    meusAmigos.add((Amigos) obj);
-                trazerAmigo(v, i);
-            }
-
-            @Override
-            public void falha() {
-                System.out.println("falha trazer amigos usuario");
-                trazerAmigo(v, i);
-            }
-        });
-    }
+//    private void trazerMeusAmigos(final View v, final int i){
+//        new CtrlAmigos(contexto).listar("WHERE amigoAdd = " + DadosUsuario.codigo+ " OR amigoAce = "+DadosUsuario.codigo, new CallbackListar() {
+//            @Override
+//            public void resultadoListar(List<Object> lista) {
+//                meusAmigos = new ArrayList<>();
+//                for (Object obj : lista)
+//                    meusAmigos.add((Amigos) obj);
+//                trazerAmigo(v, i);
+//            }
+//
+//            @Override
+//            public void falha() {
+//                System.out.println("falha trazer amigos usuario");
+//                trazerAmigo(v, i);
+//            }
+//        });
+//    }
 
     /* Traz a lista de amizades do amigo */
     private void trazerAmigo(final View v, final int i){
-        new CtrlUsuario(contexto).trazer(amigos.get(i).getAmigoAce(), new CallbackTrazer() {
+        // pega o codigo do usuario que é diferente ao usuario em foco
+        int codigo;
+        if (amigos.get(i).getAmigoAce() == usuario)
+            codigo = amigos.get(i).getAmigoAdd();
+        else
+            codigo = amigos.get(i).getAmigoAce();
+
+        new CtrlUsuario(contexto).trazer(codigo, new CallbackTrazer() {
             @Override
             public void resultadoTrazer(Object obj) {
                 amigos.get(i).setAmigoAceObj((Usuario) obj);
@@ -110,6 +119,13 @@ public class AmigosAdapter extends BaseAdapter {
 
     /* seta os dados do amigo em questão */
     private void setarDados(View v, int i){
+
+        int codigo;
+        if (amigos.get(i).getAmigoAce() == usuario)
+            codigo = amigos.get(i).getAmigoAdd();
+        else
+            codigo = amigos.get(i).getAmigoAce();
+
 
         final TextView nome = (TextView) v.findViewById(R.id.lbNome);
         final CircleImageView imgAmigo = (CircleImageView) v.findViewById(R.id.imgUsuario) ;
@@ -143,7 +159,7 @@ public class AmigosAdapter extends BaseAdapter {
             }
         }
 
-        monitorarCliqueImgUsuario(imgAmigo, i);
+        monitorarCliqueImgUsuario(imgAmigo, codigo);
     }
 
     private void monitorarCliqueAceitarAmizade(final LinearLayout layout, final int codigoAmizade, final int post) {
@@ -171,7 +187,7 @@ public class AmigosAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(contexto, PerfilActivity.class);
-                intent.putExtra("usuario", amigos.get(i).getAmigoAce());
+                intent.putExtra("usuario", i);
                 contexto.startActivity(intent);
             }
         });

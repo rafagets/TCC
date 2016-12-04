@@ -30,6 +30,7 @@ public class PerfilAmigos extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private List<Amigos> amigos;
+    private List<Amigos> meusAmigos;
     private int usuario;
 
     /**
@@ -63,15 +64,18 @@ public class PerfilAmigos extends Fragment {
     }
 
     private void buscar(final View rootView){
+
+        // Controla se as duas lista foram recebidas
+        final int[] flag = {0};
         /*
         * verifica se o usuario da pesquisa é o mesmo que esta logado
         * se ja estiver logado, buscas todos os amigos, inclusive as solicitaçoes.
         */
         String condicao = "";
         if (usuario != DadosUsuario.codigo){
-            condicao = "WHERE amigoAdd = " +usuario+ " OR amigoAce = " +usuario+ " AND statusAmizade = 0 ORDER BY statusAmizade DESC";
+            condicao = "WHERE statusAmizade = 0 AND (amigoAdd = " +usuario+ " OR amigoAce = " +usuario+ ") ORDER BY statusAmizade DESC";
         }else{
-            condicao = "WHERE amigoAdd = " +usuario+ " OR amigoAce = " +usuario;
+            condicao = "WHERE amigoAdd = " +usuario+ " OR amigoAce = " +usuario+ " ORDER BY statusAmizade DESC";
         }
 
         new CtrlAmigos(getActivity()).listar(condicao, new CallbackListar() {
@@ -82,14 +86,17 @@ public class PerfilAmigos extends Fragment {
                     amigos.add((Amigos) obj);
 
                 if (amigos != null) {
-                    AmigosAdapter adapter = new AmigosAdapter(amigos, getActivity());
+                    flag[0]++;
+                    if (flag[0] == 2)
+                        montar();
+                    /*AmigosAdapter adapter = new AmigosAdapter(amigos, getActivity());
                     GridView gridView = (GridView) getActivity().findViewById(R.id.gridView);
-                    gridView.setAdapter(adapter);
+                    gridView.setAdapter(adapter);*/
                 }else{
                     LinearLayout layout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
                     layout.removeAllViewsInLayout();
                     ImageView falha = new ImageView(getActivity());
-                    falha.setImageResource(R.drawable.back_falha_carregar);
+                    falha.setImageResource(R.drawable.falha);
                     layout.addView(falha);
                 }
 
@@ -109,6 +116,35 @@ public class PerfilAmigos extends Fragment {
                 layout.setVisibility(View.VISIBLE);
             }
         });
+
+        /* Tras a lista de amizades do usuario logado no sistema
+        *  para comparar se a amizade do amigo contem na sua lista de amizades*/
+        new CtrlAmigos(getActivity()).listar("WHERE amigoAdd = " + DadosUsuario.codigo+ " OR amigoAce = "+DadosUsuario.codigo, new CallbackListar() {
+            @Override
+            public void resultadoListar(List<Object> lista) {
+                meusAmigos = new ArrayList<>();
+                for (Object obj : lista)
+                    meusAmigos.add((Amigos) obj);
+
+                flag[0]++;
+                if (flag[0] == 2)
+                    montar();
+            }
+
+            @Override
+            public void falha() {
+                System.out.println("falha trazer amigos usuario");
+                flag[0]++;
+                if (flag[0] == 2)
+                    montar();
+            }
+        });
+    }
+
+    private void montar(){
+        AmigosAdapter adapter = new AmigosAdapter(amigos, meusAmigos, getActivity());
+        GridView gridView = (GridView) getActivity().findViewById(R.id.gridView);
+        gridView.setAdapter(adapter);
     }
 
 }

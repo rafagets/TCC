@@ -57,7 +57,7 @@ public class PesquisaProduto extends BaseAdapter implements Filterable {
         CircleImageView img = (CircleImageView) v.findViewById(R.id.imgProduto);
         TextView nomeProduto = (TextView) v.findViewById(R.id.lbNomeProduto);
 
-        listaFiltroP.get(i).setImgFundo(img, contexto);
+        listaFiltroP.get(i).setImgIcone(img, contexto);
         nomeProduto.setText(listaFiltroP.get(i).getNome());
         v.setOnClickListener(new View.OnClickListener() {
             @Override

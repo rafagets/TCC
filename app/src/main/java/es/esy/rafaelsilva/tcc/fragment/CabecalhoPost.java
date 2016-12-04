@@ -4,14 +4,10 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.preference.PreferenceActivity;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,16 +16,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.esy.rafaelsilva.tcc.R;
 import es.esy.rafaelsilva.tcc.activity.HomeActivity;
@@ -37,22 +23,13 @@ import es.esy.rafaelsilva.tcc.activity.MainActivity;
 import es.esy.rafaelsilva.tcc.activity.PerfilActivity;
 import es.esy.rafaelsilva.tcc.activity.PostarFotoActivity;
 import es.esy.rafaelsilva.tcc.controle.CtrlAmigos;
-import es.esy.rafaelsilva.tcc.controle.CtrlComentario;
 import es.esy.rafaelsilva.tcc.controle.CtrlPost;
 import es.esy.rafaelsilva.tcc.controle.CtrlUsuario;
-import es.esy.rafaelsilva.tcc.interfaces.CallbackExcluir;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackSalvar;
 import es.esy.rafaelsilva.tcc.interfaces.CallbackTrazer;
-import es.esy.rafaelsilva.tcc.modelo.Lote;
-import es.esy.rafaelsilva.tcc.modelo.Post;
 import es.esy.rafaelsilva.tcc.modelo.Usuario;
-import es.esy.rafaelsilva.tcc.task.ImageLoaderTask;
-import es.esy.rafaelsilva.tcc.task.PostComentarioTask;
-import es.esy.rafaelsilva.tcc.task.UtilTask;
-import es.esy.rafaelsilva.tcc.util.Config;
 import es.esy.rafaelsilva.tcc.util.DadosUsuario;
 import es.esy.rafaelsilva.tcc.util.Resposta;
-import es.esy.rafaelsilva.tcc.util.Util;
 
 /**
  * Criado por Rafael em 25/08/2016, enjoy it.
@@ -203,6 +180,7 @@ public class CabecalhoPost extends Fragment {
                     getActivity().finish();
                 }else {
                     usuario.setImagemPerfil(imgUsuarioPrincipal, getActivity());
+                    usuario.setImagemPerfil(((HomeActivity) getActivity()).getImgUsuarioPrincipal(), getActivity());
                     getNotificacoes();
                 }
             }
